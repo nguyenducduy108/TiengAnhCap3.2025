@@ -52,7 +52,44 @@
             min-height: 100vh;
             flex-direction: row; /* Changed back to row for sidebar layout */
         }
+<!-- Login/Password Prompt Section -->
+<div id="login-prompt" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(230, 230, 230, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; text-align: center;">
+    <img src="YOUR_LOGO_URL_HERE" alt="Logo" style="max-width: 150px; margin-bottom: 20px;"> <!-- Optional: Thêm logo của bạn -->
+    <h2 style="color: #333; margin-bottom: 15px; font-size: 1.5em;">Nhập Mã Truy Cập</h2>
+    <p style="color: #555; margin-bottom: 20px; max-width: 400px;">Vui lòng nhập mã truy cập hợp lệ để bắt đầu ôn luyện.</p>
+    <input type="text" id="access-code-input" style="padding: 12px; font-size: 1.1em; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 300px;" placeholder="Mã truy cập">
+    <button id="access-submit-btn" class="button button-success" style="padding: 12px 30px; font-size: 1.1em;">Truy cập</button>
+    <p id="login-error" style="color: var(--error-color); margin-top: 15px; display: none; font-weight: bold;"></p>
+</div>
 
+<!-- Main Application Content Wrapper (Initially Hidden) -->
+<!-- Đảm bảo TOÀN BỘ nội dung gốc của bạn (sidebar, main-content) nằm BÊN TRONG div này -->
+<div id="app-wrapper" style="display: none; width: 100%; height: 100%; display: flex; flex-direction: row;">
+     <button class="menu-toggle" id="menuToggle">☰</button>
+     <aside class="sidebar" id="sidebar">
+        <h2>Luyện thi Tiếng Anh vào cấp 3</h2>
+         <nav>
+             <ul>
+                 <li><a href="#module1" class="nav-link active">Module 1: Ngữ âm</a></li>
+                 <!-- ... các link module khác ... -->
+                  <li><a href="#flashcard-creator" class="nav-link">Tạo Flashcard</a></li>
+                 <li><a href="#test1" class="nav-link">Đề thi mẫu 1</a></li>
+                 <li><a href="#test2" class="nav-link">Đề thi mẫu 2</a></li>
+                 <li><a href="#" id="logout-btn" class="nav-link" style="color: var(--warning-color);">Đăng xuất</a></li> <!-- Nút Đăng xuất -->
+             </ul>
+         </nav>
+         <!-- Hiển thị thông tin người dùng/giới thiệu (Optional) -->
+         <div id="user-info" style="padding: 15px; margin-top: 20px; border-top: 1px solid var(--secondary-color); font-size: 0.9em; color: var(--nav-text); display:none;">
+             Xin chào, <span id="user-display-name" style="font-weight: bold;">User</span>!<br>
+             Mã giới thiệu của bạn: <span id="user-referrer-code" style="font-weight: bold; color: var(--warning-color);">N/A</span>
+         </div>
+     </aside>
+
+     <main class="main-content" id="mainContent">
+         <!-- Tất cả các thẻ <section> (module1, module2, ..., test1, test2) nằm ở đây -->
+          <!-- ... -->
+     </main>
+</div>
         /* --- Navigation --- */
         .sidebar {
             width: 250px;
@@ -2428,7 +2465,516 @@
              document.getElementById('fc-random-btn').disabled = true;
              const counterEl = document.getElementById('fc-counter'); if (counterEl) counterEl.textContent = '0 / 0';
          }
+// --- Variables related to Authentication ---
+let currentSessionId = null;
+let pingIntervalId = null;
+const PING_INTERVAL_MS = 2 * 60 * 1000; // Ping every 2 minutes
 
+// --- Elements ---
+const loginPrompt = document.getElementById('login-prompt');
+const appWrapper = document.getElementById('app-wrapper');
+const accessCodeInput = document.getElementById('access-code-input');
+const accessSubmitBtn = document.getElementById('access-submit-btn');
+const loginError = document.getElementById('login-error');
+const logoutBtn = document.getElementById('logout-btn');
+const userInfoDiv = document.getElementById('user-info');
+const userDisplayName = document.getElementById('user-display-name');
+const userReferrerCode = document.getElementById('user-referrer-code');
+
+// --- Backend API URL ---
+// QUAN TRỌNG: Thay thế bằng URL backend Render thực tế của bạn
+const backendUrl = 'https://YOUR_BACKEND_SERVICE_NAME.onrender.com';
+
+// --- Functions ---
+
+// Function to show login prompt and hide main app
+function showLogin() {
+    console.log("[Auth] Showing login prompt.");
+    if (loginPrompt) loginPrompt.style.display = 'flex';
+    if (appWrapper) appWrapper.style.display = 'none';
+    // Clear any previous session info from storage
+    sessionStorage.removeItem('appSessionId');
+    sessionStorage.removeItem('appUserName');
+    sessionStorage.removeItem('appReferrerCode');
+    currentSessionId = null;
+    stopPinging(); // Stop pinging if logging out or session invalid
+    if(userInfoDiv) userInfoDiv.style.display = 'none'; // Hide user info
+}
+
+// Function to show main app and hide login prompt
+function showAppContent(userName = 'User', referrerCode = null) {
+    console.log("[Auth] Showing main app content.");
+    if (loginPrompt) loginPrompt.style.display = 'none';
+    if (appWrapper) appWrapper.style.display = 'flex'; // Use flex because body uses flex
+
+    // Initialize other functionalities AFTER content is visible
+    initializePageFunctionality(); // Make sure this initializes nav, tests, etc.
+
+    // Display user info (Optional)
+    if(userInfoDiv && userDisplayName && userReferrerCode){
+        userDisplayName.textContent = userName || 'User';
+        userReferrerCode.textContent = referrerCode || 'Không có';
+        userInfoDiv.style.display = 'block';
+    }
+}
+
+// Function to handle authentication
+async function handleAuthentication() {
+    if (!accessCodeInput || !loginError || !accessSubmitBtn) {
+        console.error("Login elements not found!");
+        return;
+    }
+    const accessCode = accessCodeInput.value.trim();
+    if (!accessCode) {
+        loginError.textContent = 'Vui lòng nhập mã truy cập.';
+        loginError.style.display = 'block';
+        return;
+    }
+
+    loginError.style.display = 'none'; // Hide error initially
+    accessSubmitBtn.disabled = true; // Disable button during request
+    accessSubmitBtn.textContent = 'Đang kiểm tra...';
+
+    try {
+        const response = await fetch(`${backendUrl}/api/authenticate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessCode: accessCode })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success && data.sessionId) {
+            console.log("[Auth] Authentication successful. Session ID:", data.sessionId);
+            currentSessionId = data.sessionId;
+            sessionStorage.setItem('appSessionId', currentSessionId); // Store session ID
+            sessionStorage.setItem('appUserName', data.userName || 'User');
+            if(data.referrerCode) sessionStorage.setItem('appReferrerCode', data.referrerCode);
+
+            showAppContent(data.userName, data.referrerCode);
+            startPinging(); // Start pinging the server
+        } else {
+            console.error("[Auth] Authentication failed:", data.message);
+            loginError.textContent = data.message || 'Xác thực thất bại. Vui lòng thử lại.';
+            loginError.style.display = 'block';
+            accessSubmitBtn.disabled = false; // Re-enable button
+            accessSubmitBtn.textContent = 'Truy cập';
+        }
+    } catch (error) {
+        console.error('[Auth] Network or server error during authentication:', error);
+        loginError.textContent = 'Lỗi kết nối đến máy chủ. Vui lòng thử lại.';
+        loginError.style.display = 'block';
+        accessSubmitBtn.disabled = false;
+        accessSubmitBtn.textContent = 'Truy cập';
+    }
+}
+
+// Function to send periodic pings
+async function sendPing() {
+    if (!currentSessionId) {
+        console.log("[Ping] No active session, stopping ping.");
+        stopPinging();
+        return;
+    }
+    // console.log(`[Ping] Sending ping for session: ${currentSessionId}`);
+    try {
+        const response = await fetch(`${backendUrl}/api/ping`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: currentSessionId })
+        });
+        if (!response.ok) {
+            const data = await response.json();
+            console.warn(`[Ping] Ping failed or session expired. Status: ${response.status}, Message: ${data.message}`);
+            // Session is invalid on server, force logout on client
+            handleLogout(false); // Pass false to not call API again
+            alert("Phiên đăng nhập đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.");
+        } else {
+             // console.log("[Ping] Ping successful.");
+        }
+    } catch (error) {
+        console.error('[Ping] Network error during ping:', error);
+        // Optional: Implement retry logic or inform user about connection issues
+    }
+}
+
+// Start periodic pinging
+function startPinging() {
+    if (pingIntervalId) clearInterval(pingIntervalId); // Clear any existing interval
+    if (currentSessionId) {
+        pingIntervalId = setInterval(sendPing, PING_INTERVAL_MS);
+        console.log("[Ping] Started pinging interval.");
+        // Send an initial ping immediately after login might be good
+        // sendPing();
+    }
+}
+
+// Stop periodic pinging
+function stopPinging() {
+    if (pingIntervalId) {
+        clearInterval(pingIntervalId);
+        pingIntervalId = null;
+        console.log("[Ping] Stopped pinging interval.");
+    }
+}
+
+// Function to handle logout
+async function handleLogout(callApi = true) {
+    console.log("[Logout] Logging out...");
+    const sessionIdToLogout = currentSessionId || sessionStorage.getItem('appSessionId');
+    stopPinging();
+    sessionStorage.removeItem('appSessionId');
+    sessionStorage.removeItem('appUserName');
+    sessionStorage.removeItem('appReferrerCode');
+    currentSessionId = null;
+
+    if (callApi && sessionIdToLogout) {
+        try {
+            await fetch(`${backendUrl}/api/logout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionId: sessionIdToLogout })
+            });
+            console.log("[Logout] Logout API call sent.");
+        } catch (error) {
+            console.error('[Logout] Network error during logout API call:', error);
+        }
+    }
+    showLogin(); // Show the login prompt again
+}
+
+
+// --- Event Listeners ---
+
+// Attach listener to the submit button within DOMContentLoaded to ensure it exists
+document.addEventListener('DOMContentLoaded', () => {
+    const submitBtn = document.getElementById('access-submit-btn');
+    const codeInput = document.getElementById('access-code-input');
+    const logoutButton = document.getElementById('logout-btn'); // Find logout button
+
+    if (submitBtn && codeInput) {
+        submitBtn.addEventListener('click', handleAuthentication);
+        // Allow pressing Enter in the password field
+        codeInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleAuthentication();
+            }
+        });
+         console.log("[DOMContentLoaded] Login form listeners attached.");
+    } else {
+        console.error("[DOMContentLoaded] Login prompt button or input not found!");
+    }
+
+    // Attach listener for logout button
+    if (logoutButton) {
+         logoutButton.addEventListener('click', (e) => {
+             e.preventDefault(); // Prevent default link behavior
+             handleLogout();
+         });
+         console.log("[DOMContentLoaded] Logout listener attached.");
+    } else {
+         console.warn("[DOMContentLoaded] Logout button not found.");
+    }
+
+
+    // Check for existing session on page load
+    const storedSessionId = sessionStorage.getItem('appSessionId');
+    if (storedSessionId) {
+        console.log("[DOMContentLoaded] Found stored session ID:", storedSessionId);
+        currentSessionId = storedSessionId;
+        const storedUserName = sessionStorage.getItem('appUserName');
+        const storedReferrerCode = sessionStorage.getItem('appReferrerCode');
+        showAppContent(storedUserName, storedReferrerCode); // Show app content directly
+        startPinging(); // Resume pinging
+    } else {
+        console.log("[DOMContentLoaded] No stored session ID found. Showing login.");
+        showLogin(); // Ensure login is shown if no session
+    }
+
+     // Call the function to attach listeners for test submits (moved here)
+    // attachTestSubmitListeners(); // This will be called inside showAppContent now
+});
+
+// Keep other functions like checkAnswerMCQ, checkAnswerText, submitMockTest, flashcard logic, etc.
+
+// Function to Initialize Everything Else (Called after successful login)
+function initializePageFunctionality(){
+     console.log("[Init Page] Initializing page functionality...");
+
+     // --- Navigation and Section Switching ---
+     const navLinks = document.querySelectorAll('.nav-link');
+     const contentSections = document.querySelectorAll('.content-section');
+     const sidebar = document.getElementById('sidebar');
+     const menuToggle = document.getElementById('menuToggle');
+     const mainContent = document.getElementById('mainContent');
+
+     function showSection(sectionId) {
+         contentSections.forEach(section => {
+             section.style.display = (section.id === sectionId) ? 'block' : 'none';
+             section.classList.toggle('active', section.id === sectionId);
+         });
+         navLinks.forEach(link => {
+             link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+         });
+         if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+             sidebar.classList.remove('open');
+         }
+         if(mainContent) mainContent.scrollTop = 0;
+         window.scrollTo(0, 0);
+     }
+
+     if (navLinks.length > 0 && contentSections.length > 0 && sidebar && menuToggle && mainContent) {
+         navLinks.forEach(link => {
+             // Remove previous listeners to avoid duplicates if called multiple times
+             link.replaceWith(link.cloneNode(true));
+         });
+          // Re-select links after cloning
+         document.querySelectorAll('.nav-link').forEach(link => {
+              if (link.id !== 'logout-btn') { // Don't re-attach nav logic to logout button
+                    link.addEventListener('click', (e) => {
+                         e.preventDefault();
+                         const targetId = link.getAttribute('href')?.substring(1);
+                         if (targetId) { showSection(targetId); }
+                    });
+              }
+         });
+
+
+         menuToggle.replaceWith(menuToggle.cloneNode(true)); // Clone to remove old listeners
+         document.getElementById('menuToggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+
+
+          // Close sidebar if clicking on the main content area
+          mainContent.replaceWith(mainContent.cloneNode(true)); // Clone to remove old listeners
+          document.getElementById('mainContent').addEventListener('click', (e) => {
+              if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                  sidebar.classList.remove('open');
+              }
+          });
+
+
+         // Set initial section based on hash or default
+         let hash = window.location.hash.substring(1);
+         let initialSectionId = 'module1'; // Default section
+         if (hash && document.getElementById(hash)) {
+             initialSectionId = hash;
+         }
+         console.log(`[Init Page] Setting initial section to: ${initialSectionId}`);
+         showSection(initialSectionId);
+
+
+     } else {
+         console.warn("[Init Page] Navigation elements missing, skipping setup.");
+     }
+
+     // --- Event Listener Attachment for Tests ---
+     attachTestSubmitListeners();
+
+     // --- Initialize Flashcards ---
+     const flashcardTable = document.getElementById('flashcard-input-table');
+      if (flashcardTable && tableBody.rows.length === 0) { // Only add row if table is empty
+         addFlashcardRow();
+      }
+      console.log("[Init Page] Page functionality initialized.");
+}
+
+
+// --- Event Listener Attachment Function for Test Buttons ---
+ function attachTestSubmitListeners() {
+      const submitBtn1 = document.getElementById('submit-test1-btn');
+      if (submitBtn1) {
+          // Remove previous listener before adding new one if function called multiple times
+          submitBtn1.replaceWith(submitBtn1.cloneNode(true));
+          document.getElementById('submit-test1-btn').addEventListener('click', function() {
+              console.log("[Button Click] Submit button for test1 clicked via listener.");
+              submitMockTest('test1');
+          });
+          console.log("[Attach Listeners] Event listener attached to #submit-test1-btn.");
+      } else {
+          console.warn("[Attach Listeners] Submit button #submit-test1-btn not found.");
+      }
+
+      const submitBtn2 = document.getElementById('submit-test2-btn');
+       if (submitBtn2) {
+            submitBtn2.replaceWith(submitBtn2.cloneNode(true));
+            document.getElementById('submit-test2-btn').addEventListener('click', function() {
+                console.log("[Button Click] Submit button for test2 clicked via listener.");
+               submitMockTest('test2');
+            });
+            console.log("[Attach Listeners] Event listener attached to #submit-test2-btn.");
+       } else {
+            console.warn("[Attach Listeners] Submit button #submit-test2-btn not found.");
+       }
+ }
+
+ // --- Mock Test Submission and Grading (Keep the corrected submitMockTest function) ---
+ function submitMockTest(testId) {
+     console.log(`[Debug] Starting submitMockTest for ${testId}`);
+     let form = document.getElementById(`mock-test-${testId}-form`)
+             || document.getElementById(`mock-test-${testId.replace(/^test/, '')}-form`);
+
+     if (!form) {
+         console.error(`[Debug] CRITICAL ERROR: Form element for '${testId}' NOT FOUND.`);
+         alert(`Lỗi: Không tìm thấy form HTML cho bài thi ${testId}.`);
+         return;
+     }
+     console.log(`[Debug] Form found for ${testId} with ID: ${form.id}`);
+     const questions = form.querySelectorAll('.question');
+     if (questions.length === 0) { console.error(`[Debug] No questions (.question) found within form ${testId}`); return; }
+     const resultsSummary = document.getElementById(`${testId}-results-summary`);
+     const detailedResultsDiv = document.getElementById(`${testId}-detailed-results`);
+     const section = document.getElementById(testId);
+     const submitButton = form.querySelector('.submit-btn');
+
+     if (!resultsSummary) console.error(`[Debug] Results summary div (#${testId}-results-summary) NOT FOUND!`);
+     if (!detailedResultsDiv) console.error(`[Debug] Detailed results div (#${testId}-detailed-results) NOT FOUND!`);
+     if (!submitButton) console.warn(`[Debug] Submit button (.submit-btn) not found for test ${testId}`);
+
+     if ((submitButton && submitButton.disabled) || (section && section.classList.contains('submitted'))) {
+         console.warn(`[Debug] Test ${testId} already submitted.`);
+         resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+         return;
+     }
+     if (section) section.classList.add('submitted'); else form.classList.add('submitted');
+     console.log(`[Debug] Found ${questions.length} questions for test ${testId}`);
+     let score = 0; let totalValidQuestions = 0; let detailedAnswersHTML = '<ol>';
+
+     questions.forEach((question, index) => {
+         const questionId = question.getAttribute('data-question-id');
+         const correctAnswerDataAttr = question.getAttribute('data-correct-answer');
+         if (correctAnswerDataAttr === null || correctAnswerDataAttr === undefined) { console.warn(`[Debug] Q${index + 1} missing data-correct-answer.`); return; }
+         totalValidQuestions++;
+         const isMcq = question.querySelector('input[type="radio"]'); const textInput = question.querySelector('input[type="text"]');
+         let userAnswer = null; let isAnswerCorrect = false; let correctAnswersForDisplay = [];
+         question.classList.remove('user-correct', 'user-incorrect');
+         if (isMcq) {
+             question.querySelectorAll('.options li').forEach(li => { li.classList.remove('user-correct', 'user-incorrect', 'correct-answer-highlight'); const label = li.querySelector('label'); if(label) label.style.pointerEvents = 'none'; });
+             question.querySelectorAll(`input[name="${questionId}"]`).forEach(radio => radio.disabled = true);
+         } else if (textInput) { textInput.classList.remove('user-correct', 'user-incorrect'); textInput.disabled = true; }
+         else { console.warn(`[Debug] Q${index + 1} no valid input.`); totalValidQuestions--; return; }
+
+         if (isMcq) {
+             const selectedRadio = question.querySelector(`input[name="${questionId}"]:checked`); const correctAnswerValue = correctAnswerDataAttr; correctAnswersForDisplay.push(correctAnswerValue);
+             const correctRadio = question.querySelector(`input[value="${correctAnswerValue}"]`); const correctLabelLi = correctRadio ? correctRadio.closest('li') : null;
+             if (selectedRadio) { userAnswer = selectedRadio.value; isAnswerCorrect = (userAnswer === correctAnswerValue); const selectedLabelLi = selectedRadio.closest('li'); if (selectedLabelLi) selectedLabelLi.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect'); if (!isAnswerCorrect && correctLabelLi) correctLabelLi.classList.add('correct-answer-highlight'); }
+             else if (correctLabelLi) { correctLabelLi.classList.add('correct-answer-highlight'); }
+         } else if (textInput) {
+             userAnswer = normalizeAnswer(textInput.value); let correctOptionsNormalized = [];
+             try { const parsed = JSON.parse(correctAnswerDataAttr.replace(/'/g, '"')); if (Array.isArray(parsed)) { correctOptionsNormalized = parsed.map(normalizeAnswer); correctAnswersForDisplay = parsed; } else { correctOptionsNormalized = [normalizeAnswer(String(parsed))]; correctAnswersForDisplay = [String(parsed)]; } }
+             catch (e) { correctOptionsNormalized = [normalizeAnswer(correctAnswerDataAttr)]; correctAnswersForDisplay = [correctAnswerDataAttr]; }
+             isAnswerCorrect = correctOptionsNormalized.includes(userAnswer); textInput.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect');
+         }
+         if (isAnswerCorrect) { score++; }
+         detailedAnswersHTML += `<li><span class="q-number">Câu ${index + 1}:</span> <span class="q-answer">${correctAnswersForDisplay.join(' / ')}</span></li>`;
+     });
+     detailedAnswersHTML += '</ol>'; console.log(`[Debug] Grading complete. Score: ${score}/${totalValidQuestions}`);
+     if (resultsSummary) { resultsSummary.innerHTML = `<h3>Kết quả</h3>Bạn đã trả lời đúng ${score} / ${totalValidQuestions} câu.`; resultsSummary.style.display = 'block'; console.log(`[Debug] Displayed results summary.`); }
+     if (detailedResultsDiv) { detailedResultsDiv.innerHTML = `<h4>Tổng hợp đáp án đúng</h4>${detailedAnswersHTML}`; detailedResultsDiv.style.display = 'block'; console.log(`[Debug] Displayed detailed results.`); }
+     if (submitButton) { submitButton.disabled = true; console.log(`[Debug] Submit button disabled.`); }
+     resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' }); console.log(`[Debug] submitMockTest finished.`);
+ }
+
+
+// --- Flashcard Creator Logic ---
+ let flashcards = [];
+ let currentCardIndex = 0;
+ const maxFlashcards = 15;
+
+ function addFlashcardRow() {
+    const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+     if (!tableBody) return;
+     if (tableBody.rows.length >= maxFlashcards) {
+         alert(`Bạn chỉ có thể tạo tối đa ${maxFlashcards} flashcards.`);
+         return;
+     }
+     const newRow = tableBody.insertRow();
+     const cell1 = newRow.insertCell(0);
+     const cell2 = newRow.insertCell(1);
+     cell1.innerHTML = '<input type="text" placeholder="Nhập từ...">';
+     cell2.innerHTML = '<input type="text" placeholder="Nhập nghĩa hoặc ví dụ...">';
+     document.getElementById('add-fc-row-btn').disabled = (tableBody.rows.length >= maxFlashcards);
+ }
+
+ function createFlashcards() {
+     flashcards = [];
+     const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+     if (!tableBody) return;
+     const rows = tableBody.rows;
+     for (let i = 0; i < rows.length; i++) {
+         const wordInput = rows[i].cells[0].getElementsByTagName('input')[0];
+         const meaningInput = rows[i].cells[1].getElementsByTagName('input')[0];
+         const word = wordInput.value.trim();
+         const meaning = meaningInput.value.trim();
+         if (word && meaning) flashcards.push({ front: word, back: meaning });
+     }
+     const displayArea = document.getElementById('flashcard-display-area');
+     const prevBtn = document.getElementById('fc-prev-btn');
+     const nextBtn = document.getElementById('fc-next-btn');
+     const randomBtn = document.getElementById('fc-random-btn');
+     const counterEl = document.getElementById('fc-counter');
+
+     if (flashcards.length === 0) {
+         alert("Vui lòng nhập ít nhất một cặp từ và nghĩa.");
+         if(displayArea) displayArea.classList.add('hidden');
+         if(prevBtn) prevBtn.disabled = true; if(nextBtn) nextBtn.disabled = true; if(randomBtn) randomBtn.disabled = true;
+         if (counterEl) counterEl.textContent = '0 / 0';
+         return;
+     }
+     currentCardIndex = 0;
+     displayFlashcard();
+     if(displayArea) displayArea.classList.remove('hidden');
+     const controlsEnabled = flashcards.length > 0;
+     if(prevBtn) prevBtn.disabled = true;
+     if(nextBtn) nextBtn.disabled = flashcards.length <= 1;
+     if(randomBtn) randomBtn.disabled = controlsEnabled;
+ }
+
+ function displayFlashcard() {
+     const displayArea = document.getElementById('flashcard-display-area');
+     const card = document.getElementById('flashcard');
+     const front = document.getElementById('flashcard-front');
+     const back = document.getElementById('flashcard-back');
+     const counter = document.getElementById('fc-counter');
+     const prevBtn = document.getElementById('fc-prev-btn');
+     const nextBtn = document.getElementById('fc-next-btn');
+     const randomBtn = document.getElementById('fc-random-btn');
+
+      if (!displayArea || !card || !front || !back || !counter || !prevBtn || !nextBtn || !randomBtn) { return; }
+     if (flashcards.length === 0 || currentCardIndex < 0 || currentCardIndex >= flashcards.length) {
+         displayArea.classList.add('hidden');
+         prevBtn.disabled = true; nextBtn.disabled = true; randomBtn.disabled = true; counter.textContent = '0 / 0';
+         return;
+     };
+      displayArea.classList.remove('hidden');
+     card.classList.remove('is-flipped');
+     setTimeout(() => {
+        const currentData = flashcards[currentCardIndex];
+        front.textContent = currentData.front; back.textContent = currentData.back;
+        counter.textContent = `${currentCardIndex + 1} / ${flashcards.length}`;
+     }, 50);
+     prevBtn.disabled = (currentCardIndex === 0);
+     nextBtn.disabled = (currentCardIndex === flashcards.length - 1);
+     randomBtn.disabled = flashcards.length <= 0;
+ }
+
+ document.getElementById('flashcard')?.addEventListener('click', function() { if (flashcards.length > 0) this.classList.toggle('is-flipped'); });
+ function nextFlashcard() { if (currentCardIndex < flashcards.length - 1) { currentCardIndex++; displayFlashcard(); } }
+ function prevFlashcard() { if (currentCardIndex > 0) { currentCardIndex--; displayFlashcard(); } }
+ function randomFlashcard() {
+     if (flashcards.length > 1) { let randomIndex; do { randomIndex = Math.floor(Math.random() * flashcards.length); } while (flashcards.length > 1 && randomIndex === currentCardIndex); currentCardIndex = randomIndex; displayFlashcard(); }
+     else if (flashcards.length === 1) { currentCardIndex = 0; displayFlashcard(); }
+ }
+ function resetFlashcardTable() {
+     const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+     if (!tableBody) return;
+     tableBody.innerHTML = ''; addFlashcardRow(); flashcards = [];
+     document.getElementById('flashcard-display-area')?.classList.add('hidden');
+     document.getElementById('add-fc-row-btn').disabled = false;
+     document.getElementById('fc-prev-btn').disabled = true; document.getElementById('fc-next-btn').disabled = true;
+     document.getElementById('fc-random-btn').disabled = true;
+     const counterEl = document.getElementById('fc-counter'); if (counterEl) counterEl.textContent = '0 / 0';
+ }
     </script>
 
 </body>
