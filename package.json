@@ -1,6 +1,7 @@
 {
   "name": "english-learning-app-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend for English Learning App with Referral",
   "main": "server.js",
   "scripts": {
