@@ -5,268 +5,563 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luyện thi Tiếng Anh vào cấp 3</title>
     <style>
-        /* --- Global Styles --- */
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
-        :root {
-            --primary-color: #007bff; /* Blue */
-            --secondary-color: #6c757d; /* Gray */
-            --background-color: #f8f9fa; /* Light Gray */
+        /* CSS Tối thiểu cho Login Prompt & App Wrapper */
+        :root { /* Giữ lại các biến màu nếu cần */
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
             --text-color: #333;
             --card-bg: #ffffff;
             --border-color: #dee2e6;
-            --success-color: #28a745; /* Green */
-            --warning-color: #ffc107; /* Yellow */
-            --error-color: #dc3545; /* Red */
-            --info-color: #17a2b8; /* Cyan */
-            --nav-bg: #343a40; /* Dark Gray */
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+            --nav-bg: #343a40;
             --nav-text: #f8f9fa;
-            --nav-hover: #495057;
-            --link-color: #0056b3;
-            --correct-bg: #d4edda;
-            --correct-border: #c3e6cb;
-            --correct-text: #155724;
-            --incorrect-bg: #f8d7da;
-            --incorrect-border: #f5c6cb;
-            --incorrect-text: #721c24;
-            --flashcard-front: #e9ecef;
-            --flashcard-back: #fff3cd;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-             scroll-behavior: smooth; /* Smooth scroll for anchors */
-        }
-
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            display: flex;
-            min-height: 100vh;
-            flex-direction: row; /* Changed back to row for sidebar layout */
-        }
-<!-- Login/Password Prompt Section -->
-<div id="login-prompt" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(230, 230, 230, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; text-align: center;">
-    <img src="YOUR_LOGO_URL_HERE" alt="Logo" style="max-width: 150px; margin-bottom: 20px;"> <!-- Optional: Thêm logo của bạn -->
-    <h2 style="color: #333; margin-bottom: 15px; font-size: 1.5em;">Nhập Mã Truy Cập</h2>
-    <p style="color: #555; margin-bottom: 20px; max-width: 400px;">Vui lòng nhập mã truy cập hợp lệ để bắt đầu ôn luyện.</p>
-    <input type="text" id="access-code-input" style="padding: 12px; font-size: 1.1em; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 300px;" placeholder="Mã truy cập">
-    <button id="access-submit-btn" class="button button-success" style="padding: 12px 30px; font-size: 1.1em;">Truy cập</button>
-    <p id="login-error" style="color: var(--error-color); margin-top: 15px; display: none; font-weight: bold;"></p>
-</div>
-
-<!-- Main Application Content Wrapper (Initially Hidden) -->
-<!-- Đảm bảo TOÀN BỘ nội dung gốc của bạn (sidebar, main-content) nằm BÊN TRONG div này -->
-<div id="app-wrapper" style="display: none; width: 100%; height: 100%; display: flex; flex-direction: row;">
-     <button class="menu-toggle" id="menuToggle">☰</button>
-     <aside class="sidebar" id="sidebar">
-        <h2>Luyện thi Tiếng Anh vào cấp 3</h2>
-         <nav>
-             <ul>
-                 <li><a href="#module1" class="nav-link active">Module 1: Ngữ âm</a></li>
-                 <!-- ... các link module khác ... -->
-                  <li><a href="#flashcard-creator" class="nav-link">Tạo Flashcard</a></li>
-                 <li><a href="#test1" class="nav-link">Đề thi mẫu 1</a></li>
-                 <li><a href="#test2" class="nav-link">Đề thi mẫu 2</a></li>
-                 <li><a href="#" id="logout-btn" class="nav-link" style="color: var(--warning-color);">Đăng xuất</a></li> <!-- Nút Đăng xuất -->
-             </ul>
-         </nav>
-         <!-- Hiển thị thông tin người dùng/giới thiệu (Optional) -->
-         <div id="user-info" style="padding: 15px; margin-top: 20px; border-top: 1px solid var(--secondary-color); font-size: 0.9em; color: var(--nav-text); display:none;">
-             Xin chào, <span id="user-display-name" style="font-weight: bold;">User</span>!<br>
-             Mã giới thiệu của bạn: <span id="user-referrer-code" style="font-weight: bold; color: var(--warning-color);">N/A</span>
-         </div>
-     </aside>
-
-     <main class="main-content" id="mainContent">
-         <!-- Tất cả các thẻ <section> (module1, module2, ..., test1, test2) nằm ở đây -->
-          <!-- ... -->
-     </main>
-</div>
-        /* --- Navigation --- */
-        .sidebar {
-            width: 250px;
-            background-color: var(--nav-bg);
-            color: var(--nav-text);
-            padding: 20px 0;
-            /* position: fixed; */ /* Removed fixed position for simpler flow */
-            /* top: 0; */
-            /* left: 0; */
-            height: 100vh; /* Full height */
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            flex-shrink: 0; /* Prevent sidebar from shrinking */
+            font-family: 'Lato', sans-serif; /* Giữ font */
+             margin: 0; /* Quan trọng để div che phủ toàn màn hình */
+             padding: 0;
+             display: flex; /* Cần thiết cho layout sidebar/main */
+             flex-direction: row;
+             min-height: 100vh;
         }
 
-        .sidebar h2 {
+        /* Login Prompt Styling */
+        #login-prompt {
+            position: fixed; /* Che phủ toàn bộ viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.97); /* Nền hơi mờ */
+            z-index: 10000; /* Luôn ở trên cùng */
+            display: flex; /* Sử dụng flex để căn giữa */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
             text-align: center;
+            box-sizing: border-box; /* Bao gồm padding trong kích thước */
+        }
+        #login-prompt h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        #login-prompt p {
+            color: var(--secondary-color);
             margin-bottom: 25px;
-            font-size: 1.4em;
-            color: var(--warning-color);
-            padding: 0 15px;
+            max-width: 450px;
+            line-height: 1.5;
         }
-
-        .sidebar nav ul {
-            list-style: none;
+        #login-prompt input[type="password"],
+        #login-prompt input[type="text"] /* Thêm text để test dễ hơn nếu cần */
+        {
+            padding: 12px 15px;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
         }
-
-        .sidebar nav ul li a {
-            display: block;
-            color: var(--nav-text);
-            text-decoration: none;
-            padding: 12px 20px;
-            transition: background-color 0.3s ease, padding-left 0.3s ease;
-            font-size: 0.95em;
-            border-left: 4px solid transparent;
+        #login-prompt button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
-
-        .sidebar nav ul li a:hover {
-            background-color: var(--nav-hover);
-            border-left-color: var(--primary-color);
-            padding-left: 24px;
-        }
-
-        .sidebar nav ul li a.active {
-            background-color: var(--primary-color);
+         #login-prompt button:hover {
+             background-color: #218838;
+         }
+        #login-error {
+            color: var(--error-color);
+            margin-top: 15px;
+            display: none; /* Initially hidden */
             font-weight: bold;
-            border-left-color: var(--warning-color);
         }
 
-        /* --- Main Content Area --- */
-        .main-content {
-            /* margin-left: 250px; */ /* Removed margin-left */
-            padding: 30px;
-            flex-grow: 1; /* Allow content to take remaining space */
-            overflow-y: auto; /* Add scroll if content overflows */
-            height: 100vh; /* Match sidebar height */
-            /* transition: margin-left 0.3s ease; */ /* No longer needed */
+        /* App Wrapper Styling */
+        #app-wrapper {
+            display: none; /* Initially hidden */
+            width: 100%; /* Take full width */
+            height: 100vh; /* Take full height */
+            display: flex; /* Use flex for sidebar/main layout */
+            flex-direction: row;
         }
 
-        .content-section {
-            display: none; /* Hide all sections by default */
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .content-section.active {
-            display: block; /* Show the active section */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- Content Styling (Keep as before) --- */
-        h1, h2, h3, h4 { color: var(--primary-color); margin-bottom: 15px; }
-        h1 { font-size: 1.8em; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;}
-        h2 { font-size: 1.5em; } h3 { font-size: 1.2em; color: var(--secondary-color); margin-top: 20px;}
-        h4 { font-size: 1.1em; color: #555; margin-top: 15px; }
-        p { margin-bottom: 15px; } ul, ol { margin-left: 20px; margin-bottom: 15px; padding-left: 15px; }
-        li { margin-bottom: 8px; } code, pre { background-color: #e9ecef; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.95em; }
-        pre { padding: 15px; overflow-x: auto; margin-bottom: 15px; border: 1px solid var(--border-color); }
-        blockquote { border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 15px 0; font-style: italic; color: #555; background-color: #f1f1f1; padding: 10px 15px; border-radius: 4px; }
-        .flash-card { background-color: var(--flashcard-back); border: 1px solid #ffeeba; border-left: 5px solid var(--warning-color); padding: 15px; margin: 15px 0; border-radius: 5px; }
-        .flash-card h4 { color: #856404; margin-top: 0; margin-bottom: 10px; }
-        .tips { background-color: #d1ecf1; border: 1px solid #bee5eb; border-left: 5px solid var(--info-color); padding: 15px; margin: 15px 0; border-radius: 5px; }
-        .tips h4 { color: #0c5460; margin-top: 0; margin-bottom: 10px; }
-        .example { border: 1px solid var(--border-color); padding: 15px; margin: 15px 0; border-radius: 5px; background-color: #fdfdff; }
-        .example h4 { margin-top: 0; margin-bottom: 10px; color: var(--success-color); }
-        .example .analysis { margin-top: 10px; font-style: italic; color: var(--secondary-color); border-top: 1px dashed var(--border-color); padding-top: 10px; }
-
-        /* --- Interactive Question Styles (Keep as before) --- */
-        .practice-question, .mock-test .question { margin-bottom: 25px; padding: 15px; border: 1px solid var(--border-color); border-radius: 5px; position: relative; }
-        .practice-question .question-text, .mock-test .question .question-text { font-weight: bold; margin-bottom: 10px; display: block; }
-        .practice-question ul, .mock-test .options { list-style: none; padding-left: 0; margin-bottom: 10px; }
-        .practice-question ul li, .mock-test .options li { margin-bottom: 8px; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
-        .practice-question ul li input[type="radio"], .mock-test .options li input[type="radio"] { margin-right: 10px; vertical-align: middle; }
-        .practice-question ul li label, .mock-test .options li label { display: inline-block; cursor: pointer; vertical-align: middle; -webkit-user-select: text; user-select: text; }
-        .mock-test.submitted .options li label { cursor: default; pointer-events: none; }
-        .practice-question input[type="text"], .mock-test input[type="text"] { display: block; width: 100%; max-width: 500px; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 1em; margin-top: 5px; }
-        .mock-test .question label[for*='-input'] { display: inline-block; margin-right: 5px; font-weight: normal; }
-        .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; font-weight: bold; display: none; }
-        .feedback.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--correct-text); display: block; }
-        .feedback.incorrect { background-color: var(--incorrect-bg); border: 1px solid var(--incorrect-border); color: var(--incorrect-text); display: block; }
-        .feedback .correct-answer { display: block; margin-top: 5px; font-weight: normal; font-style: italic; }
-        .mock-test.submitted .options li.user-correct label, .mock-test.submitted input[type="text"].user-correct { border: 1px solid var(--correct-text) !important; box-shadow: 0 0 3px var(--correct-text); }
-        .mock-test.submitted .options li.user-correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); box-shadow: none; }
-        .mock-test.submitted .options li.user-incorrect label, .mock-test.submitted input[type="text"].user-incorrect { border: 1px solid var(--incorrect-text) !important; box-shadow: 0 0 3px var(--incorrect-text); }
-        .mock-test.submitted .options li.user-incorrect { background-color: var(--incorrect-bg); border: 1px solid var(--incorrect-border); box-shadow: none; }
-        .mock-test.submitted .options li.correct-answer-highlight label { background-color: #fff3cd !important; border: 1px dashed var(--warning-color) !important; display: inline-block; padding: 2px 5px; border-radius: 3px; }
-        .mock-test.submitted .options li.correct-answer-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-        .mock-test .correct-answer-text { display: block; margin-top: 8px; padding: 8px; background-color: #e2e3e5; border-radius: 4px; font-style: italic; color: #495057; font-size: 0.9em; display: none; }
-        .mock-test.submitted .correct-answer-text { display: block; }
-
-        /* --- Buttons (Keep as before) --- */
-        .button { display: inline-block; background-color: var(--primary-color); color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 0.95em; transition: background-color 0.3s ease; margin-top: 10px; vertical-align: middle; }
-        .button:hover:not(:disabled) { background-color: var(--link-color); }
-        .button:disabled { background-color: var(--secondary-color); cursor: not-allowed; opacity: 0.7; }
-        .button-secondary { background-color: var(--secondary-color); } .button-secondary:hover:not(:disabled) { background-color: #5a6268; }
-        .button-success { background-color: var(--success-color); } .button-success:hover:not(:disabled) { background-color: #218838; }
-        .button-warning { background-color: var(--warning-color); color: #333; } .button-warning:hover:not(:disabled) { background-color: #e0a800; }
-        .button-info { background-color: var(--info-color); } .button-info:hover:not(:disabled) { background-color: #138496; }
-
-        /* --- Mock Test Specific Styles (Keep as before) --- */
-        .mock-test .results-summary { margin-top: 30px; padding: 20px; background-color: var(--info-color); color: white; border: 1px solid var(--info-color); border-radius: 5px; text-align: center; font-size: 1.2em; display: none; }
-        .mock-test .results-summary h3 { color: white; margin-top: 0; }
-        .detailed-results { margin-top: 30px; padding: 20px; background-color: #f1f1f1; border: 1px solid var(--border-color); border-radius: 5px; display: none; }
-        .detailed-results h4 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .detailed-results ol { list-style-type: decimal; list-style-position: inside; padding-left: 0; margin-left: 0; }
-        .detailed-results li { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted var(--secondary-color); font-size: 0.95em; }
-        .detailed-results li:last-child { border-bottom: none; }
-        .detailed-results .q-number { font-weight: bold; color: var(--primary-color); }
-        .detailed-results .q-answer { font-style: italic; color: var(--success-color); margin-left: 5px; }
-
-        /* --- Flashcard Creator Styles (Keep as before) --- */
-        #flashcard-creator table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        #flashcard-creator th, #flashcard-creator td { border: 1px solid var(--border-color); padding: 10px; text-align: left; vertical-align: top; }
-        #flashcard-creator th { background-color: #e9ecef; }
-        #flashcard-creator input[type="text"] { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; }
-        .flashcard-container { margin-top: 20px; perspective: 1000px; min-height: 180px; display: flex; justify-content: center; align-items: center; }
-        .flashcard { width: 300px; height: 150px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .flashcard.is-flipped { transform: rotateY(180deg); }
-        .flashcard-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; font-size: 1.2em; border-radius: 8px; overflow: auto; }
-        .flashcard-front { background-color: var(--flashcard-front); color: var(--text-color); }
-        .flashcard-back { background-color: var(--flashcard-back); color: #333; transform: rotateY(180deg); }
-        .flashcard-controls { margin-top: 15px; text-align: center; }
-        .flashcard-controls .button { margin: 0 5px; }
-        .flashcard-controls span { margin: 0 10px; font-style: italic; color: var(--secondary-color); }
-
-        /* --- Responsive Design --- */
-        .menu-toggle { display: none; position: fixed; top: 15px; left: 15px; background-color: var(--nav-bg); color: var(--nav-text); border: none; padding: 10px 15px; font-size: 1.5em; cursor: pointer; z-index: 1001; border-radius: 5px; }
-        @media (max-width: 768px) {
-             /* Toggle sidebar */
-             body { flex-direction: column; } /* Stack sidebar and content vertically */
-             .sidebar { position: fixed; /* Fixed position for mobile */ transform: translateX(-100%); width: 220px; /* Adjust width */ }
-             .sidebar.open { transform: translateX(0); }
-             .main-content { margin-left: 0; /* Remove margin when sidebar is hidden/overlay */ padding: 60px 15px 20px 15px; /* Add padding top for toggle button, reduce side padding */ height: calc(100vh - 0px); /* Adjust height considering potential fixed header */ }
-             .menu-toggle { display: block; }
-             h1 { font-size: 1.6em; } h2 { font-size: 1.3em; }
-             .flashcard { width: 90%; }
-             #flashcard-creator table input[type="text"] { font-size: 0.9em; }
-             .mock-test .question label[for*='-input'] { display: block; margin-bottom: 5px;}
-             .mock-test input[type="text"] { width: 100%; }
-        }
-         /* --- Helper Classes --- */
-        .text-center { text-align: center; } .bold { font-weight: bold; } .italic { font-style: italic; }
-        .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mb-1 { margin-bottom: 0.5rem; } .mb-2 { margin-bottom: 1rem; }
-        .hidden { display: none; }
+         /* Add basic styles for sidebar and main-content if needed for layout testing */
+         .sidebar {
+             width: 250px; /* Example width */
+             background-color: var(--nav-bg); /* Example color */
+             flex-shrink: 0;
+              height: 100vh;
+              overflow-y: auto;
+              color: var(--nav-text); /* Example text color */
+         }
+         .main-content {
+             flex-grow: 1;
+             padding: 30px;
+              height: 100vh;
+              overflow-y: auto;
+              background-color: var(--background-color); /* Example background */
+         }
+          /* Style for mobile menu toggle if you keep it outside app-wrapper initially */
+         .menu-toggle { display: none; /* Hide on desktop */ }
+          @media (max-width: 768px) {
+             /* Adjustments for mobile layout if needed */
+              body { flex-direction: column; }
+              #app-wrapper { flex-direction: column; height: auto; } /* Stack vertically */
+              .sidebar { width: 100%; height: auto; position: relative; transform: none; /* Reset fixed/transform */ }
+              .main-content { margin-left: 0; height: auto; }
+              .menu-toggle { display: block; /* Show toggle button */ position: absolute; top:10px; left: 10px; z-index: 1001; background: #333; color: white; border: none; padding: 5px 10px;}
+              /* You might need more complex logic/CSS for mobile sidebar toggling */
+          }
 
     </style>
 </head>
 <body>
+
+    <!-- Login/Password Prompt Section -->
+    <div id="login-prompt">
+        <!-- Optional Logo -->
+        <!-- <img src="YOUR_LOGO_URL_HERE" alt="Logo" style="max-width: 150px; margin-bottom: 20px;"> -->
+        <h2>Nhập Mã Truy Cập</h2>
+        <p>Vui lòng nhập mã truy cập hợp lệ để bắt đầu ôn luyện.</p>
+        <input type="password" id="access-code-input" placeholder="Mã truy cập">
+        <button id="access-submit-btn" class="button button-success">Truy cập</button>
+        <p id="login-error" style="display: none;">Mật khẩu không đúng!</p>
+    </div>
+
+    <!-- Main Application Content Wrapper (Initially Hidden) -->
+    <div id="app-wrapper" style="display: none;">
+
+        <!-- ====================================================== -->
+        <!-- == PASTE YOUR ORIGINAL <button class="menu-toggle"> == -->
+        <!-- ==           <aside class="sidebar"> ... </aside>   == -->
+        <!-- ==           <main class="main-content"> ... </main> == -->
+        <!-- ==           CONTENT HERE                            == -->
+        <!-- ====================================================== -->
+
+        <!-- Placeholder Example: -->
+         <button class="menu-toggle" id="menuToggle">☰</button>
+         <aside class="sidebar" id="sidebar">
+            <h2>Luyện thi Tiếng Anh vào cấp 3</h2>
+             <nav>
+                 <ul>
+                     <li><a href="#module1" class="nav-link active">Module 1</a></li>
+                     <li><a href="#test1" class="nav-link">Đề thi mẫu 1</a></li>
+                     <li><a href="#" id="logout-btn" class="nav-link" style="color: var(--warning-color);">Đăng xuất</a></li>
+                 </ul>
+             </nav>
+              <div id="user-info" style="padding: 15px; margin-top: 20px; border-top: 1px solid var(--secondary-color); font-size: 0.9em; color: var(--nav-text); display:none;">
+                 Xin chào, <span id="user-display-name" style="font-weight: bold;">User</span>!<br>
+                 Mã giới thiệu của bạn: <span id="user-referrer-code" style="font-weight: bold; color: var(--warning-color);">N/A</span>
+             </div>
+         </aside>
+         <main class="main-content" id="mainContent">
+             <section id="module1" class="content-section active"><h1>Nội dung Module 1</h1></section>
+             <section id="test1" class="content-section mock-test"><h1>Nội dung Đề thi 1</h1><form id="mock-test-1-form"></form></section>
+              <!-- Add other sections as needed -->
+         </main>
+
+    </div> <!-- End #app-wrapper -->
+
+    <!-- Đặt toàn bộ JavaScript của bạn vào đây -->
+    <script>
+        // --- Variables related to Authentication ---
+        let currentSessionId = null;
+        let pingIntervalId = null;
+        const PING_INTERVAL_MS = 2 * 60 * 1000; // Ping every 2 minutes
+
+        // --- Elements ---
+        const loginPrompt = document.getElementById('login-prompt');
+        const appWrapper = document.getElementById('app-wrapper');
+        const accessCodeInput = document.getElementById('access-code-input');
+        const accessSubmitBtn = document.getElementById('access-submit-btn');
+        const loginError = document.getElementById('login-error');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInfoDiv = document.getElementById('user-info');
+        const userDisplayName = document.getElementById('user-display-name');
+        const userReferrerCode = document.getElementById('user-referrer-code');
+
+        // --- Backend API URL ---
+        // QUAN TRỌNG: Thay thế bằng URL backend Render thực tế của bạn
+        const backendUrl = 'https://YOUR_BACKEND_SERVICE_NAME.onrender.com'; // <<<<====== !!! UPDATE THIS !!!
+
+        // --- Utility Function ---
+        function normalizeAnswer(answer) {
+            if (typeof answer !== 'string') return "";
+            return answer.trim().toLowerCase().replace(/\.$/, '');
+        }
+
+
+        // --- Core Functions ---
+
+        function showLogin() {
+            console.log("[Auth] Showing login prompt.");
+            if (loginPrompt) loginPrompt.style.display = 'flex';
+            if (appWrapper) appWrapper.style.display = 'none';
+            sessionStorage.removeItem('appSessionId');
+            sessionStorage.removeItem('appUserName');
+            sessionStorage.removeItem('appReferrerCode');
+            currentSessionId = null;
+            stopPinging();
+            if(userInfoDiv) userInfoDiv.style.display = 'none';
+             // Make sure password input is enabled when showing login
+             if(accessCodeInput) accessCodeInput.disabled = false;
+             if(accessSubmitBtn) {
+                 accessSubmitBtn.disabled = false;
+                 accessSubmitBtn.textContent = 'Truy cập';
+             }
+        }
+
+        function showAppContent(userName = 'User', referrerCode = null) {
+            console.log("[Auth] Showing main app content.");
+            if (loginPrompt) loginPrompt.style.display = 'none';
+            if (appWrapper) appWrapper.style.display = 'flex'; // Use flex for wrapper
+
+            initializePageFunctionality(); // Setup nav, tests etc. AFTER showing content
+
+            if(userInfoDiv && userDisplayName && userReferrerCode){
+                userDisplayName.textContent = userName || 'User';
+                userReferrerCode.textContent = referrerCode || 'Không có';
+                userInfoDiv.style.display = 'block';
+            }
+        }
+
+        async function handleAuthentication() {
+            if (!accessCodeInput || !loginError || !accessSubmitBtn || !backendUrl.includes('.onrender.com')) { // Basic check for URL update
+                 console.error("Login elements not found or backend URL not set!");
+                  if (!backendUrl.includes('.onrender.com')) {
+                     alert("Lỗi cấu hình: Vui lòng cập nhật backendUrl trong mã JavaScript.");
+                 }
+                 return;
+            }
+            const accessCode = accessCodeInput.value.trim();
+            if (!accessCode) { loginError.textContent = 'Vui lòng nhập mã truy cập.'; loginError.style.display = 'block'; return; }
+
+            loginError.style.display = 'none';
+            accessSubmitBtn.disabled = true; accessSubmitBtn.textContent = 'Đang kiểm tra...';
+
+            try {
+                console.log(`[Auth] Sending code ${accessCode} to ${backendUrl}/api/authenticate`);
+                const response = await fetch(`${backendUrl}/api/authenticate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accessCode: accessCode })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success && data.sessionId) {
+                    console.log("[Auth] Success. Session ID:", data.sessionId);
+                    currentSessionId = data.sessionId;
+                    sessionStorage.setItem('appSessionId', currentSessionId);
+                    sessionStorage.setItem('appUserName', data.userName || 'User');
+                    if(data.referrerCode) sessionStorage.setItem('appReferrerCode', data.referrerCode);
+                    else sessionStorage.removeItem('appReferrerCode'); // Clear if no referrer
+
+                    showAppContent(data.userName, data.referrerCode);
+                    startPinging();
+                } else {
+                    console.error("[Auth] Failed:", data.message || `Status ${response.status}`);
+                    loginError.textContent = data.message || `Xác thực thất bại (Lỗi ${response.status}).`;
+                    loginError.style.display = 'block';
+                    accessSubmitBtn.disabled = false; accessSubmitBtn.textContent = 'Truy cập';
+                }
+            } catch (error) {
+                console.error('[Auth] Network/Fetch error:', error);
+                loginError.textContent = 'Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại.';
+                loginError.style.display = 'block';
+                accessSubmitBtn.disabled = false; accessSubmitBtn.textContent = 'Truy cập';
+            }
+        }
+
+        async function sendPing() {
+             if (!currentSessionId || !backendUrl.includes('.onrender.com')) {
+                 // console.log("[Ping] No active session or backend URL not set. Stopping ping.");
+                 stopPinging();
+                 return;
+             }
+             try {
+                 const response = await fetch(`${backendUrl}/api/ping`, {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ sessionId: currentSessionId })
+                 });
+                 if (!response.ok) {
+                     const data = await response.json().catch(() => ({})); // Catch parsing error too
+                     console.warn(`[Ping] Failed or session expired. Status: ${response.status}, Message: ${data.message || 'N/A'}`);
+                     handleLogout(false); // Force logout on client
+                     alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+                 } // else { console.log("[Ping] Success"); }
+             } catch (error) {
+                 console.error('[Ping] Network error:', error);
+             }
+        }
+
+        function startPinging() {
+            stopPinging(); // Clear previous interval if any
+            if (currentSessionId) {
+                pingIntervalId = setInterval(sendPing, PING_INTERVAL_MS);
+                console.log("[Ping] Started pinging interval.");
+                 sendPing(); // Send initial ping immediately
+            }
+        }
+
+        function stopPinging() {
+            if (pingIntervalId) { clearInterval(pingIntervalId); pingIntervalId = null; console.log("[Ping] Stopped pinging interval."); }
+        }
+
+        async function handleLogout(callApi = true) {
+            console.log("[Logout] Logging out...");
+            const sessionIdToLogout = currentSessionId || sessionStorage.getItem('appSessionId');
+            stopPinging();
+            sessionStorage.removeItem('appSessionId');
+            sessionStorage.removeItem('appUserName');
+            sessionStorage.removeItem('appReferrerCode');
+            currentSessionId = null;
+
+            if (callApi && sessionIdToLogout && backendUrl.includes('.onrender.com')) {
+                try {
+                    await fetch(`${backendUrl}/api/logout`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sessionId: sessionIdToLogout })
+                    });
+                    console.log("[Logout] Logout API call sent.");
+                } catch (error) { console.error('[Logout] API call error:', error); }
+            }
+            showLogin();
+        }
+
+        // Function to Initialize Page Functionality (Nav, Test Listeners, etc.)
+        function initializePageFunctionality(){
+             console.log("[Init Page] Initializing page functionality...");
+
+             // --- Navigation and Section Switching ---
+             const navLinks = document.querySelectorAll('.nav-link'); // Re-select inside this scope
+             const contentSections = document.querySelectorAll('.content-section');
+             const sidebar = document.getElementById('sidebar');
+             const menuToggle = document.getElementById('menuToggle');
+             const mainContent = document.getElementById('mainContent');
+
+             function showSection(sectionId) {
+                 contentSections.forEach(section => {
+                     section.style.display = (section.id === sectionId) ? 'block' : 'none';
+                     section.classList.toggle('active', section.id === sectionId);
+                 });
+                 navLinks.forEach(link => {
+                     link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                 });
+                 if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+                     sidebar.classList.remove('open');
+                 }
+                 if(mainContent) mainContent.scrollTop = 0;
+                 window.scrollTo(0, 0);
+             }
+
+             if (navLinks.length > 0 && contentSections.length > 0 && sidebar && menuToggle && mainContent) {
+                // Clone and replace to ensure listeners are fresh if this is called multiple times
+                 navLinks.forEach(link => {
+                    const newLink = link.cloneNode(true);
+                    link.parentNode.replaceChild(newLink, link);
+                 });
+                 // Re-select and attach listeners
+                 document.querySelectorAll('.nav-link').forEach(link => {
+                     if (link.id !== 'logout-btn') {
+                           link.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const targetId = link.getAttribute('href')?.substring(1);
+                                if (targetId) { showSection(targetId); }
+                           });
+                     }
+                 });
+
+                 menuToggle.replaceWith(menuToggle.cloneNode(true));
+                 document.getElementById('menuToggle').addEventListener('click', () => sidebar?.classList.toggle('open'));
+
+                 mainContent.replaceWith(mainContent.cloneNode(true));
+                 document.getElementById('mainContent').addEventListener('click', (e) => {
+                     if (window.innerWidth <= 768 && sidebar?.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                         sidebar.classList.remove('open');
+                     }
+                 });
+
+                 // Initial section (can default differently if needed)
+                 let hash = window.location.hash.substring(1);
+                 let initialSectionId = hash && document.getElementById(hash) ? hash : 'module1'; // Default to module1 after login
+                 console.log(`[Init Page] Setting initial section to: ${initialSectionId}`);
+                 showSection(initialSectionId);
+
+             } else {
+                 console.warn("[Init Page] Navigation elements missing, skipping nav setup.");
+             }
+
+             // --- Attach listeners for test buttons ---
+              attachTestSubmitListeners(); // Assuming this function is defined below
+
+              // --- Initialize Flashcards (if present) ---
+              const flashcardTable = document.getElementById('flashcard-input-table');
+              if (flashcardTable && flashcardTable.querySelector('tbody') && flashcardTable.querySelector('tbody').rows.length === 0) {
+                 addFlashcardRow(); // Add initial row only if table exists and is empty
+              }
+             console.log("[Init Page] Page functionality initialized.");
+        }
+
+         // --- Attach Listeners for Test Submit Buttons ---
+         function attachTestSubmitListeners() {
+              const submitBtn1 = document.getElementById('submit-test1-btn');
+              if (submitBtn1) {
+                   submitBtn1.replaceWith(submitBtn1.cloneNode(true)); // Remove old listeners
+                   document.getElementById('submit-test1-btn').addEventListener('click', function() {
+                       console.log("[Button Click] Submit button for test1 clicked.");
+                       submitMockTest('test1');
+                   });
+                   console.log("[Attach Listeners] Event listener attached to #submit-test1-btn.");
+              } else { console.warn("[Attach Listeners] Submit button #submit-test1-btn not found."); }
+
+              const submitBtn2 = document.getElementById('submit-test2-btn');
+               if (submitBtn2) {
+                    submitBtn2.replaceWith(submitBtn2.cloneNode(true)); // Remove old listeners
+                    document.getElementById('submit-test2-btn').addEventListener('click', function() {
+                        console.log("[Button Click] Submit button for test2 clicked.");
+                       submitMockTest('test2');
+                    });
+                    console.log("[Attach Listeners] Event listener attached to #submit-test2-btn.");
+               } else { console.warn("[Attach Listeners] Submit button #submit-test2-btn not found."); }
+         }
+
+
+        // --- Mock Test Submission and Grading (KEEP THE FUNCTION FROM PREVIOUS RESPONSE) ---
+         function submitMockTest(testId) {
+             console.log(`[Debug] Starting submitMockTest for ${testId}`);
+             let form = document.getElementById(`mock-test-${testId}-form`)
+                     || document.getElementById(`mock-test-${testId.replace(/^test/, '')}-form`);
+
+             if (!form) { console.error(`[Debug] CRITICAL ERROR: Form element for '${testId}' NOT FOUND.`); alert(`Lỗi: Không tìm thấy form HTML cho bài thi ${testId}.`); return; }
+             console.log(`[Debug] Form found for ${testId} with ID: ${form.id}`);
+             const questions = form.querySelectorAll('.question');
+             if (questions.length === 0) { console.error(`[Debug] No questions (.question) found within form ${testId}`); return; }
+             const resultsSummary = document.getElementById(`${testId}-results-summary`);
+             const detailedResultsDiv = document.getElementById(`${testId}-detailed-results`);
+             const section = document.getElementById(testId);
+             const submitButton = form.querySelector('.submit-btn');
+
+             if (!resultsSummary) console.error(`[Debug] Results summary div (#${testId}-results-summary) NOT FOUND!`);
+             if (!detailedResultsDiv) console.error(`[Debug] Detailed results div (#${testId}-detailed-results) NOT FOUND!`);
+             if (!submitButton) console.warn(`[Debug] Submit button (.submit-btn) not found for test ${testId}`);
+
+             if ((submitButton && submitButton.disabled) || (section && section.classList.contains('submitted'))) { console.warn(`[Debug] Test ${testId} already submitted.`); resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+             if (section) section.classList.add('submitted'); else form.classList.add('submitted');
+             console.log(`[Debug] Found ${questions.length} questions for test ${testId}`);
+             let score = 0; let totalValidQuestions = 0; let detailedAnswersHTML = '<ol>';
+
+             questions.forEach((question, index) => {
+                 const questionId = question.getAttribute('data-question-id');
+                 const correctAnswerDataAttr = question.getAttribute('data-correct-answer');
+                 if (correctAnswerDataAttr === null || correctAnswerDataAttr === undefined) { console.warn(`[Debug] Q${index + 1} missing data-correct-answer.`); return; }
+                 totalValidQuestions++;
+                 const isMcq = question.querySelector('input[type="radio"]'); const textInput = question.querySelector('input[type="text"]');
+                 let userAnswer = null; let isAnswerCorrect = false; let correctAnswersForDisplay = [];
+                 question.classList.remove('user-correct', 'user-incorrect');
+                 if (isMcq) {
+                     question.querySelectorAll('.options li').forEach(li => { li.classList.remove('user-correct', 'user-incorrect', 'correct-answer-highlight'); const label = li.querySelector('label'); if(label) label.style.pointerEvents = 'none'; });
+                     question.querySelectorAll(`input[name="${questionId}"]`).forEach(radio => radio.disabled = true);
+                 } else if (textInput) { textInput.classList.remove('user-correct', 'user-incorrect'); textInput.disabled = true; }
+                 else { console.warn(`[Debug] Q${index + 1} no valid input.`); totalValidQuestions--; return; }
+
+                 if (isMcq) {
+                     const selectedRadio = question.querySelector(`input[name="${questionId}"]:checked`); const correctAnswerValue = correctAnswerDataAttr; correctAnswersForDisplay.push(correctAnswerValue);
+                     const correctRadio = question.querySelector(`input[value="${correctAnswerValue}"]`); const correctLabelLi = correctRadio ? correctRadio.closest('li') : null;
+                     if (selectedRadio) { userAnswer = selectedRadio.value; isAnswerCorrect = (userAnswer === correctAnswerValue); const selectedLabelLi = selectedRadio.closest('li'); if (selectedLabelLi) selectedLabelLi.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect'); if (!isAnswerCorrect && correctLabelLi) correctLabelLi.classList.add('correct-answer-highlight'); }
+                     else if (correctLabelLi) { correctLabelLi.classList.add('correct-answer-highlight'); }
+                 } else if (textInput) {
+                     userAnswer = normalizeAnswer(textInput.value); let correctOptionsNormalized = [];
+                     try { const parsed = JSON.parse(correctAnswerDataAttr.replace(/'/g, '"')); if (Array.isArray(parsed)) { correctOptionsNormalized = parsed.map(normalizeAnswer); correctAnswersForDisplay = parsed; } else { correctOptionsNormalized = [normalizeAnswer(String(parsed))]; correctAnswersForDisplay = [String(parsed)]; } }
+                     catch (e) { correctOptionsNormalized = [normalizeAnswer(correctAnswerDataAttr)]; correctAnswersForDisplay = [correctAnswerDataAttr]; }
+                     isAnswerCorrect = correctOptionsNormalized.includes(userAnswer); textInput.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect');
+                 }
+                 if (isAnswerCorrect) { score++; }
+                 detailedAnswersHTML += `<li><span class="q-number">Câu ${index + 1}:</span> <span class="q-answer">${correctAnswersForDisplay.join(' / ')}</span></li>`;
+             });
+             detailedAnswersHTML += '</ol>'; console.log(`[Debug] Grading complete. Score: ${score}/${totalValidQuestions}`);
+             if (resultsSummary) { resultsSummary.innerHTML = `<h3>Kết quả</h3>Bạn đã trả lời đúng ${score} / ${totalValidQuestions} câu.`; resultsSummary.style.display = 'block'; console.log(`[Debug] Displayed results summary.`); }
+             if (detailedResultsDiv) { detailedResultsDiv.innerHTML = `<h4>Tổng hợp đáp án đúng</h4>${detailedAnswersHTML}`; detailedResultsDiv.style.display = 'block'; console.log(`[Debug] Displayed detailed results.`); }
+             if (submitButton) { submitButton.disabled = true; console.log(`[Debug] Submit button disabled.`); }
+             resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' }); console.log(`[Debug] submitMockTest finished.`);
+         }
+
+
+        // --- Flashcard Creator Logic (Keep functions addFlashcardRow, createFlashcards, etc.) ---
+         let flashcards = [];
+         let currentCardIndex = 0;
+         const maxFlashcards = 15;
+
+         function addFlashcardRow() {
+            const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+             if (!tableBody) return;
+             if (tableBody.rows.length >= maxFlashcards) { alert(`Bạn chỉ có thể tạo tối đa ${maxFlashcards} flashcards.`); return; }
+             const newRow = tableBody.insertRow();
+             const cell1 = newRow.insertCell(0); const cell2 = newRow.insertCell(1);
+             cell1.innerHTML = '<input type="text" placeholder="Nhập từ...">'; cell2.innerHTML = '<input type="text" placeholder="Nhập nghĩa hoặc ví dụ...">';
+             document.getElementById('add-fc-row-btn').disabled = (tableBody.rows.length >= maxFlashcards);
+         }
+         function createFlashcards() {
+             flashcards = [];
+             const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+             if (!tableBody) return;
+             const rows = tableBody.rows;
+             for (let i = 0; i < rows.length; i++) {
+                 const wordInput = rows[i].cells[0].getElementsByTagName('input')[0]; const meaningInput = rows[i].cells[1].getElementsByTagName('input')[0];
+                 const word = wordInput.value.trim(); const meaning = meaningInput.value.trim();
+                 if (word && meaning) flashcards.push({ front: word, back: meaning });
+             }
+             const displayArea = document.getElementById('flashcard-display-area'); const prevBtn = document.getElementById('fc-prev-btn'); const nextBtn = document.getElementById('fc-next-btn'); const randomBtn = document.getElementById('fc-random-btn'); const counterEl = document.getElementById('fc-counter');
+             if (flashcards.length === 0) {
+                 alert("Vui lòng nhập ít nhất một cặp từ và nghĩa.");
+                 if(displayArea) displayArea.classList.add('hidden'); if(prevBtn) prevBtn.disabled = true; if(nextBtn) nextBtn.disabled = true; if(randomBtn) randomBtn.disabled = true; if (counterEl) counterEl.textContent = '0 / 0'; return;
+             }
+             currentCardIndex = 0; displayFlashcard(); if(displayArea) displayArea.classList.remove('hidden');
+             const controlsEnabled = flashcards.length > 0; if(prevBtn) prevBtn.disabled = true; if(nextBtn) nextBtn.disabled = flashcards.length <= 1; if(randomBtn) randomBtn.disabled = controlsEnabled;
+         }
+         function displayFlashcard() {
+             const displayArea = document.getElementById('flashcard-display-area'); const card = document.getElementById('flashcard'); const front = document.getElementById('flashcard-front'); const back = document.getElementById('flashcard-back'); const counter = document.getElementById('fc-counter'); const prevBtn = document.getElementById('fc-prev-btn'); const nextBtn = document.getElementById('fc-next-btn'); const randomBtn = document.getElementById('fc-random-btn');
+              if (!displayArea || !card || !front || !back || !counter || !prevBtn || !nextBtn || !randomBtn) { return; }
+             if (flashcards.length === 0 || currentCardIndex < 0 || currentCardIndex >= flashcards.length) { displayArea.classList.add('hidden'); prevBtn.disabled = true; nextBtn.disabled = true; randomBtn.disabled = true; counter.textContent = '0 / 0'; return; };
+              displayArea.classList.remove('hidden'); card.classList.remove('is-flipped');
+             setTimeout(() => { const currentData = flashcards[currentCardIndex]; front.textContent = currentData.front; back.textContent = currentData.back; counter.textContent = `${currentCardIndex + 1} / ${flashcards.length}`; }, 50);
+             prevBtn.disabled = (currentCardIndex === 0); nextBtn.disabled = (currentCardIndex === flashcards.length - 1); randomBtn.disabled = flashcards.length <= 0;
+         }
+         document.getElementById('flashcard')?.addEventListener('click', function() { if (flashcards.length > 0) this.classList.toggle('is-flipped'); });
+         function nextFlashcard() { if (currentCardIndex < flashcards.length - 1) { currentCardIndex++; displayFlashcard(); } }
+         function prevFlashcard() { if (currentCardIndex > 0) { currentCardIndex--; displayFlashcard(); } }
+         function randomFlashcard() { if (flashcards.length > 1) { let randomIndex; do { randomIndex = Math.floor(Math.random() * flashcards.length); } while (flashcards.length > 1 && randomIndex === currentCardIndex); currentCardIndex = randomIndex; displayFlashcard(); } else if (flashcards.length === 1) { currentCardIndex = 0; displayFlashcard(); } }
+         function resetFlashcardTable() {
+             const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0]; if (!tableBody) return;
+             tableBody.innerHTML = ''; addFlashcardRow(); flashcards = []; document.getElementById('flashcard-display-area')?.classList.add('hidden');
+             document.getElementById('add-fc-row-btn').disabled = false; document.getElementById('fc-prev-btn').disabled = true; document.getElementById('fc-next-btn').disabled = true; document.getElementById('fc-random-btn').disabled = true;
+             const counterEl = document.getElementById('fc-counter'); if (counterEl) counterEl.textContent = '0 / 0';
+         }
+
+        // --- Initial Setup Call (within DOMContentLoaded) ---
+        // Moved the call inside DOMContentLoaded listener for reliability
+        // initializePageFunctionality(); // Called inside DOMContentLoaded now
+
+
+    </script>
+
+</body>
+</html>
 
     <button class="menu-toggle" id="menuToggle">&#9776;</button>
 
