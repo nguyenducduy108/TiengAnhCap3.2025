@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản lý Mã Truy Cập</title>
+    <style>
+        /* Basic Styling for Admin Page */
+        :root {
+            --primary-color: #007bff; --secondary-color: #6c757d; --background-color: #f8f9fa;
+            --text-color: #333; --card-bg: #ffffff; --border-color: #dee2e6;
+            --success-color: #28a745; --warning-color: #ffc107; --error-color: #dc3545;
+            --info-color: #17a2b8; --light-gray: #e9ecef;
+        }
+        body { font-family: sans-serif; padding: 20px; background-color: var(--background-color); color: var(--text-color); }
+        h1, h2 { color: var(--primary-color); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+        #admin-content { display: none; /* Hidden until password entered */ }
+        #admin-password-prompt { padding: 30px; background-color: var(--card-bg); border-radius: 8px; max-width: 400px; margin: 50px auto; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #admin-password-prompt input { padding: 10px; width: 80%; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 4px;}
+        .button { display: inline-block; background-color: var(--primary-color); color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.95em; transition: background-color 0.3s ease; margin: 5px; }
+        .button:hover:not(:disabled) { background-color: #0056b3; }
+        .button:disabled { background-color: var(--secondary-color); cursor: not-allowed; opacity: 0.7; }
+        .button-success { background-color: var(--success-color); } .button-success:hover:not(:disabled) { background-color: #218838; }
+        .button-warning { background-color: var(--warning-color); color: #333; } .button-warning:hover:not(:disabled) { background-color: #e0a800; }
+        .button-danger { background-color: var(--error-color); } .button-danger:hover:not(:disabled) { background-color: #c82333; }
+        .error-msg { color: var(--error-color); font-weight: bold; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: var(--card-bg); }
+        th, td { border: 1px solid var(--border-color); padding: 10px; text-align: left; font-size: 0.9em; }
+        th { background-color: var(--light-gray); }
+        td button { font-size: 0.8em; padding: 4px 8px; }
+        .form-section { background-color: var(--card-bg); padding: 20px; border-radius: 5px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .form-section label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-section input[type="text"] { width: 100%; max-width: 300px; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 4px;}
+        .status-active { color: var(--success-color); font-weight: bold; }
+        .status-inactive { color: var(--secondary-color); font-weight: bold; }
+        #loading-indicator { display: none; margin-top: 15px; font-style: italic; color: var(--secondary-color); }
+        #action-feedback { margin-top: 15px; padding: 10px; border-radius: 4px; display: none; }
+        #action-feedback.success { background-color: var(--correct-bg); color: var(--correct-text); border: 1px solid var(--correct-border); display: block; }
+        #action-feedback.error { background-color: var(--incorrect-bg); color: var(--incorrect-text); border: 1px solid var(--incorrect-border); display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Basic Password Prompt -->
+    <div id="admin-password-prompt">
+        <h2>Admin Access</h2>
+        <label for="admin-password">Nhập mật khẩu Admin:</label><br>
+        <input type="password" id="admin-password" placeholder="Mật khẩu Admin">
+        <button id="admin-login-btn" class="button button-success">Đăng nhập</button>
+        <p id="admin-login-error" class="error-msg" style="display: none;">Sai mật khẩu!</p>
+    </div>
+
+    <!-- Admin Content (Hidden by default) -->
+    <div id="admin-content">
+        <h1>Quản lý Mã Truy Cập</h1>
+
+        <!-- Section to Generate New Code -->
+        <div class="form-section">
+            <h2>Tạo Mã Mới</h2>
+            <form id="generate-code-form">
+                <div>
+                    <label for="referrer-code">Mã Người Giới Thiệu (Tùy chọn):</label>
+                    <input type="text" id="referrer-code" name="referrerCode">
+                </div>
+                <div>
+                    <label for="user-name">Tên Người Dùng (Tùy chọn):</label>
+                    <input type="text" id="user-name" name="userName">
+                </div>
+                <button type="submit" class="button button-success">Tạo Mã</button>
+                 <span id="loading-generate" style="display: none; margin-left: 10px; font-style: italic;">Đang tạo...</span>
+            </form>
+             <div id="generate-feedback" class="action-feedback"></div>
+        </div>
+
+        <!-- Section to View Codes -->
+        <div class="table-section">
+            <h2>Danh sách Mã Truy Cập</h2>
+            <button id="refresh-codes-btn" class="button button-info">Tải lại Danh sách</button>
+            <span id="loading-indicator">Đang tải...</span>
+            <table id="codes-table">
+                <thead>
+                    <tr>
+                        <th>Mã Truy Cập</th>
+                        <th>Người Giới Thiệu</th>
+                        <th>Tên User</th>
+                        <th>Trạng Thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Code rows will be populated by JavaScript -->
+                    <tr><td colspan="5">Đang tải dữ liệu...</td></tr>
+                </tbody>
+            </table>
+             <div id="codes-feedback" class="action-feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const ADMIN_PASSWORD = 18181d77a6e8b21; // !!! CHANGE THIS !!!
+        const ADMIN_SECRET_KEY = 616868; // !!! CHANGE THIS !!! Must match .env on backend
+        const BACKEND_URL = https://tienganhcap3-2025-2.onrender.com; // !!! CHANGE THIS !!!
+
+        // --- Elements ---
+        const adminPasswordPrompt = document.getElementById('admin-password-prompt');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminLoginError = document.getElementById('admin-login-error');
+        const adminContent = document.getElementById('admin-content');
+        const generateCodeForm = document.getElementById('generate-code-form');
+        const referrerCodeInput = document.getElementById('referrer-code');
+        const userNameInput = document.getElementById('user-name');
+        const loadingGenerate = document.getElementById('loading-generate');
+        const generateFeedback = document.getElementById('generate-feedback');
+        const refreshCodesBtn = document.getElementById('refresh-codes-btn');
+        const codesTableBody = document.getElementById('codes-table')?.getElementsByTagName('tbody')[0];
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const codesFeedback = document.getElementById('codes-feedback');
+
+        // --- Functions ---
+
+        function checkAdminPassword() {
+            if (adminPasswordInput.value === ADMIN_PASSWORD) {
+                adminPasswordPrompt.style.display = 'none';
+                adminContent.style.display = 'block';
+                fetchAccessCodes(); // Load codes after successful login
+            } else {
+                adminLoginError.style.display = 'block';
+            }
+        }
+
+        // Function to display feedback messages
+        function showFeedback(element, message, isSuccess = true) {
+             if (!element) return;
+             element.textContent = message;
+             element.className = isSuccess ? 'action-feedback success' : 'action-feedback error'; // Update class directly
+             element.style.display = 'block';
+              // Optionally hide after a few seconds
+              setTimeout(() => { element.style.display = 'none'; }, 5000);
+        }
+
+        // Fetch and display codes
+        async function fetchAccessCodes() {
+            if (!codesTableBody || !loadingIndicator || !codesFeedback) return;
+            loadingIndicator.style.display = 'inline';
+            codesFeedback.style.display = 'none';
+            codesTableBody.innerHTML = '<tr><td colspan="5">Đang tải dữ liệu...</td></tr>'; // Clear table
+
+            try {
+                // Include the secret key as a query parameter (adjust if using headers)
+                const response = await fetch(`${BACKEND_URL}/api/admin/codes?secret=${ADMIN_SECRET_KEY}`);
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: `Lỗi ${response.status}` }));
+                    throw new Error(errorData.message || `Lỗi HTTP: ${response.status}`);
+                }
+                const codes = await response.json();
+
+                codesTableBody.innerHTML = ''; // Clear loading message
+                if (codes && codes.length > 0) {
+                    codes.forEach(code => {
+                        const row = codesTableBody.insertRow();
+                        row.insertCell(0).textContent = code.code;
+                        row.insertCell(1).textContent = code.referrer_code || 'N/A';
+                        row.insertCell(2).textContent = code.user_name || '-';
+                        const statusCell = row.insertCell(3);
+                        statusCell.textContent = code.is_active ? 'Hoạt động' : 'Vô hiệu hóa';
+                        statusCell.className = code.is_active ? 'status-active' : 'status-inactive';
+
+                        const actionCell = row.insertCell(4);
+                        const toggleBtn = document.createElement('button');
+                        toggleBtn.textContent = code.is_active ? 'Vô hiệu hóa' : 'Kích hoạt';
+                        toggleBtn.className = `button ${code.is_active ? 'button-warning' : 'button-success'} toggle-btn`;
+                        toggleBtn.dataset.code = code.code; // Store code in data attribute
+                        toggleBtn.onclick = () => toggleCodeStatus(code.code, !code.is_active); // Pass code and desired new state
+                        actionCell.appendChild(toggleBtn);
+
+                        // Add delete button (optional, use with caution)
+                        // const deleteBtn = document.createElement('button');
+                        // deleteBtn.textContent = 'Xóa';
+                        // deleteBtn.className = 'button button-danger delete-btn';
+                        // deleteBtn.dataset.code = code.code;
+                        // deleteBtn.onclick = () => deleteCode(code.code);
+                        // actionCell.appendChild(deleteBtn);
+                    });
+                } else {
+                    codesTableBody.innerHTML = '<tr><td colspan="5">Không có mã truy cập nào.</td></tr>';
+                }
+            } catch (error) {
+                console.error("Error fetching codes:", error);
+                 codesTableBody.innerHTML = '<tr><td colspan="5">Lỗi khi tải dữ liệu.</td></tr>';
+                 showFeedback(codesFeedback, `Lỗi tải mã: ${error.message}`, false);
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        // Generate new code
+        async function handleGenerateCode(event) {
+            event.preventDefault(); // Prevent default form submission
+            if (!generateFeedback || !loadingGenerate) return;
+
+            const referrer = referrerCodeInput.value.trim();
+            const user = userNameInput.value.trim();
+
+            loadingGenerate.style.display = 'inline';
+            generateFeedback.style.display = 'none';
+            const submitBtn = generateCodeForm.querySelector('button[type="submit"]');
+            if(submitBtn) submitBtn.disabled = true;
+
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/generate_code`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        adminSecret: ADMIN_SECRET_KEY,
+                        referrerCode: referrer || null, // Send null if empty
+                        userName: user || null        // Send null if empty
+                    })
+                });
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showFeedback(generateFeedback, `Tạo mã thành công: ${data.newCode}`, true);
+                    generateCodeForm.reset(); // Clear the form
+                    fetchAccessCodes(); // Refresh the table
+                } else {
+                     showFeedback(generateFeedback, `Lỗi tạo mã: ${data.message || `Lỗi ${response.status}`}`, false);
+                }
+            } catch (error) {
+                console.error("Error generating code:", error);
+                 showFeedback(generateFeedback, `Lỗi mạng hoặc máy chủ: ${error.message}`, false);
+            } finally {
+                 loadingGenerate.style.display = 'none';
+                 if(submitBtn) submitBtn.disabled = false;
+            }
+        }
+
+        // Toggle code active status
+        async function toggleCodeStatus(code, desiredActiveState) {
+             if (!codesFeedback) return;
+            console.log(`Toggling code ${code} to active=${desiredActiveState}`);
+             codesFeedback.style.display = 'none'; // Hide previous feedback
+
+             // Find the button and disable it temporarily
+             const button = document.querySelector(`.toggle-btn[data-code="${code}"]`);
+             if (button) button.disabled = true;
+
+
+            try {
+                 // *** YOU NEED TO IMPLEMENT THIS ENDPOINT ON YOUR BACKEND ***
+                 // Example endpoint: /api/admin/codes/toggle-active
+                const response = await fetch(`${BACKEND_URL}/api/admin/codes/toggle-active`, {
+                     method: 'POST', // Or PUT
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({
+                         adminSecret: ADMIN_SECRET_KEY,
+                         code: code,
+                         setActive: desiredActiveState // Send the desired state
+                     })
+                 });
+                 const data = await response.json();
+
+                 if (response.ok && data.success) {
+                      showFeedback(codesFeedback, `Cập nhật trạng thái mã ${code} thành công!`, true);
+                     fetchAccessCodes(); // Refresh table to show new status
+                 } else {
+                      showFeedback(codesFeedback, `Lỗi cập nhật mã ${code}: ${data.message || `Lỗi ${response.status}`}`, false);
+                       if (button) button.disabled = false; // Re-enable button on error
+                 }
+            } catch (error) {
+                 console.error(`Error toggling code ${code}:`, error);
+                 showFeedback(codesFeedback, `Lỗi mạng hoặc máy chủ khi cập nhật mã ${code}.`, false);
+                 if (button) button.disabled = false; // Re-enable button on error
+            }
+             // Note: Button re-enabling on success happens during table refresh
+        }
+
+         // Function to delete code (Optional - uncomment if needed)
+         /*
+         async function deleteCode(code) {
+             if (!confirm(`Bạn có chắc chắn muốn XÓA mã '${code}' không? Hành động này không thể hoàn tác.`)) {
+                 return;
+             }
+              if (!codesFeedback) return;
+              console.log(`Deleting code ${code}`);
+              codesFeedback.style.display = 'none';
+
+              const deleteBtn = document.querySelector(`.delete-btn[data-code="${code}"]`);
+              if(deleteBtn) deleteBtn.disabled = true;
+
+              try {
+                  // *** YOU NEED TO IMPLEMENT THIS ENDPOINT ON YOUR BACKEND ***
+                  const response = await fetch(`${BACKEND_URL}/api/admin/codes/delete`, {
+                      method: 'POST', // Or DELETE
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                          adminSecret: ADMIN_SECRET_KEY,
+                          code: code
+                      })
+                  });
+                  const data = await response.json();
+                  if (response.ok && data.success) {
+                      showFeedback(codesFeedback, `Đã xóa mã ${code}.`, true);
+                      fetchAccessCodes(); // Refresh table
+                  } else {
+                      showFeedback(codesFeedback, `Lỗi xóa mã ${code}: ${data.message || `Lỗi ${response.status}`}`, false);
+                      if(deleteBtn) deleteBtn.disabled = false;
+                  }
+              } catch (error) {
+                   console.error(`Error deleting code ${code}:`, error);
+                   showFeedback(codesFeedback, `Lỗi mạng hoặc máy chủ khi xóa mã ${code}.`, false);
+                   if(deleteBtn) deleteBtn.disabled = false;
+              }
+         }
+         */
+
+
+        // --- Initial Setup & Event Listeners ---
+        adminLoginBtn?.addEventListener('click', checkAdminPassword);
+        adminPasswordInput?.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                checkAdminPassword();
+            }
+        });
+
+        generateCodeForm?.addEventListener('submit', handleGenerateCode);
+        refreshCodesBtn?.addEventListener('click', fetchAccessCodes);
+
+    </script>
+</body>
+</html>
