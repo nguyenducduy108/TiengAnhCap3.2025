@@ -1,0 +1,23 @@
+{
+  "name": "english-learning-app-backend",
+  "version": "1.0.0",
+  "description": "Backend for English Learning App with Referral",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js" // Optional: for local development with auto-restart
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1", // Or latest version
+    "express": "^4.18.2",  // Or latest version
+    "pg": "^8.11.3"       // Or latest version
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1" // Optional: for local development
+  },
+    "engines": {            // Important for Render/Heroku
+    "node": "18.x"        // Specify Node.js version compatible with Render
+  }
+}
