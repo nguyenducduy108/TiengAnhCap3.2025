@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện thi Tiếng Anh vào cấp 3</title>
+    <style>
+        /* --- Global Styles --- */
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --secondary-color: #6c757d; /* Gray */
+            --background-color: #f8f9fa; /* Light Gray */
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --success-color: #28a745; /* Green */
+            --warning-color: #ffc107; /* Yellow */
+            --error-color: #dc3545; /* Red */
+            --info-color: #17a2b8; /* Cyan */
+            --nav-bg: #343a40; /* Dark Gray */
+            --nav-text: #f8f9fa;
+            --nav-hover: #495057;
+            --link-color: #0056b3;
+            --correct-bg: #d4edda;
+            --correct-border: #c3e6cb;
+            --correct-text: #155724;
+            --incorrect-bg: #f8d7da;
+            --incorrect-border: #f5c6cb;
+            --incorrect-text: #721c24;
+            --flashcard-front: #e9ecef;
+            --flashcard-back: #fff3cd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+             scroll-behavior: smooth; /* Smooth scroll for anchors */
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row; /* Changed back to row for sidebar layout */
+        }
+
+        /* --- Navigation --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--nav-bg);
+            color: var(--nav-text);
+            padding: 20px 0;
+            /* position: fixed; */ /* Removed fixed position for simpler flow */
+            /* top: 0; */
+            /* left: 0; */
+            height: 100vh; /* Full height */
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            color: var(--warning-color);
+            padding: 0 15px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li a {
+            display: block;
+            color: var(--nav-text);
+            text-decoration: none;
+            padding: 12px 20px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
+            font-size: 0.95em;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: var(--nav-hover);
+            border-left-color: var(--primary-color);
+            padding-left: 24px;
+        }
+
+        .sidebar nav ul li a.active {
+            background-color: var(--primary-color);
+            font-weight: bold;
+            border-left-color: var(--warning-color);
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            /* margin-left: 250px; */ /* Removed margin-left */
+            padding: 30px;
+            flex-grow: 1; /* Allow content to take remaining space */
+            overflow-y: auto; /* Add scroll if content overflows */
+            height: 100vh; /* Match sidebar height */
+            /* transition: margin-left 0.3s ease; */ /* No longer needed */
+        }
+
+        .content-section {
+            display: none; /* Hide all sections by default */
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block; /* Show the active section */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Content Styling (Keep as before) --- */
+        h1, h2, h3, h4 { color: var(--primary-color); margin-bottom: 15px; }
+        h1 { font-size: 1.8em; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;}
+        h2 { font-size: 1.5em; } h3 { font-size: 1.2em; color: var(--secondary-color); margin-top: 20px;}
+        h4 { font-size: 1.1em; color: #555; margin-top: 15px; }
+        p { margin-bottom: 15px; } ul, ol { margin-left: 20px; margin-bottom: 15px; padding-left: 15px; }
+        li { margin-bottom: 8px; } code, pre { background-color: #e9ecef; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.95em; }
+        pre { padding: 15px; overflow-x: auto; margin-bottom: 15px; border: 1px solid var(--border-color); }
+        blockquote { border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 15px 0; font-style: italic; color: #555; background-color: #f1f1f1; padding: 10px 15px; border-radius: 4px; }
+        .flash-card { background-color: var(--flashcard-back); border: 1px solid #ffeeba; border-left: 5px solid var(--warning-color); padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .flash-card h4 { color: #856404; margin-top: 0; margin-bottom: 10px; }
+        .tips { background-color: #d1ecf1; border: 1px solid #bee5eb; border-left: 5px solid var(--info-color); padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .tips h4 { color: #0c5460; margin-top: 0; margin-bottom: 10px; }
+        .example { border: 1px solid var(--border-color); padding: 15px; margin: 15px 0; border-radius: 5px; background-color: #fdfdff; }
+        .example h4 { margin-top: 0; margin-bottom: 10px; color: var(--success-color); }
+        .example .analysis { margin-top: 10px; font-style: italic; color: var(--secondary-color); border-top: 1px dashed var(--border-color); padding-top: 10px; }
+
+        /* --- Interactive Question Styles (Keep as before) --- */
+        .practice-question, .mock-test .question { margin-bottom: 25px; padding: 15px; border: 1px solid var(--border-color); border-radius: 5px; position: relative; }
+        .practice-question .question-text, .mock-test .question .question-text { font-weight: bold; margin-bottom: 10px; display: block; }
+        .practice-question ul, .mock-test .options { list-style: none; padding-left: 0; margin-bottom: 10px; }
+        .practice-question ul li, .mock-test .options li { margin-bottom: 8px; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
+        .practice-question ul li input[type="radio"], .mock-test .options li input[type="radio"] { margin-right: 10px; vertical-align: middle; }
+        .practice-question ul li label, .mock-test .options li label { display: inline-block; cursor: pointer; vertical-align: middle; -webkit-user-select: text; user-select: text; }
+        .mock-test.submitted .options li label { cursor: default; pointer-events: none; }
+        .practice-question input[type="text"], .mock-test input[type="text"] { display: block; width: 100%; max-width: 500px; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 1em; margin-top: 5px; }
+        .mock-test .question label[for*='-input'] { display: inline-block; margin-right: 5px; font-weight: normal; }
+        .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; font-weight: bold; display: none; }
+        .feedback.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--correct-text); display: block; }
+        .feedback.incorrect { background-color: var(--incorrect-bg); border: 1px solid var(--incorrect-border); color: var(--incorrect-text); display: block; }
+        .feedback .correct-answer { display: block; margin-top: 5px; font-weight: normal; font-style: italic; }
+        .mock-test.submitted .options li.user-correct label, .mock-test.submitted input[type="text"].user-correct { border: 1px solid var(--correct-text) !important; box-shadow: 0 0 3px var(--correct-text); }
+        .mock-test.submitted .options li.user-correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); box-shadow: none; }
+        .mock-test.submitted .options li.user-incorrect label, .mock-test.submitted input[type="text"].user-incorrect { border: 1px solid var(--incorrect-text) !important; box-shadow: 0 0 3px var(--incorrect-text); }
+        .mock-test.submitted .options li.user-incorrect { background-color: var(--incorrect-bg); border: 1px solid var(--incorrect-border); box-shadow: none; }
+        .mock-test.submitted .options li.correct-answer-highlight label { background-color: #fff3cd !important; border: 1px dashed var(--warning-color) !important; display: inline-block; padding: 2px 5px; border-radius: 3px; }
+        .mock-test.submitted .options li.correct-answer-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+        .mock-test .correct-answer-text { display: block; margin-top: 8px; padding: 8px; background-color: #e2e3e5; border-radius: 4px; font-style: italic; color: #495057; font-size: 0.9em; display: none; }
+        .mock-test.submitted .correct-answer-text { display: block; }
+
+        /* --- Buttons (Keep as before) --- */
+        .button { display: inline-block; background-color: var(--primary-color); color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 0.95em; transition: background-color 0.3s ease; margin-top: 10px; vertical-align: middle; }
+        .button:hover:not(:disabled) { background-color: var(--link-color); }
+        .button:disabled { background-color: var(--secondary-color); cursor: not-allowed; opacity: 0.7; }
+        .button-secondary { background-color: var(--secondary-color); } .button-secondary:hover:not(:disabled) { background-color: #5a6268; }
+        .button-success { background-color: var(--success-color); } .button-success:hover:not(:disabled) { background-color: #218838; }
+        .button-warning { background-color: var(--warning-color); color: #333; } .button-warning:hover:not(:disabled) { background-color: #e0a800; }
+        .button-info { background-color: var(--info-color); } .button-info:hover:not(:disabled) { background-color: #138496; }
+
+        /* --- Mock Test Specific Styles (Keep as before) --- */
+        .mock-test .results-summary { margin-top: 30px; padding: 20px; background-color: var(--info-color); color: white; border: 1px solid var(--info-color); border-radius: 5px; text-align: center; font-size: 1.2em; display: none; }
+        .mock-test .results-summary h3 { color: white; margin-top: 0; }
+        .detailed-results { margin-top: 30px; padding: 20px; background-color: #f1f1f1; border: 1px solid var(--border-color); border-radius: 5px; display: none; }
+        .detailed-results h4 { color: var(--primary-color); margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .detailed-results ol { list-style-type: decimal; list-style-position: inside; padding-left: 0; margin-left: 0; }
+        .detailed-results li { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted var(--secondary-color); font-size: 0.95em; }
+        .detailed-results li:last-child { border-bottom: none; }
+        .detailed-results .q-number { font-weight: bold; color: var(--primary-color); }
+        .detailed-results .q-answer { font-style: italic; color: var(--success-color); margin-left: 5px; }
+
+        /* --- Flashcard Creator Styles (Keep as before) --- */
+        #flashcard-creator table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        #flashcard-creator th, #flashcard-creator td { border: 1px solid var(--border-color); padding: 10px; text-align: left; vertical-align: top; }
+        #flashcard-creator th { background-color: #e9ecef; }
+        #flashcard-creator input[type="text"] { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; }
+        .flashcard-container { margin-top: 20px; perspective: 1000px; min-height: 180px; display: flex; justify-content: center; align-items: center; }
+        .flashcard { width: 300px; height: 150px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; font-size: 1.2em; border-radius: 8px; overflow: auto; }
+        .flashcard-front { background-color: var(--flashcard-front); color: var(--text-color); }
+        .flashcard-back { background-color: var(--flashcard-back); color: #333; transform: rotateY(180deg); }
+        .flashcard-controls { margin-top: 15px; text-align: center; }
+        .flashcard-controls .button { margin: 0 5px; }
+        .flashcard-controls span { margin: 0 10px; font-style: italic; color: var(--secondary-color); }
+
+        /* --- Responsive Design --- */
+        .menu-toggle { display: none; position: fixed; top: 15px; left: 15px; background-color: var(--nav-bg); color: var(--nav-text); border: none; padding: 10px 15px; font-size: 1.5em; cursor: pointer; z-index: 1001; border-radius: 5px; }
+        @media (max-width: 768px) {
+             /* Toggle sidebar */
+             body { flex-direction: column; } /* Stack sidebar and content vertically */
+             .sidebar { position: fixed; /* Fixed position for mobile */ transform: translateX(-100%); width: 220px; /* Adjust width */ }
+             .sidebar.open { transform: translateX(0); }
+             .main-content { margin-left: 0; /* Remove margin when sidebar is hidden/overlay */ padding: 60px 15px 20px 15px; /* Add padding top for toggle button, reduce side padding */ height: calc(100vh - 0px); /* Adjust height considering potential fixed header */ }
+             .menu-toggle { display: block; }
+             h1 { font-size: 1.6em; } h2 { font-size: 1.3em; }
+             .flashcard { width: 90%; }
+             #flashcard-creator table input[type="text"] { font-size: 0.9em; }
+             .mock-test .question label[for*='-input'] { display: block; margin-bottom: 5px;}
+             .mock-test input[type="text"] { width: 100%; }
+        }
+         /* --- Helper Classes --- */
+        .text-center { text-align: center; } .bold { font-weight: bold; } .italic { font-style: italic; }
+        .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mb-1 { margin-bottom: 0.5rem; } .mb-2 { margin-bottom: 1rem; }
+        .hidden { display: none; }
+
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+
+    <aside class="sidebar" id="sidebar">
+        <h2>Luyện thi Tiếng Anh vào cấp 3</h2>
+        <nav>
+            <ul>
+                <li><a href="#module1" class="nav-link active">Module 1: Ngữ âm</a></li>
+                <li><a href="#module2" class="nav-link">Module 2: Ngữ pháp</a></li>
+                <li><a href="#module3" class="nav-link">Module 3: Từ đồng nghĩa/trái nghĩa</a></li>
+                <li><a href="#module4" class="nav-link">Module 4: Điền từ</a></li>
+                <li><a href="#module5" class="nav-link">Module 5: Đọc hiểu</a></li>
+                <li><a href="#module6" class="nav-link">Module 6: Tìm lỗi sai</a></li>
+                <li><a href="#module7" class="nav-link">Module 7: Viết lại câu</a></li>
+                 <li><a href="#flashcard-creator" class="nav-link">Tạo Flashcard</a></li>
+                <li><a href="#test1" class="nav-link">Đề thi mẫu 1</a></li>
+                <li><a href="#test2" class="nav-link">Đề thi mẫu 2</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+
+        <!-- Module 1: Ngữ âm -->
+        <section id="module1" class="content-section active">
+            <h1>Module 1: Ngữ âm (Phát âm và Trọng âm)</h1>
+             <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Phân biệt cách phát âm của các âm cuối phổ biến (đuôi -s/-es, -ed) cũng như nguyên âm trong một số từ quen thuộc.</li>
+                <li>Nhận biết trọng âm của từ hai và ba âm tiết; nắm được quy tắc trọng âm cơ bản.</li>
+            </ul>
+            <h3>Tóm tắt kiến thức:</h3>
+             <p>Trong đề thi, phần ngữ âm thường gồm một câu hỏi về phát âm và một câu hỏi về trọng âm. Nội dung chủ yếu xoay quanh một số quy tắc phát âm nhất định:</p>
+            <ul>
+                <li>
+                    <span class="bold">Phát âm đuôi -ed:</span> Có 3 cách phát âm:
+                    <ul>
+                        <li><code>/ɪd/</code>: sau âm /t/ hoặc /d/ (ví dụ: wanted, needed).</li>
+                        <li><code>/t/</code>: sau phụ âm vô thanh như /k/, /p/, /f/, /s/, /ʃ/, /tʃ/ (ví dụ: looked, hoped, laughed, kissed, watched).</li>
+                        <li><code>/d/</code>: sau nguyên âm và phụ âm hữu thanh còn lại (ví dụ: played, opened, loved).</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="bold">Phát âm đuôi -s/-es:</span> Có 3 cách:
+                    <ul>
+                        <li><code>/s/</code>: sau âm vô thanh /p/, /t/, /k/, /f/, /θ/ (ví dụ: stops, books, laughs).</li>
+                        <li><code>/z/</code>: sau nguyên âm và âm hữu thanh /b/, /d/, /g/, /v/, /ð/, /m/, /n/, /ŋ/, /l/, /r/ (ví dụ: plays, goes, opens, sings).</li>
+                        <li><code>/ɪz/</code>: sau các âm /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/ (ví dụ: kisses, rises, watches, changes).</li>
+                    </ul>
+                </li>
+                 <li>
+                    <span class="bold">Trọng âm từ:</span>
+                    <ul>
+                        <li>Từ 2 âm tiết: Thường rơi vào âm tiết thứ nhất với danh từ/tính từ (<code>ˈlesson</code>, <code>ˈhappy</code>), và vào âm thứ hai với động từ (<code>reˈply</code>, <code>beˈgin</code>).</li>
+                        <li>Từ 3 âm tiết trở lên: Nhấn trước các hậu tố như <code>-tion</code>, <code>-sion</code>, <code>-ic</code>, <code>-ial</code> (ví dụ: <code>eduˈcation</code>, <code>eˈlectric</code>).</li>
+                        <li>Ngoại lệ: Cần ghi nhớ một số từ không theo quy tắc (ví dụ: <code>ˈcomfortable</code>, <code>ˈinteresting</code> nhấn âm đầu, <code>hoˈtel</code> nhấn âm hai).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p><span class="bold">Ví dụ 1:</span> Chọn từ có phần gạch chân được phát âm khác với những từ còn lại:</p>
+                <ul>
+                    <li>A. want<span class="bold">ed</span></li>
+                    <li>B. need<span class="bold">ed</span></li>
+                    <li>C. danc<span class="bold">ed</span></li>
+                    <li>D. decid<span class="bold">ed</span></li>
+                </ul>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span> Đuôi -ed ở A, B, D được phát âm là /ɪd/ (vì động từ tận cùng bằng âm /t/ hoặc /d/). Riêng <code>danced</code> kết thúc bằng âm /s/ (vô thanh) nên -ed phát âm là /t/. Do đó đáp án đúng là <span class="bold">C</span>.
+                </div>
+
+                 <p class="mt-2"><span class="bold">Ví dụ 2:</span> Chọn từ có trọng âm khác với những từ còn lại:</p>
+                 <ul>
+                     <li>A. machine (/məˈʃiːn/)</li>
+                     <li>B. lesson (/ˈles.ən/)</li>
+                     <li>C. hotel (/həʊˈtel/)</li>
+                     <li>D. reply (/rɪˈplaɪ/)</li>
+                 </ul>
+                 <div class="analysis">
+                    <span class="bold">Phân tích:</span> Các từ A, C, D có trọng âm rơi vào âm tiết thứ hai. Riêng <code>lesson</code> nhấn âm đầu. Vì vậy đáp án đúng là <span class="bold">B</span>.
+                 </div>
+            </div>
+
+            <div class="flash-card">
+                <h4>Flash-card kiến thức quan trọng:</h4>
+                 <ul>
+                    <li><span class="bold">Phát âm -ED:</span> <code>/ɪd/</code> (sau t, d), <code>/t/</code> (sau âm vô thanh: k, p, f, s, sh, ch…), <code>/d/</code> (sau âm hữu thanh & nguyên âm).</li>
+                    <li><span class="bold">Phát âm -S/ES:</span> <code>/ɪz/</code> (sau s, z, x, ch, sh, ge…), <code>/s/</code> (sau âm vô thanh), <code>/z/</code> (sau âm hữu thanh & nguyên âm).</li>
+                    <li><span class="bold">Quy tắc trọng âm:</span> Danh từ/Tính từ 2 âm tiết (nhấn âm 1), Động từ 2 âm tiết (nhấn âm 2); Từ có hậu tố -tion, -sion, -ic… (nhấn trước hậu tố).</li>
+                    <li><span class="bold">Ngoại lệ trọng âm:</span> Ghi nhớ từ đặc biệt: <code>ˈinteresting</code>, <code>ˈcomfortable</code>, <code>poˈlice</code>, <code>hoˈtel</code>...</li>
+                </ul>
+            </div>
+
+            <div class="tips">
+                <h4>Mẹo ghi nhớ & làm bài:</h4>
+                 <ul>
+                    <li>Học thuộc quy tắc phát âm đuôi -ed, -s/es bằng cách nhóm các âm cuối và lấy ví dụ.</li>
+                    <li>Tạo danh sách các từ có cách phát âm đặc biệt hoặc ngoại lệ thường gặp.</li>
+                    <li>Với trọng âm, luôn xác định từ loại (danh từ, động từ...) và số âm tiết trước khi áp dụng quy tắc.</li>
+                    <li>Luyện nghe và đọc to để cảm nhận trọng âm tự nhiên của từ.</li>
+                    <li>Khi làm bài, đọc lướt các đáp án, tìm ra các từ có cùng quy tắc phát âm/trọng âm, từ đó loại trừ và tìm ra từ khác biệt.</li>
+                </ul>
+            </div>
+
+            <hr style="margin: 30px 0;">
+            <h3>Câu hỏi luyện tập</h3>
+
+             <div class="practice-question" data-question-id="m1q1" data-correct-answer="A">
+                <span class="question-text">1. Chọn từ có phần gạch chân phát âm khác với các từ còn lại:</span>
+                <ul>
+                    <li><label><input type="radio" name="m1q1" value="A"> A. book<span class="bold">s</span></label></li>
+                    <li><label><input type="radio" name="m1q1" value="B"> B. pen<span class="bold">s</span></label></li>
+                    <li><label><input type="radio" name="m1q1" value="C"> C. table<span class="bold">s</span></label></li>
+                    <li><label><input type="radio" name="m1q1" value="D"> D. chair<span class="bold">s</span></label></li>
+                </ul>
+                <button class="button button-info" onclick="checkAnswerMCQ('m1q1', true, 'Đáp án: A. /s/, còn lại /z/')">Kiểm tra</button>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m1q2" data-correct-answer="B">
+                <span class="question-text">2. Chọn từ có trọng âm chính rơi vào âm tiết thứ nhất:</span>
+                 <ul>
+                    <li><label><input type="radio" name="m1q2" value="A"> A. enjoy</label></li>
+                    <li><label><input type="radio" name="m1q2" value="B"> B. office</label></li>
+                    <li><label><input type="radio" name="m1q2" value="C"> C. agree</label></li>
+                    <li><label><input type="radio" name="m1q2" value="D"> D. relax</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m1q2', true, 'Đáp án: B. office (nhấn âm 1), còn lại nhấn âm 2')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m1q3" data-correct-answer="C">
+                <span class="question-text">3. Chọn từ có phần gạch chân được phát âm khác với những từ còn lại:</span>
+                <ul>
+                    <li><label><input type="radio" name="m1q3" value="A"> A. wash<span class="bold">ed</span></label></li>
+                    <li><label><input type="radio" name="m1q3" value="B"> B. stopp<span class="bold">ed</span></label></li>
+                    <li><label><input type="radio" name="m1q3" value="C"> C. need<span class="bold">ed</span></label></li>
+                    <li><label><input type="radio" name="m1q3" value="D"> D. watch<span class="bold">ed</span></label></li>
+                </ul>
+                <button class="button button-info" onclick="checkAnswerMCQ('m1q3', true, 'Đáp án: C. /ɪd/, còn lại /t/')">Kiểm tra</button>
+                <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m1q4" data-correct-answer="D">
+                <span class="question-text">4. Chọn từ có trọng âm chính rơi vào âm tiết thứ hai:</span>
+                 <ul>
+                    <li><label><input type="radio" name="m1q4" value="A"> A. parent</label></li>
+                    <li><label><input type="radio" name="m1q4" value="B"> B. teacher</label></li>
+                    <li><label><input type="radio" name="m1q4" value="C"> C. happy</label></li>
+                    <li><label><input type="radio" name="m1q4" value="D"> D. police</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m1q4', true, 'Đáp án: D. police (nhấn âm 2), còn lại nhấn âm 1')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 2: Ngữ pháp -->
+        <section id="module2" class="content-section">
+             <h1>Module 2: Ngữ pháp (Hoàn thành câu)</h1>
+              <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Ôn tập các điểm ngữ pháp trọng tâm trong chương trình THCS (đặc biệt lớp 9).</li>
+                <li>Vận dụng ngữ pháp để chọn từ/cụm từ hoàn thành câu chính xác.</li>
+            </ul>
+            <h3>Tóm tắt kiến thức cần nhớ:</h3>
+             <p>Các câu hỏi trắc nghiệm ngữ pháp bao trùm nhiều chuyên đề. Học sinh cần nắm vững nền tảng ngữ pháp cơ bản, bao gồm:</p>
+            <ul>
+                <li><span class="bold">Thì của động từ:</span> 12 thì cơ bản (HTĐ, HTTD, HTHT, QKĐ, QKTD, QKHT, TLĐ, TLTD, TLHT...). Chú ý dấu hiệu nhận biết (yesterday, since, for, already, next week, while...).</li>
+                <li><span class="bold">Câu bị động (Passive Voice):</span> S + be + V3/ed (+ by O). Chú ý chia "be" đúng thì.</li>
+                <li><span class="bold">Câu điều kiện (Conditional Sentences):</span> Loại 1 (Real - Present/Future), Loại 2 (Unreal - Present), Loại 3 (Unreal - Past).</li>
+                <li><span class="bold">Câu ước (Wish Sentences):</span> Wish + S + V(QKĐ) - ước cho hiện tại; Wish + S + V(QKHT) - ước cho quá khứ.</li>
+                <li><span class="bold">Câu tường thuật (Reported Speech):</span> Lùi thì, đổi đại từ, trạng từ chỉ thời gian/nơi chốn.</li>
+                <li><span class="bold">Mệnh đề quan hệ (Relative Clauses):</span> Who, whom, which, that, whose. Phân biệt mệnh đề xác định và không xác định (dấu phẩy).</li>
+                <li><span class="bold">Động từ khuyết thiếu (Modal Verbs):</span> Can, could, may, might, must, have to, should, ought to... Chú ý nghĩa và cách dùng.</li>
+                <li><span class="bold">Danh động từ (Gerunds) & Động từ nguyên mẫu (Infinitives):</span> Động từ theo sau bởi V-ing (enjoy, avoid, finish...) hoặc To V (want, decide, hope...). Phân biệt stop to V / stop V-ing, remember to V / remember V-ing.</li>
+                <li><span class="bold">Cụm động từ (Phrasal Verbs):</span> Turn on/off, look for, look after, give up, go on...</li>
+                <li><span class="bold">Giới từ (Prepositions) & Liên từ (Conjunctions):</span> In, on, at, for, since, and, but, or, so, because, although, while...</li>
+            </ul>
+
+             <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p>“When ____?” - “About 3 months ago.”</p>
+                <ul>
+                    <li>A. did you go abroad</li>
+                    <li>B. have you gone abroad</li>
+                    <li>C. do you go abroad</li>
+                    <li>D. had you gone abroad</li>
+                </ul>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span> Câu trả lời “3 months ago” chỉ một thời điểm xác định trong quá khứ. Do đó, câu hỏi phải dùng thì Quá khứ đơn (Past Simple). Cấu trúc câu hỏi QKĐ là "Did + S + V(nguyên mẫu)?". Đáp án <span class="bold">A</span> là phù hợp.
+                </div>
+            </div>
+
+            <div class="flash-card">
+                 <h4>Flash-card ngữ pháp quan trọng:</h4>
+                 <ul>
+                    <li><span class="bold">12 Thì cơ bản:</span> Nắm vững công thức, cách dùng, dấu hiệu nhận biết.</li>
+                    <li><span class="bold">Bị động:</span> S + be + V3/ed.</li>
+                    <li><span class="bold">Điều kiện:</span> Loại 1 (If + HTĐ, S + will + V), Loại 2 (If + QKĐ, S + would + V), Loại 3 (If + QKHT, S + would have + V3).</li>
+                    <li><span class="bold">Mệnh đề QH:</span> Who (người-CN), Whom (người-TN), Which (vật), Whose (sở hữu), That (thay thế trong MĐQH xác định).</li>
+                    <li><span class="bold">Tường thuật:</span> Lùi thì (HT -> QK, QK -> QKHT, will -> would...), đổi trạng từ (now -> then, today -> that day...).</li>
+                </ul>
+            </div>
+
+            <div class="tips">
+                 <h4>Mẹo ghi nhớ & làm bài:</h4>
+                 <ul>
+                    <li>Lập bảng tổng hợp các thì, cấu trúc câu điều kiện, bị động...</li>
+                    <li>Làm bài tập theo từng chuyên đề để nắm vững kiến thức.</li>
+                    <li>Đọc kỹ cả câu, xác định dấu hiệu nhận biết (thời gian, từ nối...) để chọn cấu trúc đúng.</li>
+                    <li>Luôn kiểm tra sự hòa hợp giữa chủ ngữ và động từ.</li>
+                    <li>Loại trừ các đáp án sai rõ ràng về ngữ pháp hoặc nghĩa.</li>
+                </ul>
+            </div>
+
+             <hr style="margin: 30px 0;">
+             <h3>Câu hỏi luyện tập</h3>
+
+             <div class="practice-question" data-question-id="m2q1" data-correct-answer="C">
+                <span class="question-text">1. My brother enjoys _______ soccer in his free time.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q1" value="A"> A. play</label></li>
+                     <li><label><input type="radio" name="m2q1" value="B"> B. to play</label></li>
+                     <li><label><input type="radio" name="m2q1" value="C"> C. playing</label></li>
+                     <li><label><input type="radio" name="m2q1" value="D"> D. played</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q1', true, 'Giải thích: Sau `enjoy` dùng V-ing.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m2q2" data-correct-answer="B">
+                <span class="question-text">2. If I _______ enough money, I would travel around the world.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q2" value="A"> A. have</label></li>
+                     <li><label><input type="radio" name="m2q2" value="B"> B. had</label></li>
+                     <li><label><input type="radio" name="m2q2" value="C"> C. will have</label></li>
+                     <li><label><input type="radio" name="m2q2" value="D"> D. have had</label></li>
+                 </ul>
+                  <button class="button button-info" onclick="checkAnswerMCQ('m2q2', true, 'Giải thích: Câu điều kiện loại 2 (Mệnh đề If dùng QKĐ).')">Kiểm tra</button>
+                  <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m2q3" data-correct-answer="C">
+                <span class="question-text">3. This book _____ by a famous author in the 19th century.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q3" value="A"> A. wrote</label></li>
+                     <li><label><input type="radio" name="m2q3" value="B"> B. is written</label></li>
+                     <li><label><input type="radio" name="m2q3" value="C"> C. was written</label></li>
+                     <li><label><input type="radio" name="m2q3" value="D"> D. writes</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q3', true, 'Giải thích: Câu bị động thì QKĐ (`in the 19th century`).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m2q4" data-correct-answer="C">
+                <span class="question-text">4. She asked me if I _____ the film “Avatar” before.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q4" value="A"> A. saw</label></li>
+                     <li><label><input type="radio" name="m2q4" value="B"> B. have seen</label></li>
+                     <li><label><input type="radio" name="m2q4" value="C"> C. had seen</label></li>
+                     <li><label><input type="radio" name="m2q4" value="D"> D. will see</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q4', true, 'Giải thích: Câu tường thuật, lùi thì HTHT (`have seen`) -> QKHT (`had seen`).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m2q5" data-correct-answer="B">
+                 <span class="question-text">5. The place ______ we spent our holiday was really beautiful.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q5" value="A"> A. what</label></li>
+                     <li><label><input type="radio" name="m2q5" value="B"> B. where</label></li>
+                     <li><label><input type="radio" name="m2q5" value="C"> C. which</label></li>
+                     <li><label><input type="radio" name="m2q5" value="D"> D. who</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q5', true, 'Giải thích: Mệnh đề quan hệ chỉ nơi chốn (`where = in which`).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m2q6" data-correct-answer="A">
+                <span class="question-text">6. We haven't seen each other _______ last year.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q6" value="A"> A. since</label></li>
+                     <li><label><input type="radio" name="m2q6" value="B"> B. for</label></li>
+                     <li><label><input type="radio" name="m2q6" value="C"> C. ago</label></li>
+                     <li><label><input type="radio" name="m2q6" value="D"> D. from</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q6', true, 'Giải thích: HTHT (`haven\'t seen`) + mốc thời gian (`last year`) -> dùng `since`.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m2q7" data-correct-answer="D">
+                <span class="question-text">7. My father suggested _______ to the beach for the weekend.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m2q7" value="A"> A. go</label></li>
+                     <li><label><input type="radio" name="m2q7" value="B"> B. to go</label></li>
+                     <li><label><input type="radio" name="m2q7" value="C"> C. went</label></li>
+                     <li><label><input type="radio" name="m2q7" value="D"> D. going</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m2q7', true, 'Giải thích: Sau `suggest` dùng V-ing.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 3: Từ vựng đồng nghĩa – Trái nghĩa -->
+        <section id="module3" class="content-section">
+             <h1>Module 3: Từ vựng đồng nghĩa – Trái nghĩa</h1>
+            <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Nắm được cách xác định từ đồng nghĩa và trái nghĩa dựa vào ngữ cảnh câu.</li>
+                <li>Mở rộng vốn từ vựng (bao gồm cả từ đồng nghĩa và từ trái nghĩa) thường gặp trong đề thi.</li>
+            </ul>
+            <h3>Tóm tắt kiến thức cần nhớ:</h3>
+             <ul>
+                <li><span class="bold">Đồng nghĩa (Synonym):</span> Các từ khác nhau nhưng có nghĩa tương tự hoặc gần giống nhau. Ví dụ: <code>big</code> ≈ <code>large</code>; <code>start</code> ≈ <code>begin</code>.</li>
+                <li><span class="bold">Trái nghĩa (Antonym):</span> Các từ có nghĩa đối lập nhau. Ví dụ: <code>hot</code> ≠ <code>cold</code>; <code>good</code> ≠ <code>bad</code>.</li>
+                <li><span class="bold">Ngữ cảnh (Context) là chìa khóa:</span> Nghĩa của một từ có thể thay đổi tùy thuộc vào câu văn. Hãy đọc kỹ câu chứa từ gạch chân để hiểu đúng nghĩa của nó trong ngữ cảnh đó.</li>
+                <li><span class="bold">Từ vựng trọng tâm:</span> Tập trung ôn các từ vựng trong SGK lớp 9 và các chủ đề quen thuộc (môi trường, giáo dục, công nghệ, đời sống xã hội...).</li>
+                <li><span class="bold">Tiền tố/Hậu tố phủ định:</span> Các tiền tố như <code>un-</code>, <code>in-</code>, <code>im-</code>, <code>ir-</code>, <code>dis-</code> hoặc hậu tố <code>-less</code> thường tạo ra từ trái nghĩa (ví dụ: <code>happy</code> -> <code>unhappy</code>; <code>possible</code> -> <code>impossible</code>; <code>careful</code> -> <code>careless</code>).</li>
+            </ul>
+
+            <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p><span class="bold">Ví dụ 1 (Đồng nghĩa):</span> “Linh is an <span class="bold"><u>industrious</u></span> student who often studies late at night.” Chọn từ đồng nghĩa với <u>industrious</u>:</p>
+                <ul><li>A. hard-working</li><li>B. intelligent</li><li>C. outgoing</li><li>D. creative</li></ul>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span> <code>Industrious</code> có nghĩa là chăm chỉ, cần cù. Trong các lựa chọn, <code>hard-working</code> có nghĩa tương đương nhất. Đáp án đúng là <span class="bold">A</span>.
+                </div>
+
+                <p class="mt-2"><span class="bold">Ví dụ 2 (Trái nghĩa):</span> “The lake is very <span class="bold"><u>deep</u></span>, much deeper than it looks.” Chọn từ trái nghĩa với <u>deep</u>:</p>
+                <ul><li>A. shallow</li><li>B. clear</li><li>C. muddy</li><li>D. narrow</li></ul>
+                 <div class="analysis">
+                    <span class="bold">Phân tích:</span> <code>Deep</code> có nghĩa là sâu. Từ trái nghĩa với nó là <code>shallow</code> (nông, cạn). Đáp án đúng là <span class="bold">A</span>.
+                </div>
+            </div>
+
+            <div class="flash-card">
+                 <h4>Flash-card từ vựng quan trọng:</h4>
+                 <ul>
+                    <li><code>Generous</code> (rộng lượng) - ĐN: kind; TN: mean (keo kiệt)</li>
+                    <li><code>Ancient</code> (cổ xưa) - ĐN: old; TN: modern (hiện đại)</li>
+                    <li><code>Expand</code> (mở rộng) - ĐN: enlarge; TN: shrink (co lại), narrow (thu hẹp)</li>
+                    <li><code>Important</code> (quan trọng) - ĐN: essential, significant; TN: trivial, unimportant (không quan trọng)</li>
+                    <li><code>Careless</code> (cẩu thả) - ĐN: negligent; TN: careful (cẩn thận)</li>
+                    <li><code>Permit</code> (cho phép) - ĐN: allow; TN: forbid, prohibit (cấm)</li>
+                 </ul>
+            </div>
+
+            <div class="tips">
+                <h4>Mẹo ghi nhớ & làm bài:</h4>
+                 <ul>
+                    <li>Học từ theo cặp Đồng nghĩa - Trái nghĩa. Sử dụng flashcards hoặc ứng dụng học từ vựng.</li>
+                    <li>Đọc câu cẩn thận, xác định nghĩa của từ gạch chân trong ngữ cảnh.</li>
+                    <li>Phân tích sắc thái nghĩa của từ (tích cực/tiêu cực) để loại trừ đáp án.</li>
+                    <li>Nếu không biết từ gạch chân, thử đoán nghĩa dựa vào các từ xung quanh hoặc ngữ cảnh chung.</li>
+                    <li>Chú ý yêu cầu của câu hỏi là tìm từ ĐỒNG NGHĨA (closest meaning) hay TRÁI NGHĨA (opposite meaning).</li>
+                 </ul>
+            </div>
+
+             <hr style="margin: 30px 0;">
+             <h3>Câu hỏi luyện tập</h3>
+
+             <div class="practice-question" data-question-id="m3q1" data-correct-answer="B">
+                <span class="question-text">1. “This exercise is quite <span class="bold"><u>straightforward</u></span>; I finished it in 5 minutes.” Từ nào đồng nghĩa gần nhất với <u>straightforward</u>?</span>
+                <ul>
+                    <li><label><input type="radio" name="m3q1" value="A"> A. complicated</label></li>
+                    <li><label><input type="radio" name="m3q1" value="B"> B. simple</label></li>
+                    <li><label><input type="radio" name="m3q1" value="C"> C. careful</label></li>
+                    <li><label><input type="radio" name="m3q1" value="D"> D. quick</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m3q1', true, 'Giải thích: `straightforward` = đơn giản, dễ hiểu.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m3q2" data-correct-answer="C">
+                <span class="question-text">2. “My grandparents prefer a <span class="bold"><u>quiet</u></span> life in the countryside.” Từ nào trái nghĩa với <u>quiet</u> trong câu trên?</span>
+                <ul>
+                    <li><label><input type="radio" name="m3q2" value="A"> A. peaceful</label></li>
+                    <li><label><input type="radio" name="m3q2" value="B"> B. simple</label></li>
+                    <li><label><input type="radio" name="m3q2" value="C"> C. busy</label></li>
+                    <li><label><input type="radio" name="m3q2" value="D"> D. boring</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m3q2', true, 'Giải thích: `quiet` (yên tĩnh) trái nghĩa với `busy` (bận rộn, náo nhiệt) trong ngữ cảnh này.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m3q3" data-correct-answer="D">
+                <span class="question-text">3. The project was <span class="bold"><u>terminated</u></span> due to lack of funding. (Tìm từ đồng nghĩa)</span>
+                <ul>
+                    <li><label><input type="radio" name="m3q3" value="A"> A. started</label></li>
+                    <li><label><input type="radio" name="m3q3" value="B"> B. continued</label></li>
+                    <li><label><input type="radio" name="m3q3" value="C"> C. changed</label></li>
+                    <li><label><input type="radio" name="m3q3" value="D"> D. ended</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m3q3', true, 'Giải thích: `terminated` = chấm dứt, kết thúc.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m3q4" data-correct-answer="A">
+                <span class="question-text">4. It is <span class="bold"><u>compulsory</u></span> for all students to wear uniforms. (Tìm từ trái nghĩa)</span>
+                <ul>
+                    <li><label><input type="radio" name="m3q4" value="A"> A. optional</label></li>
+                    <li><label><input type="radio" name="m3q4" value="B"> B. necessary</label></li>
+                    <li><label><input type="radio" name="m3q4" value="C"> C. important</label></li>
+                    <li><label><input type="radio" name="m3q4" value="D"> D. required</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m3q4', true, 'Giải thích: `compulsory` (bắt buộc) trái nghĩa với `optional` (tùy chọn).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 4: Điền từ vào chỗ trống -->
+        <section id="module4" class="content-section">
+             <h1>Module 4: Điền từ vào chỗ trống (Hoàn thành đoạn văn)</h1>
+            <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Rèn kỹ năng đọc hiểu tổng quát đoạn văn ngắn để chọn từ/cụm từ điền vào chỗ trống hợp lý nhất.</li>
+                <li>Củng cố kiến thức về từ loại, từ vựng và ngữ pháp trong văn cảnh dài hơn một câu.</li>
+            </ul>
+            <h3>Tóm tắt kiến thức cần nhớ:</h3>
+              <p>Dạng bài này yêu cầu chọn từ/cụm từ (A, B, C, D) phù hợp nhất để điền vào chỗ trống trong một đoạn văn. Kiến thức cần vận dụng bao gồm:</p>
+            <ul>
+                <li><span class="bold">Từ loại (Word Form):</span> Xác định loại từ cần điền (danh từ, động từ, tính từ, trạng từ) dựa vào cấu trúc câu và vị trí của chỗ trống. Ví dụ: sau tính từ thường là danh từ, sau động từ thường là trạng từ (bổ nghĩa cho V).</li>
+                <li><span class="bold">Ngữ pháp (Grammar):</span> Liên từ (conjunctions: and, but, because, although...), giới từ (prepositions: in, on, at, with, for...), đại từ quan hệ (relative pronouns: who, which, that...), thì của động từ.</li>
+                <li><span class="bold">Từ vựng theo chủ đề (Vocabulary):</span> Từ vựng liên quan đến chủ đề của đoạn văn.</li>
+                <li><span class="bold">Collocations:</span> Các cụm từ cố định (ví dụ: <code>make a decision</code>, <code>pay attention to</code>, <code>depend on</code>).</li>
+                <li><span class="bold">Ngữ cảnh & Logic (Context & Cohesion):</span> Từ được chọn phải phù hợp về nghĩa với câu và cả đoạn văn, đảm bảo tính liên kết, mạch lạc.</li>
+            </ul>
+
+             <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p>Đọc đoạn văn và chọn phương án đúng cho mỗi chỗ trống:</p>
+                <blockquote>“Many people want to improve their health. One common recommendation is to exercise regularly. Exercising not only helps you stay fit (1) ____ also reduces stress. (2) ____, eating a balanced diet is equally important. Combining exercise and proper nutrition leads to better overall health.”</blockquote>
+                <p><span class="bold">1.</span> A. and &nbsp;&nbsp; B. but &nbsp;&nbsp; C. or &nbsp;&nbsp; D. so</p>
+                <p><span class="bold">2.</span> A. Moreover &nbsp;&nbsp; B. Although &nbsp;&nbsp; C. Otherwise &nbsp;&nbsp; D. Meanwhile</p>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span><br>
+                    - Câu (1): Cấu trúc "not only... but also..." (không những... mà còn...). Tuy nhiên, ở đây dùng "also" nên cần một liên từ kết hợp song song. "And" phù hợp nhất để nối hai lợi ích tương đương. -> Đáp án <span class="bold">A</span>.<br>
+                    - Câu (2): Chỗ trống đứng đầu câu, nối ý về chế độ ăn với ý về tập thể dục. Cần một trạng từ liên kết chỉ sự bổ sung thông tin. "Moreover" (Hơn nữa) là phù hợp nhất. -> Đáp án <span class="bold">A</span>.
+                </div>
+            </div>
+
+             <div class="flash-card">
+                 <h4>Flash-card điểm ngữ pháp/ từ vựng:</h4>
+                 <ul>
+                    <li><span class="bold">Liên từ kết hợp:</span> <code>and</code>, <code>but</code>, <code>or</code>, <code>so</code>, <code>for</code>, <code>nor</code>, <code>yet</code> (nối các thành phần tương đương).</li>
+                    <li><span class="bold">Liên từ phụ thuộc:</span> <code>because</code>, <code>since</code>, <code>as</code> (lý do); <code>although</code>, <code>though</code>, <code>even though</code> (nhượng bộ); <code>if</code>, <code>unless</code> (điều kiện); <code>while</code>, <code>when</code> (thời gian).</li>
+                    <li><span class="bold">Trạng từ liên kết:</span> <code>however</code>, <code>nevertheless</code> (tuy nhiên); <code>moreover</code>, <code>furthermore</code>, <code>in addition</code> (thêm vào đó); <code>therefore</code>, <code>consequently</code>, <code>as a result</code> (do đó, kết quả).</li>
+                    <li><span class="bold">Giới từ:</span> Phân biệt <code>because of / due to / owing to + N/V-ing</code> (do) và <code>despite / in spite of + N/V-ing</code> (mặc dù).</li>
+                    <li><span class="bold">Collocations thông dụng:</span> <code>take part in</code>, <code>make progress</code>, <code>do homework</code>, <code>have fun</code>...</li>
+                </ul>
+            </div>
+
+            <div class="tips">
+                <h4>Mẹo ghi nhớ & làm bài:</h4>
+                 <ul>
+                    <li>Đọc lướt (skim) toàn bộ đoạn văn để nắm ý chính và chủ đề.</li>
+                    <li>Đọc kỹ câu chứa chỗ trống và các câu lân cận để hiểu ngữ cảnh.</li>
+                    <li>Xác định từ loại cần điền vào chỗ trống (danh từ, động từ, tính từ, trạng từ, liên từ, giới từ...).</li>
+                    <li>Xem xét các từ đứng trước và sau chỗ trống (ví dụ: sau "the" thường là danh từ, sau "to" có thể là V-nguyên mẫu...).</li>
+                    <li>Loại trừ các phương án sai về ngữ pháp hoặc không hợp nghĩa.</li>
+                    <li>Sau khi chọn, đọc lại cả câu để kiểm tra tính hợp lý.</li>
+                 </ul>
+            </div>
+
+             <hr style="margin: 30px 0;">
+             <h3>Câu hỏi luyện tập</h3>
+
+            <p>Điền từ thích hợp vào chỗ trống trong đoạn văn sau:</p>
+            <blockquote>“Air pollution is a growing problem in many cities. Exhaust fumes from vehicles and emissions (1) ____ factories make the air dirty. Breathing polluted air (2) ____ cause health issues for city residents. To improve air quality, we must take action, such as using public transport and (3) ____ energy-efficient appliances. Everyone should contribute to protecting the air we breathe.”</blockquote>
+
+             <div class="practice-question" data-question-id="m4q1" data-correct-answer="B">
+                <span class="question-text">1. Chỗ trống (1):</span>
+                <ul>
+                    <li><label><input type="radio" name="m4q1" value="A"> A. on</label></li>
+                    <li><label><input type="radio" name="m4q1" value="B"> B. from</label></li>
+                    <li><label><input type="radio" name="m4q1" value="C"> C. at</label></li>
+                    <li><label><input type="radio" name="m4q1" value="D"> D. in</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m4q1', true, 'Giải thích: `emissions from` = khí thải từ.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m4q2" data-correct-answer="C">
+                <span class="question-text">2. Chỗ trống (2):</span>
+                <ul>
+                    <li><label><input type="radio" name="m4q2" value="A"> A. ought</label></li>
+                    <li><label><input type="radio" name="m4q2" value="B"> B. should</label></li>
+                    <li><label><input type="radio" name="m4q2" value="C"> C. can</label></li>
+                    <li><label><input type="radio" name="m4q2" value="D"> D. need</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m4q2', true, 'Giải thích: `can cause` = có thể gây ra.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m4q3" data-correct-answer="B">
+                <span class="question-text">3. Chỗ trống (3):</span>
+                <ul>
+                    <li><label><input type="radio" name="m4q3" value="A"> A. promoting</label></li>
+                    <li><label><input type="radio" name="m4q3" value="B"> B. installing</label></li>
+                    <li><label><input type="radio" name="m4q3" value="C"> C. doing</label></li>
+                    <li><label><input type="radio" name="m4q3" value="D"> D. consuming</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m4q3', true, 'Giải thích: `installing appliances` = lắp đặt thiết bị.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <p class="mt-2">Điền từ thích hợp vào chỗ trống trong đoạn văn sau:</p>
+             <blockquote>"Learning a foreign language can be challenging, (4) ____ it offers many benefits. It opens up new opportunities for travel and work. (5) ____, it helps improve cognitive skills and cultural understanding."</blockquote>
+
+            <div class="practice-question" data-question-id="m4q4" data-correct-answer="A">
+                <span class="question-text">4. Chỗ trống (4):</span>
+                <ul>
+                    <li><label><input type="radio" name="m4q4" value="A"> A. but</label></li>
+                    <li><label><input type="radio" name="m4q4" value="B"> B. so</label></li>
+                    <li><label><input type="radio" name="m4q4" value="C"> C. because</label></li>
+                    <li><label><input type="radio" name="m4q4" value="D"> D. although</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m4q4', true, 'Giải thích: Nối hai ý tương phản (thử thách nhưng nhiều lợi ích).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m4q5" data-correct-answer="C">
+                <span class="question-text">5. Chỗ trống (5):</span>
+                <ul>
+                    <li><label><input type="radio" name="m4q5" value="A"> A. However</label></li>
+                    <li><label><input type="radio" name="m4q5" value="B"> B. Therefore</label></li>
+                    <li><label><input type="radio" name="m4q5" value="C"> C. Moreover</label></li>
+                    <li><label><input type="radio" name="m4q5" value="D"> D. Otherwise</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m4q5', true, 'Giải thích: Bổ sung thêm một lợi ích khác (`Moreover` = Hơn nữa).')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 5: Đọc hiểu -->
+        <section id="module5" class="content-section">
+             <h1>Module 5: Đọc hiểu (Đọc – hiểu văn bản)</h1>
+            <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Phát triển kỹ năng đọc hiểu đoạn văn dài: nắm ý chính, tìm thông tin chi tiết, suy luận từ văn cảnh.</li>
+                <li>Biết cách trả lời các câu hỏi đọc hiểu thông thường (ý chính, chi tiết, từ vựng, tham chiếu, suy luận).</li>
+            </ul>
+             <h3>Tóm tắt kiến thức cần nhớ:</h3>
+              <p>Bài đọc hiểu thường gồm một đoạn văn và các câu hỏi trắc nghiệm liên quan. Các dạng câu hỏi phổ biến:</p>
+            <ul>
+                <li><span class="bold">Câu hỏi ý chính (Main Idea/Best Title):</span> Hỏi về nội dung bao quát, chủ đề chính hoặc tiêu đề phù hợp nhất cho đoạn văn. Thường tìm thấy ý chính ở câu đầu hoặc câu cuối đoạn, hoặc tổng hợp từ toàn bài.</li>
+                <li><span class="bold">Câu hỏi chi tiết (Specific Detail):</span> Hỏi về thông tin cụ thể được nêu trong bài (What, When, Where, Why, How...). Cần định vị (scan) từ khóa trong câu hỏi và tìm thông tin tương ứng trong bài đọc.</li>
+                <li><span class="bold">Câu hỏi từ vựng (Vocabulary in Context):</span> Hỏi nghĩa của một từ/cụm từ được gạch chân/in đậm trong bài. Cần dựa vào ngữ cảnh xung quanh để đoán nghĩa hoặc tìm từ đồng nghĩa/trái nghĩa.</li>
+                <li><span class="bold">Câu hỏi tham chiếu (Reference):</span> Hỏi đại từ (he, she, it, they, this, that...) hoặc các từ chỉ định khác đề cập đến danh từ/ý nào đã được nhắc đến trước đó.</li>
+                <li><span class="bold">Câu hỏi suy luận (Inference):</span> Hỏi về thông tin không được nêu trực tiếp nhưng có thể suy ra từ các chi tiết trong bài (What can be inferred...? The author implies that...). Đòi hỏi khả năng đọc hiểu sâu hơn.</li>
+                 <li><span class="bold">Câu hỏi về thái độ/mục đích của tác giả (Author's Tone/Purpose):</span> Hỏi về giọng văn (tích cực, tiêu cực, khách quan...) hoặc mục đích viết bài (thông báo, thuyết phục, giải trí...).</li>
+            </ul>
+
+             <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p>Đọc đoạn văn ngắn sau và trả lời câu hỏi:</p>
+                <blockquote>“Mai has a unique hobby. Every weekend, she goes to the beach to collect plastic trash. She carefully sorts the trash and sends it to a recycling center. Mai believes that small actions can make a big difference in protecting the environment. Her dedication inspires her friends to join in cleaning up their neighborhood.”</blockquote>
+                <p><span class="bold">Câu hỏi:</span> What is the main idea of the passage?</p>
+                <ul>
+                    <li>A. Mai enjoys going to the beach with her friends.</li>
+                    <li>B. Mai has a hobby of collecting trash to help the environment.</li>
+                    <li>C. Mai and her friends go to a recycling center every weekend.</li>
+                    <li>D. Mai likes doing small things.</li>
+                </ul>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span> Đoạn văn tập trung mô tả sở thích đặc biệt của Mai là nhặt rác ở bãi biển để bảo vệ môi trường và hành động này truyền cảm hứng cho người khác. Câu B tóm tắt chính xác nhất nội dung này. Các phương án khác hoặc sai chi tiết (A, C) hoặc quá chung chung (D). Đáp án đúng là <span class="bold">B</span>.
+                </div>
+            </div>
+
+            <div class="flash-card">
+                 <h4>Flash-card ghi nhớ:</h4>
+                 <ul>
+                    <li><span class="bold">Skimming:</span> Đọc nhanh tiêu đề, câu đầu/cuối mỗi đoạn để nắm ý chính.</li>
+                    <li><span class="bold">Scanning:</span> Đọc lướt để tìm từ khóa cụ thể (tên riêng, số liệu, ngày tháng...).</li>
+                    <li><span class="bold">Context Clues:</span> Dựa vào các từ xung quanh để đoán nghĩa từ mới.</li>
+                    <li><span class="bold">Reference Words:</span> Theo dõi các đại từ (it, they, this...) để biết chúng thay thế cho cái gì.</li>
+                    <li><span class="bold">Inference:</span> Kết hợp thông tin trong bài với kiến thức nền để rút ra kết luận logic.</li>
+                    <li><span class="bold">Keywords:</span> Gạch chân từ khóa trong câu hỏi để định hướng tìm kiếm trong bài đọc.</li>
+                 </ul>
+            </div>
+
+            <div class="tips">
+                <h4>Mẹo làm bài hiệu quả:</h4>
+                <ul>
+                    <li>Đọc câu hỏi trước khi đọc bài để xác định mục tiêu cần tìm kiếm thông tin.</li>
+                    <li>Với câu hỏi ý chính, hãy chú ý câu chủ đề (thường là câu đầu tiên của đoạn).</li>
+                    <li>Khi trả lời câu hỏi chi tiết, tìm chính xác vị trí thông tin trong bài đọc và đối chiếu với các lựa chọn.</li>
+                    <li>Đối với câu hỏi từ vựng, thay thế các lựa chọn vào vị trí từ cần tìm nghĩa xem từ nào phù hợp nhất với ngữ cảnh.</li>
+                    <li>Với câu hỏi suy luận, chọn đáp án có cơ sở logic từ thông tin trong bài, tránh suy diễn quá xa.</li>
+                    <li>Quản lý thời gian hợp lý, không dành quá nhiều thời gian cho một câu hỏi khó.</li>
+                 </ul>
+            </div>
+
+            <hr style="margin: 30px 0;">
+            <h3>Câu hỏi luyện tập</h3>
+
+             <p>Đọc đoạn văn sau và trả lời câu hỏi:</p>
+             <blockquote>“Peter is preparing for a marathon. He runs 5 kilometers every morning. He also follows a strict diet rich in protein to strengthen his muscles. Peter’s goal is to finish the marathon in under 4 hours.”</blockquote>
+
+            <div class="practice-question" data-question-id="m5q1" data-correct-answer="A">
+                <span class="question-text">1. How often does Peter run?</span>
+                <ul>
+                    <li><label><input type="radio" name="m5q1" value="A"> A. Every morning</label></li>
+                    <li><label><input type="radio" name="m5q1" value="B"> B. Twice a week</label></li>
+                    <li><label><input type="radio" name="m5q1" value="C"> C. Every weekend</label></li>
+                    <li><label><input type="radio" name="m5q1" value="D"> D. Once a month</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m5q1', true, 'Thông tin: "He runs 5 kilometers every morning."')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m5q2" data-correct-answer="C">
+                <span class="question-text">2. What is Peter’s goal for the marathon?</span>
+                <ul>
+                    <li><label><input type="radio" name="m5q2" value="A"> A. To run every day</label></li>
+                    <li><label><input type="radio" name="m5q2" value="B"> B. To win the marathon</label></li>
+                    <li><label><input type="radio" name="m5q2" value="C"> C. To finish in less than 4 hours</label></li>
+                    <li><label><input type="radio" name="m5q2" value="D"> D. To build muscle strength</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m5q2', true, 'Thông tin: "Peter’s goal is to finish the marathon in under 4 hours."')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <p class="mt-2">Đọc đoạn văn sau và trả lời câu hỏi:</p>
+            <blockquote>"The internet has become an <span class="bold"><u>indispensable</u></span> part of modern life. It allows us to communicate instantly, access vast amounts of information, and shop online. However, excessive use can lead to addiction and health problems. It's important to use the internet wisely."</blockquote>
+
+             <div class="practice-question" data-question-id="m5q3" data-correct-answer="B">
+                <span class="question-text">3. The word "<span class="bold"><u>indispensable</u></span>" in the passage is closest in meaning to:</span>
+                <ul>
+                    <li><label><input type="radio" name="m5q3" value="A"> A. unimportant</label></li>
+                    <li><label><input type="radio" name="m5q3" value="B"> B. essential</label></li>
+                    <li><label><input type="radio" name="m5q3" value="C"> C. difficult</label></li>
+                    <li><label><input type="radio" name="m5q3" value="D"> D. expensive</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m5q3', true, 'Giải thích: `indispensable` = không thể thiếu, thiết yếu.')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m5q4" data-correct-answer="D">
+                <span class="question-text">4. According to the passage, what is a potential negative consequence of using the internet too much?</span>
+                <ul>
+                    <li><label><input type="radio" name="m5q4" value="A"> A. Difficulty communicating</label></li>
+                    <li><label><input type="radio" name="m5q4" value="B"> B. Limited access to information</label></li>
+                    <li><label><input type="radio" name="m5q4" value="C"> C. Problems shopping online</label></li>
+                    <li><label><input type="radio" name="m5q4" value="D"> D. Addiction and health issues</label></li>
+                </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m5q4', true, 'Thông tin: "excessive use can lead to addiction and health problems."')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 6: Tìm lỗi sai -->
+        <section id="module6" class="content-section">
+            <h1>Module 6: Tìm lỗi sai</h1>
+            <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Nâng cao khả năng phát hiện lỗi ngữ pháp và từ vựng trong câu tiếng Anh.</li>
+                <li>Củng cố kiến thức ngữ pháp thông qua việc nhận diện và sửa lỗi thường gặp.</li>
+            </ul>
+            <h3>Tóm tắt kiến thức cần nhớ:</h3>
+            <p>Dạng bài này yêu cầu xác định một phần gạch chân (trong số 4 phần A, B, C, D) chứa lỗi sai trong câu. Các loại lỗi thường gặp:</p>
+            <ul>
+                <li><span class="bold">Lỗi về Thì động từ (Verb Tense):</span> Sử dụng sai thì so với ngữ cảnh hoặc dấu hiệu thời gian.</li>
+                <li><span class="bold">Lỗi về Dạng động từ (Verb Form):</span> Sai dạng V-ing/To V, sai dạng bị động/chủ động, sai dạng V3/ed trong các thì hoàn thành hoặc bị động.</li>
+                <li><span class="bold">Lỗi về Sự hòa hợp Chủ ngữ - Động từ (Subject-Verb Agreement):</span> Chủ ngữ số ít đi với động từ số nhiều và ngược lại.</li>
+                <li><span class="bold">Lỗi về Từ loại (Word Form/Part of Speech):</span> Dùng sai dạng từ (danh từ thay vì tính từ, trạng từ thay vì tính từ...). Ví dụ: <code>He drives careful.</code> (Sai) -> <code>He drives carefully.</code> (Đúng).</li>
+                <li><span class="bold">Lỗi về Đại từ (Pronouns):</span> Sai đại từ nhân xưng, đại từ sở hữu, đại từ quan hệ, đại từ phản thân... (ví dụ: <code>Me like ice cream.</code> -> <code>I like...</code>).</li>
+                <li><span class="bold">Lỗi về Tính từ & Trạng từ (Adjectives & Adverbs):</span> Sai vị trí, sai dạng so sánh, nhầm lẫn giữa tính từ và trạng từ.</li>
+                <li><span class="bold">Lỗi về Giới từ (Prepositions):</span> Dùng sai giới từ (in/on/at, between/among, for/since...).</li>
+                <li><span class="bold">Lỗi về Mạo từ (Articles):</span> Dùng sai/thiếu a/an/the hoặc không dùng mạo từ khi cần.</li>
+                <li><span class="bold">Lỗi về Cấu trúc song song (Parallel Structure):</span> Các thành phần liệt kê trong câu không cùng dạng (ví dụ: <code>likes reading, writing and to swim</code> -> <code>...and swimming</code>).</li>
+                <li><span class="bold">Lỗi về Từ vựng (Word Choice):</span> Dùng từ sai nghĩa trong ngữ cảnh (ví dụ: <code>affect</code> vs <code>effect</code>).</li>
+            </ul>
+
+            <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                 <p>Tìm phần gạch chân chứa lỗi sai trong câu sau:</p>
+                 <p>My mother (A)<u>told</u> me that I (B)<u>should learn</u> (C)<u>hardly</u> to pass (D)<u>the exam</u>.</p>
+                <div class="analysis">
+                    <span class="bold">Phân tích:</span> Trạng từ <code>hardly</code> có nghĩa là "hầu như không", không phù hợp với ý nghĩa khuyên bảo "học hành chăm chỉ". Cần dùng trạng từ <code>hard</code> (chăm chỉ) để bổ nghĩa cho động từ <code>learn</code>. Các phần khác: (A) told - đúng dạng QKĐ của tell, (B) should learn - đúng cấu trúc khuyên bảo, (D) the exam - đúng mạo từ. -> Lỗi sai ở <span class="bold">C</span>. Sửa: hard.
+                </div>
+            </div>
+
+            <div class="flash-card">
+                 <h4>Flash-card lỗi phổ biến:</h4>
+                 <ul>
+                    <li><span class="bold">Adj/Adv:</span> <code>slow</code> (adj) vs <code>slowly</code> (adv); <code>good</code> (adj) vs <code>well</code> (adv).</li>
+                    <li><span class="bold">S-V Agreement:</span> <code>He play<ins>s</ins></code> vs <code>They play</code>. Chú ý các chủ ngữ đặc biệt (each, every, either...or...).</li>
+                    <li><span class="bold">Verb Form:</span> <code>avoid + V-ing</code>; <code>want + to V</code>; <code>used to + V</code>; <code>be used to + V-ing</code>.</li>
+                    <li><span class="bold">Parallelism:</span> <code>...reading, writing, <ins>and</ins> swimming</code> (cùng dạng V-ing).</li>
+                    <li><span class="bold">Confusing Words:</span> <code>its</code> (của nó) vs <code>it's</code> (it is); <code>affect</code> (v) vs <code>effect</code> (n); <code>amount</code> (không đếm được) vs <code>number</code> (đếm được).</li>
+                    <li><span class="bold">Enough:</span> <code>adj + enough</code> (<code>tall enough</code>); <code>enough + noun</code> (<code>enough money</code>).</li>
+                 </ul>
+            </div>
+
+            <div class="tips">
+                 <h4>Mẹo ghi nhớ & làm bài:</h4>
+                <ul>
+                    <li>Đọc kỹ cả câu để hiểu nghĩa tổng thể.</li>
+                    <li>Kiểm tra từng phần gạch chân theo các loại lỗi phổ biến đã liệt kê.</li>
+                    <li>Kiểm tra sự hòa hợp S-V, thì của động từ, dạng từ...</li>
+                    <li>Chú ý các cấu trúc cố định (collocations, phrasal verbs).</li>
+                    <li>Nếu không chắc, hãy thử sửa lỗi xem câu có trở nên hợp lý hơn không.</li>
+                    <li>Loại trừ các phần chắc chắn đúng để thu hẹp phạm vi tìm lỗi.</li>
+                 </ul>
+            </div>
+
+             <hr style="margin: 30px 0;">
+             <h3>Câu hỏi luyện tập</h3>
+
+            <div class="practice-question" data-question-id="m6q1" data-correct-answer="B">
+                <span class="question-text">1. My friend (A)<u>enjoys</u> (B)<u>to play</u> (C)<u>basketball</u> (D)<u>at the weekend</u> with his brother.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m6q1" value="A"> A</label></li>
+                     <li><label><input type="radio" name="m6q1" value="B"> B</label></li>
+                     <li><label><input type="radio" name="m6q1" value="C"> C</label></li>
+                     <li><label><input type="radio" name="m6q1" value="D"> D</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m6q1', true, 'Lỗi: (B) to play -> Sửa: playing (Sau `enjoy` dùng V-ing)')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m6q2" data-correct-answer="B">
+                 <span class="question-text">2. She (A)<u>didn’t meet</u> (B)<u>nobody</u> (C)<u>at the party</u> (D)<u>last night</u>.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m6q2" value="A"> A</label></li>
+                     <li><label><input type="radio" name="m6q2" value="B"> B</label></li>
+                     <li><label><input type="radio" name="m6q2" value="C"> C</label></li>
+                     <li><label><input type="radio" name="m6q2" value="D"> D</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m6q2', true, 'Lỗi: (B) nobody -> Sửa: anybody (Không dùng phủ định kép)')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m6q3" data-correct-answer="D">
+                 <span class="question-text">3. He works (A)<u>as</u> a teacher (B)<u>at</u> a school (C)<u>near</u> the city center, (D)<u>don't</u> he?</span>
+                 <ul>
+                     <li><label><input type="radio" name="m6q3" value="A"> A</label></li>
+                     <li><label><input type="radio" name="m6q3" value="B"> B</label></li>
+                     <li><label><input type="radio" name="m6q3" value="C"> C</label></li>
+                     <li><label><input type="radio" name="m6q3" value="D"> D</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m6q3', true, 'Lỗi: (D) don\'t -> Sửa: doesn\'t (Câu hỏi đuôi cho chủ ngữ `He` ở HTĐ)')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m6q4" data-correct-answer="C">
+                 <span class="question-text">4. The number (A)<u>of</u> students (B)<u>attending</u> the meeting (C)<u>were</u> surprisingly (D)<u>low</u>.</span>
+                 <ul>
+                     <li><label><input type="radio" name="m6q4" value="A"> A</label></li>
+                     <li><label><input type="radio" name="m6q4" value="B"> B</label></li>
+                     <li><label><input type="radio" name="m6q4" value="C"> C</label></li>
+                     <li><label><input type="radio" name="m6q4" value="D"> D</label></li>
+                 </ul>
+                 <button class="button button-info" onclick="checkAnswerMCQ('m6q4', true, 'Lỗi: (C) were -> Sửa: was (Chủ ngữ là `The number` - số ít)')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Module 7: Viết lại câu -->
+        <section id="module7" class="content-section">
+            <h1>Module 7: Viết lại câu (Biến đổi câu)</h1>
+            <h3>Mục tiêu kỹ năng:</h3>
+            <ul>
+                <li>Biết cách viết lại câu sao cho nghĩa không đổi, sử dụng các cấu trúc câu tương đương.</li>
+                <li>Ghi nhớ các mẫu câu thường xuất hiện trong phần biến đổi câu của đề thi.</li>
+            </ul>
+             <h3>Tóm tắt kiến thức cần nhớ:</h3>
+              <p>Phần này yêu cầu viết lại câu gốc bằng một cấu trúc khác nhưng vẫn giữ nguyên nghĩa, thường có từ gợi ý cho trước. Các dạng biến đổi phổ biến:</p>
+            <ul>
+                <li><span class="bold">Chủ động <-> Bị động (Active <-> Passive):</span> Chuyển đổi chủ ngữ và tân ngữ, sử dụng cấu trúc "be + V3/ed".</li>
+                <li><span class="bold">Trực tiếp <-> Gián tiếp (Direct <-> Reported Speech):</span> Lùi thì, đổi đại từ, trạng từ chỉ thời gian/nơi chốn.</li>
+                <li><span class="bold">Câu điều kiện <-> Unless/Wish:</span>
+                    <ul>
+                        <li>If... not... <-> Unless...</li>
+                        <li>Câu điều kiện loại 2 <-> Câu ước ở hiện tại (Wish + QKĐ).</li>
+                        <li>Câu điều kiện loại 3 <-> Câu ước ở quá khứ (Wish + QKHT).</li>
+                    </ul>
+                </li>
+                <li><span class="bold">So... that <-> Such... that <-> Too... to <-> Enough... to:</span>
+                    <ul>
+                        <li><code>so + adj/adv + that + clause</code></li>
+                        <li><code>such + (a/an) + adj + N + that + clause</code></li>
+                        <li><code>too + adj/adv + (for O) + to V</code> (quá... đến nỗi không thể)</li>
+                        <li><code>adj/adv + enough + (for O) + to V</code> (đủ... để)</li>
+                         <li><code>not + adj/adv + enough + (for O) + to V</code> (không đủ... để)</li>
+                    </ul>
+                </li>
+                 <li><span class="bold">Although/Though/Even though <-> Despite/In spite of:</span>
+                    <ul>
+                        <li><code>Although/Though/Even though + clause (S + V)</code></li>
+                        <li><code>Despite/In spite of + Noun/Noun Phrase/V-ing</code></li>
+                    </ul>
+                 </li>
+                  <li><span class="bold">Because <-> Because of:</span>
+                    <ul>
+                        <li><code>Because + clause (S + V)</code></li>
+                        <li><code>Because of + Noun/Noun Phrase/V-ing</code></li>
+                    </ul>
+                 </li>
+                 <li><span class="bold">So sánh (Comparisons):</span>
+                    <ul>
+                        <li>So sánh hơn <-> So sánh không bằng (<code>A is bigger than B</code> <-> <code>B is not as big as A</code>)</li>
+                        <li>So sánh nhất <-> So sánh bằng/không bằng với "no one/nothing else" (<code>C is the tallest</code> <-> <code>No one else is as tall as C</code>)</li>
+                    </ul>
+                 </li>
+                 <li><span class="bold">Các cấu trúc khác:</span>
+                    <ul>
+                        <li><code>It's the first/second/last time + S + have/has + V3</code> <-> <code>S + have/has + never/not + V3... before / S + last + V2... ago</code></li>
+                        <li><code>S + started/began + V-ing/to V... ago</code> <-> <code>S + have/has + V3/ed... for/since...</code></li>
+                        <li><code>Prefer V-ing to V-ing</code> <-> <code>Like V-ing/to V better than V-ing/to V</code></li>
+                         <li><code>It takes/took + O + time + to V</code> <-> <code>S + spend(s)/spent + time + V-ing</code></li>
+                    </ul>
+                 </li>
+            </ul>
+
+             <div class="example">
+                <h4>Câu hỏi ví dụ & Phân tích:</h4>
+                <p>Viết lại các câu sau theo gợi ý, không thay đổi nghĩa:</p>
+                <p><span class="bold">1.</span> “The last time I saw him was two years ago,” said Mai. (Rewrite using: <span class="bold">hadn’t</span>)</p>
+                <p>Lời giải: Mai said she <span class="bold">hadn’t</span> seen him for two years.</p>
+                 <div class="analysis">
+                    <span class="bold">Phân tích:</span> Câu gốc dùng "The last time... was... ago" (thì QKĐ). Để diễn đạt ý tương tự bằng QKHT phủ định, ta dùng cấu trúc "S + hadn't + V3 + for + khoảng thời gian". Thời điểm nói là trong quá khứ (said), nên việc "không gặp" xảy ra trước đó -> dùng QKHT.
+                </div>
+
+                <p class="mt-2"><span class="bold">2.</span> This house is very expensive. We can’t afford it. (Rewrite using: <span class="bold">too</span>)</p>
+                 <p>Lời giải: This house is <span class="bold">too</span> expensive for us to afford.</p>
+                 <div class="analysis">
+                    <span class="bold">Phân tích:</span> Hai câu gốc diễn tả ý "quá đắt nên không thể mua". Cấu trúc <code>too + adj + (for sb) + to V</code> dùng để diễn đạt ý này. "for us" chỉ đối tượng không thể thực hiện hành động "afford".
+                </div>
+            </div>
+
+             <div class="flash-card">
+                 <h4>Flash-card cấu trúc tương đương:</h4>
+                 <ul>
+                    <li><code>Active: S + V + O</code> <-> <code>Passive: O + be + V3/ed (+ by S)</code></li>
+                    <li><code>If... not...</code> <-> <code>Unless...</code></li>
+                    <li><code>so + adj/adv + that...</code> <-> <code>too + adj/adv + to V</code> (nghĩa phủ định)</li>
+                    <li><code>Although + clause</code> <-> <code>Despite/In spite of + N/V-ing</code></li>
+                    <li><code>S + started + V-ing... ago</code> <-> <code>S + has/have + V3/ed... for...</code></li>
+                    <li><code>A is better than B</code> <-> <code>B is not as good as A</code> / <code>B is worse than A</code></li>
+                 </ul>
+            </div>
+
+            <div class="tips">
+                 <h4>Mẹo ghi nhớ & làm bài:</h4>
+                <ul>
+                    <li>Xác định rõ cấu trúc ngữ pháp của câu gốc và cấu trúc cần chuyển đổi dựa vào từ gợi ý.</li>
+                    <li>Ghi nhớ các cặp cấu trúc tương đương thường gặp.</li>
+                    <li>Chú ý các thay đổi cần thiết về thì, dạng từ, giới từ, đại từ khi viết lại câu.</li>
+                    <li>Đảm bảo câu viết lại truyền đạt đúng và đủ ý nghĩa của câu gốc.</li>
+                    <li>Kiểm tra lại ngữ pháp, chính tả sau khi viết xong.</li>
+                 </ul>
+            </div>
+
+            <hr style="margin: 30px 0;">
+            <h3>Câu hỏi luyện tập</h3>
+
+             <div class="practice-question" data-question-id="m7q1" data-correct-answer='["lan is not as tall as hoa", "lan isnt as tall as hoa"]'>
+                 <span class="question-text">1. Viết lại câu: Lan is shorter than Hoa. (as)</span>
+                 <input type="text" id="m7q1-input" placeholder="Nhập câu trả lời của bạn...">
+                 <button class="button button-info" onclick="checkAnswerText('m7q1')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+             <div class="practice-question" data-question-id="m7q2" data-correct-answer='["he has worked here for 5 years", "he has been working here for 5 years"]'>
+                 <span class="question-text">2. Viết lại câu: He started working here 5 years ago. (for)</span>
+                 <input type="text" id="m7q2-input" placeholder="Nhập câu trả lời của bạn...">
+                  <button class="button button-info" onclick="checkAnswerText('m7q2')">Kiểm tra</button>
+                 <div class="feedback"></div>
+             </div>
+
+            <div class="practice-question" data-question-id="m7q3" data-correct-answer='["the book was too difficult for me to understand"]'>
+                 <span class="question-text">3. Viết lại câu: The book was so difficult that I couldn’t understand it. (too)</span>
+                 <input type="text" id="m7q3-input" placeholder="Nhập câu trả lời của bạn...">
+                 <button class="button button-info" onclick="checkAnswerText('m7q3')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m7q4" data-correct-answer='["my house is smaller than yours"]'>
+                 <span class="question-text">4. Viết lại câu: Your house is bigger than mine. (smaller)</span>
+                 <input type="text" id="m7q4-input" placeholder="Nhập câu trả lời của bạn...">
+                 <button class="button button-info" onclick="checkAnswerText('m7q4')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+
+            <div class="practice-question" data-question-id="m7q5" data-correct-answer='["unless you study hard, you will fail the exam", "you will fail the exam unless you study hard"]'>
+                 <span class="question-text">5. Viết lại câu: If you don't study hard, you will fail the exam. (Unless)</span>
+                 <input type="text" id="m7q5-input" placeholder="Nhập câu trả lời của bạn...">
+                  <button class="button button-info" onclick="checkAnswerText('m7q5')">Kiểm tra</button>
+                 <div class="feedback"></div>
+            </div>
+        </section>
+
+         <!-- Flashcard Creator -->
+         <section id="flashcard-creator" class="content-section">
+             <h1>Tạo Flashcard</h1>
+             <p>Nhập từ và nghĩa/ví dụ vào bảng dưới đây để tạo bộ flashcard của riêng bạn (tối đa 15 từ).</p>
+
+             <table id="flashcard-input-table">
+                 <thead>
+                     <tr>
+                         <th>Từ</th>
+                         <th>Nghĩa / Ví dụ</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <!-- Rows will be added here by JS -->
+                 </tbody>
+             </table>
+             <button id="add-fc-row-btn" class="button button-secondary" onclick="addFlashcardRow()">Thêm hàng</button>
+             <button class="button button-success" onclick="createFlashcards()">Tạo Flashcards</button>
+             <button class="button button-warning" onclick="resetFlashcardTable()">Reset Bảng</button>
+
+             <hr style="margin: 30px 0;">
+
+             <div id="flashcard-display-area" class="hidden">
+                 <h2>Flashcards của bạn</h2>
+                 <div class="flashcard-container">
+                     <div class="flashcard" id="flashcard">
+                         <div class="flashcard-face flashcard-front" id="flashcard-front"></div>
+                         <div class="flashcard-face flashcard-back" id="flashcard-back"></div>
+                     </div>
+                 </div>
+                 <div class="flashcard-controls">
+                     <button class="button button-secondary" id="fc-prev-btn" disabled onclick="prevFlashcard()">Trước</button>
+                     <span id="fc-counter">0 / 0</span>
+                     <button class="button button-secondary" id="fc-next-btn" disabled onclick="nextFlashcard()">Sau</button>
+                     <button class="button button-info" id="fc-random-btn" disabled onclick="randomFlashcard()">Ngẫu nhiên</button>
+                 </div>
+             </div>
+         </section>
+
+
+        <!-- Đề thi mẫu 1 -->
+        <section id="test1" class="content-section mock-test">
+             <h1>Đề thi mẫu 1</h1>
+             <p class="italic text-center">Thời gian: 60 phút. Không được sử dụng tài liệu.</p>
+             <hr style="margin: 20px 0;">
+
+            <form id="mock-test-1-form">
+                 <h3>Phần I: Ngữ âm (Phát âm và Trọng âm)</h3>
+                 <p>Chọn từ có phần gạch chân được phát âm khác (câu 1-2) và chọn từ có trọng âm khác (câu 3-4).</p>
+                 <div class="question" data-question-id="t1q1" data-correct-answer="A">
+                    <span class="question-text">1.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q1" value="A"> A. suggest<span class="bold">ed</span></label></li>
+                        <li><label><input type="radio" name="t1q1" value="B"> B. walk<span class="bold">ed</span></label></li>
+                        <li><label><input type="radio" name="t1q1" value="C"> C. kiss<span class="bold">ed</span></label></li>
+                        <li><label><input type="radio" name="t1q1" value="D"> D. help<span class="bold">ed</span></label></li>
+                    </ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (/ɪd/, còn lại /t/)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q2" data-correct-answer="B">
+                     <span class="question-text">2.</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t1q2" value="A"> A. h<span class="bold">ea</span>t</label></li>
+                        <li><label><input type="radio" name="t1q2" value="B"> B. h<span class="bold">ea</span>d</label></li>
+                        <li><label><input type="radio" name="t1q2" value="C"> C. tr<span class="bold">ea</span>t</label></li>
+                        <li><label><input type="radio" name="t1q2" value="D"> D. b<span class="bold">ea</span>t</label></li>
+                     </ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (/e/, còn lại /i:/)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q3" data-correct-answer="D">
+                     <span class="question-text">3.</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t1q3" value="A"> A. open</label></li>
+                        <li><label><input type="radio" name="t1q3" value="B"> B. answer</label></li>
+                        <li><label><input type="radio" name="t1q3" value="C"> C. student</label></li>
+                        <li><label><input type="radio" name="t1q3" value="D"> D. behave</label></li>
+                     </ul>
+                      <span class="correct-answer-text">Đáp án đúng: D (nhấn âm 2, còn lại âm 1)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q4" data-correct-answer="B">
+                     <span class="question-text">4.</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t1q4" value="A"> A. history</label></li>
+                        <li><label><input type="radio" name="t1q4" value="B"> B. museum</label></li>
+                        <li><label><input type="radio" name="t1q4" value="C"> C. cinema</label></li>
+                        <li><label><input type="radio" name="t1q4" value="D"> D. exercise</label></li>
+                     </ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (nhấn âm 2, còn lại âm 1)</span>
+                 </div>
+
+                <h3>Phần II: Ngữ pháp và Từ vựng (Hoàn thành câu)</h3>
+                <p>Chọn đáp án đúng để hoàn thành mỗi câu sau (câu 5 đến 20).</p>
+                 <div class="question" data-question-id="t1q5" data-correct-answer="C">
+                    <span class="question-text">5. I ____ this movie already.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q5" value="A"> A. see</label></li>
+                        <li><label><input type="radio" name="t1q5" value="B"> B. saw</label></li>
+                        <li><label><input type="radio" name="t1q5" value="C"> C. have seen</label></li>
+                        <li><label><input type="radio" name="t1q5" value="D"> D. will see</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: C (Hiện tại hoàn thành với 'already')</span>
+                 </div>
+                <div class="question" data-question-id="t1q6" data-correct-answer="B">
+                    <span class="question-text">6. When I came, they ____ dinner.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q6" value="A"> A. had</label></li>
+                        <li><label><input type="radio" name="t1q6" value="B"> B. were having</label></li>
+                        <li><label><input type="radio" name="t1q6" value="C"> C. are having</label></li>
+                        <li><label><input type="radio" name="t1q6" value="D"> D. have</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (QKTD - hành động đang xảy ra thì hành động khác xen vào)</span>
+                </div>
+                 <div class="question" data-question-id="t1q7" data-correct-answer="B">
+                    <span class="question-text">7. The letters ____ by the postman yesterday.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q7" value="A"> A. delivered</label></li>
+                        <li><label><input type="radio" name="t1q7" value="B"> B. were delivered</label></li>
+                        <li><label><input type="radio" name="t1q7" value="C"> C. have delivered</label></li>
+                        <li><label><input type="radio" name="t1q7" value="D"> D. deliver</label></li></ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (Bị động QKĐ - 'yesterday')</span>
+                </div>
+                 <div class="question" data-question-id="t1q8" data-correct-answer="B">
+                    <span class="question-text">8. If I ____ a bird, I would fly to a faraway place.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q8" value="A"> A. am</label></li>
+                        <li><label><input type="radio" name="t1q8" value="B"> B. were</label></li>
+                        <li><label><input type="radio" name="t1q8" value="C"> C. had been</label></li>
+                        <li><label><input type="radio" name="t1q8" value="D"> D. would be</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Điều kiện loại 2)</span>
+                </div>
+                 <div class="question" data-question-id="t1q9" data-correct-answer="C">
+                    <span class="question-text">9. If he had studied harder, he ____ the exam.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q9" value="A"> A. would pass</label></li>
+                        <li><label><input type="radio" name="t1q9" value="B"> B. will pass</label></li>
+                        <li><label><input type="radio" name="t1q9" value="C"> C. would have passed</label></li>
+                        <li><label><input type="radio" name="t1q9" value="D"> D. passed</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: C (Điều kiện loại 3)</span>
+                </div>
+                 <div class="question" data-question-id="t1q10" data-correct-answer="A">
+                    <span class="question-text">10. I wish it ____ rain so much in Ha Long.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q10" value="A"> A. didn’t</label></li>
+                        <li><label><input type="radio" name="t1q10" value="B"> B. wouldn’t</label></li>
+                        <li><label><input type="radio" name="t1q10" value="C"> C. doesn’t</label></li>
+                        <li><label><input type="radio" name="t1q10" value="D"> D. won’t</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (Wish ở hiện tại -> dùng QKĐ: didn't rain)</span>
+                </div>
+                 <div class="question" data-question-id="t1q11" data-correct-answer="B">
+                    <span class="question-text">11. She is looking ____ her keys; she can’t find them.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q11" value="A"> A. at</label></li>
+                        <li><label><input type="radio" name="t1q11" value="B"> B. for</label></li>
+                        <li><label><input type="radio" name="t1q11" value="C"> C. after</label></li>
+                        <li><label><input type="radio" name="t1q11" value="D"> D. up</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (look for: tìm kiếm)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q12" data-correct-answer="A">
+                     <span class="question-text">12. He agreed ____ the report by Friday.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q12" value="A"> A. to write</label></li>
+                         <li><label><input type="radio" name="t1q12" value="B"> B. writing</label></li>
+                         <li><label><input type="radio" name="t1q12" value="C"> C. write</label></li>
+                         <li><label><input type="radio" name="t1q12" value="D"> D. wrote</label></li></ul>
+                      <span class="correct-answer-text">Đáp án đúng: A (agree + to V)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q13" data-correct-answer="B">
+                     <span class="question-text">13. You ____ smoke in the hospital. It’s forbidden.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q13" value="A"> A. must</label></li>
+                         <li><label><input type="radio" name="t1q13" value="B"> B. mustn’t</label></li>
+                         <li><label><input type="radio" name="t1q13" value="C"> C. don’t have to</label></li>
+                         <li><label><input type="radio" name="t1q13" value="D"> D. should</label></li></ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (mustn’t: cấm đoán)</span>
+                 </div>
+                  <div class="question" data-question-id="t1q14" data-correct-answer="B">
+                     <span class="question-text">14. That’s the girl ____ mother is a famous singer.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q14" value="A"> A. who</label></li>
+                         <li><label><input type="radio" name="t1q14" value="B"> B. whose</label></li>
+                         <li><label><input type="radio" name="t1q14" value="C"> C. which</label></li>
+                         <li><label><input type="radio" name="t1q14" value="D"> D. that</label></li></ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (whose: chỉ sở hữu)</span>
+                 </div>
+                  <div class="question" data-question-id="t1q15" data-correct-answer="C">
+                     <span class="question-text">15. This test is ____ than the last one we took.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q15" value="A"> A. easy</label></li>
+                         <li><label><input type="radio" name="t1q15" value="B"> B. easiest</label></li>
+                         <li><label><input type="radio" name="t1q15" value="C"> C. easier</label></li>
+                         <li><label><input type="radio" name="t1q15" value="D"> D. more easy</label></li></ul>
+                      <span class="correct-answer-text">Đáp án đúng: C (so sánh hơn của 'easy')</span>
+                 </div>
+                  <div class="question" data-question-id="t1q16" data-correct-answer="B">
+                     <span class="question-text">16. Mount Everest is ____ mountain in the world.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q16" value="A"> A. higher</label></li>
+                         <li><label><input type="radio" name="t1q16" value="B"> B. the highest</label></li>
+                         <li><label><input type="radio" name="t1q16" value="C"> C. highest</label></li>
+                         <li><label><input type="radio" name="t1q16" value="D"> D. the higher</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (so sánh nhất)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q17" data-correct-answer="A">
+                    <span class="question-text">17. We often go to the countryside to enjoy the fresh ____.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q17" value="A"> A. air</label></li>
+                        <li><label><input type="radio" name="t1q17" value="B"> B. wind</label></li>
+                        <li><label><input type="radio" name="t1q17" value="C"> C. sky</label></li>
+                        <li><label><input type="radio" name="t1q17" value="D"> D. atmosphere</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (fresh air: không khí trong lành)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q18" data-correct-answer="B">
+                     <span class="question-text">18. The ____ of the new bridge will improve traffic flow in the city.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q18" value="A"> A. construct</label></li>
+                         <li><label><input type="radio" name="t1q18" value="B"> B. construction</label></li>
+                         <li><label><input type="radio" name="t1q18" value="C"> C. constructing</label></li>
+                         <li><label><input type="radio" name="t1q18" value="D"> D. constructed</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (construction: danh từ)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q19" data-correct-answer="A">
+                     <span class="question-text">19. It was not until 2010 ____ he started his own business.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q19" value="A"> A. that</label></li>
+                         <li><label><input type="radio" name="t1q19" value="B"> B. when</label></li>
+                         <li><label><input type="radio" name="t1q19" value="C"> C. then</label></li>
+                         <li><label><input type="radio" name="t1q19" value="D"> D. which</label></li></ul>
+                     <span class="correct-answer-text">Đáp án đúng: A (Cấu trúc nhấn mạnh: It was not until... that...)</span>
+                 </div>
+                  <div class="question" data-question-id="t1q20" data-correct-answer="B">
+                     <span class="question-text">20. He asked me where ____ from.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q20" value="A"> A. do I come</label></li>
+                         <li><label><input type="radio" name="t1q20" value="B"> B. I came</label></li>
+                         <li><label><input type="radio" name="t1q20" value="C"> C. I come</label></li>
+                         <li><label><input type="radio" name="t1q20" value="D"> D. did I come</label></li></ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (Câu tường thuật dạng Wh-question -> S + V (lùi thì): I came)</span>
+                 </div>
+
+                <h3>Phần III: Từ đồng nghĩa – Trái nghĩa</h3>
+                 <p>Chọn từ có nghĩa gần nhất (câu 21) hoặc trái ngược (câu 22) với từ được gạch chân.</p>
+                 <div class="question" data-question-id="t1q21" data-correct-answer="C">
+                     <span class="question-text">21. The exam was very <span class="bold"><u>tough</u></span> this year. (Đồng nghĩa)</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t1q21" value="A"> A. easy</label></li>
+                        <li><label><input type="radio" name="t1q21" value="B"> B. simple</label></li>
+                        <li><label><input type="radio" name="t1q21" value="C"> C. hard</label></li>
+                        <li><label><input type="radio" name="t1q21" value="D"> D. long</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: C (tough = hard: khó khăn)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q22" data-correct-answer="B">
+                     <span class="question-text">22. He is very <span class="bold"><u>generous</u></span> to the poor. (Trái nghĩa)</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t1q22" value="A"> A. kind</label></li>
+                        <li><label><input type="radio" name="t1q22" value="B"> B. mean</label></li>
+                        <li><label><input type="radio" name="t1q22" value="C"> C. wealthy</label></li>
+                        <li><label><input type="radio" name="t1q22" value="D"> D. friendly</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (generous: hào phóng ≠ mean: keo kiệt)</span>
+                 </div>
+
+                <h3>Phần IV: Tìm lỗi sai</h3>
+                <p>Xác định một lỗi sai trong mỗi câu sau (câu 23 đến 25).</p>
+                 <div class="question" data-question-id="t1q23" data-correct-answer="B">
+                     <span class="question-text">23. My brother (A)<u>didn’t have</u> (B)<u>time enough</u> to (C)<u>finish</u> all the homework (D)<u>yesterday</u>.</span>
+                      <ul class="options">
+                         <li><label><input type="radio" name="t1q23" value="A"> A</label></li>
+                         <li><label><input type="radio" name="t1q23" value="B"> B</label></li>
+                         <li><label><input type="radio" name="t1q23" value="C"> C</label></li>
+                         <li><label><input type="radio" name="t1q23" value="D"> D</label></li>
+                     </ul>
+                     <span class="correct-answer-text">Đáp án đúng: B (Sai: time enough -> Đúng: enough time)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q24" data-correct-answer="A">
+                     <span class="question-text">24. If I (A)<u>will have</u> free time, I (B)<u>would visit</u> (C)<u>my grandparents</u> (D)<u>tomorrow</u>.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q24" value="A"> A</label></li>
+                         <li><label><input type="radio" name="t1q24" value="B"> B</label></li>
+                         <li><label><input type="radio" name="t1q24" value="C"> C</label></li>
+                         <li><label><input type="radio" name="t1q24" value="D"> D</label></li>
+                     </ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (Sai: will have -> Đúng: have - Mệnh đề If trong câu ĐK loại 1 dùng HTĐ)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q25" data-correct-answer="D">
+                     <span class="question-text">25. The book (A)<u>which</u> you lent me (B)<u>yesterday</u> was (C)<u>so interesting that</u> I (D)<u>can’t</u> stop reading it.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q25" value="A"> A</label></li>
+                         <li><label><input type="radio" name="t1q25" value="B"> B</label></li>
+                         <li><label><input type="radio" name="t1q25" value="C"> C</label></li>
+                         <li><label><input type="radio" name="t1q25" value="D"> D</label></li>
+                     </ul>
+                    <span class="correct-answer-text">Đáp án đúng: D (Sai: can't -> Đúng: couldn't - Câu ở quá khứ 'was')</span>
+                 </div>
+
+                <h3>Phần V: Điền từ vào đoạn văn</h3>
+                 <p>Chọn một từ thích hợp ứng với A, B, C hoặc D để điền vào mỗi chỗ trống trong đoạn văn sau (câu 26 đến 30).</p>
+                 <blockquote>“English is now a global language. If you want to (26) ____ in today’s world, you should know English. Many companies require a certain level of English (27) ____ when hiring new staff. Reading English books and articles can help you (28) ____ your knowledge and vocabulary. However, learning English is not always easy. It requires a lot of (29) ____ and practice. Don’t be afraid to make (30) ____, because they are a natural part of the learning process.”</blockquote>
+                 <div class="question" data-question-id="t1q26" data-correct-answer="A">
+                    <span class="question-text">26.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q26" value="A"> A. succeed</label></li>
+                        <li><label><input type="radio" name="t1q26" value="B"> B. success</label></li>
+                        <li><label><input type="radio" name="t1q26" value="C"> C. successful</label></li>
+                        <li><label><input type="radio" name="t1q26" value="D"> D. succeeding</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (want to succeed: muốn thành công - cần động từ)</span>
+                 </div>
+                <div class="question" data-question-id="t1q27" data-correct-answer="A">
+                    <span class="question-text">27.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q27" value="A"> A. proficiency</label></li>
+                        <li><label><input type="radio" name="t1q27" value="B"> B. knowledge</label></li>
+                        <li><label><input type="radio" name="t1q27" value="C"> C. accent</label></li>
+                        <li><label><input type="radio" name="t1q27" value="D"> D. learning</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (English proficiency: sự thành thạo tiếng Anh - danh từ)</span>
+                </div>
+                <div class="question" data-question-id="t1q28" data-correct-answer="A">
+                     <span class="question-text">28.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q28" value="A"> A. broaden</label></li>
+                         <li><label><input type="radio" name="t1q28" value="B"> B. wide</label></li>
+                         <li><label><input type="radio" name="t1q28" value="C"> C. large</label></li>
+                         <li><label><input type="radio" name="t1q28" value="D"> D. open</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (broaden knowledge: mở rộng kiến thức - động từ)</span>
+                </div>
+                <div class="question" data-question-id="t1q29" data-correct-answer="A">
+                     <span class="question-text">29.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q29" value="A"> A. effort</label></li>
+                         <li><label><input type="radio" name="t1q29" value="B"> B. comfort</label></li>
+                         <li><label><input type="radio" name="t1q29" value="C"> C. supply</label></li>
+                         <li><label><input type="radio" name="t1q29" value="D"> D. effect</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (effort: sự nỗ lực - danh từ)</span>
+                 </div>
+                <div class="question" data-question-id="t1q30" data-correct-answer="B">
+                     <span class="question-text">30.</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q30" value="A"> A. progresses</label></li>
+                         <li><label><input type="radio" name="t1q30" value="B"> B. mistakes</label></li>
+                         <li><label><input type="radio" name="t1q30" value="C"> C. exercises</label></li>
+                         <li><label><input type="radio" name="t1q30" value="D"> D. friends</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (make mistakes: mắc lỗi)</span>
+                </div>
+
+                 <h3>Phần VI: Đọc hiểu</h3>
+                 <p>Đọc đoạn văn sau và chọn đáp án đúng cho các câu hỏi 31 đến 35.</p>
+                <blockquote>
+                    “Ha Long Bay is a famous tourist destination located in Quảng Ninh province, in the northeast of Vietnam. It features thousands of limestone islands and caves rising out of the emerald water. In 1994, Ha Long Bay was recognized as a UNESCO World Heritage Site for its breathtaking natural beauty and geological value. Each year, millions of visitors come to explore the bay by boat. However, the increasing number of tourists also brings environmental challenges. For example, <span class="bold">they</span> contribute to water pollution and put pressure on the bay’s ecosystems. Local authorities have taken steps to protect Ha Long Bay, such as limiting plastic use and enforcing conservation rules. Thanks to these efforts, this natural wonder remains a proud symbol of Vietnam.”
+                </blockquote>
+                 <div class="question" data-question-id="t1q31" data-correct-answer="B">
+                    <span class="question-text">31. What is the passage mainly about?</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q31" value="A"> A. The history of Quảng Ninh province.</label></li>
+                        <li><label><input type="radio" name="t1q31" value="B"> B. A famous bay and its environmental issues.</label></li>
+                        <li><label><input type="radio" name="t1q31" value="C"> C. Different caves in Việt Nam.</label></li>
+                        <li><label><input type="radio" name="t1q31" value="D"> D. Boat tours in Ha Long Bay.</label></li>
+                    </ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Ý chính: Vịnh Hạ Long và vấn đề môi trường)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q32" data-correct-answer="B">
+                    <span class="question-text">32. Where is Ha Long Bay located?</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q32" value="A"> A. In central Việt Nam.</label></li>
+                        <li><label><input type="radio" name="t1q32" value="B"> B. In the northeast of Việt Nam.</label></li>
+                        <li><label><input type="radio" name="t1q32" value="C"> C. Near Hồ Chí Minh City.</label></li>
+                        <li><label><input type="radio" name="t1q32" value="D"> D. On the border with China.</label></li>
+                     </ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Thông tin trong bài: northeast of Vietnam)</span>
+                </div>
+                <div class="question" data-question-id="t1q33" data-correct-answer="B">
+                    <span class="question-text">33. Why was Ha Long Bay recognized as a UNESCO World Heritage Site?</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t1q33" value="A"> A. Because of its large size and depth.</label></li>
+                        <li><label><input type="radio" name="t1q33" value="B"> B. Because of its natural beauty and geological value.</label></li>
+                        <li><label><input type="radio" name="t1q33" value="C"> C. Because of its ancient temples.</label></li>
+                        <li><label><input type="radio" name="t1q33" value="D"> D. Because of its cultural festivals.</label></li>
+                    </ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Thông tin trong bài: natural beauty and geological value)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q34" data-correct-answer="A">
+                     <span class="question-text">34. Which of the following is mentioned as an environmental problem in Ha Long Bay?</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q34" value="A"> A. Water pollution.</label></li>
+                         <li><label><input type="radio" name="t1q34" value="B"> B. Deforestation.</label></li>
+                         <li><label><input type="radio" name="t1q34" value="C"> C. Overfishing.</label></li>
+                         <li><label><input type="radio" name="t1q34" value="D"> D. Climate change.</label></li>
+                     </ul>
+                     <span class="correct-answer-text">Đáp án đúng: A (Thông tin trong bài: contribute to water pollution)</span>
+                 </div>
+                 <div class="question" data-question-id="t1q35" data-correct-answer="C">
+                     <span class="question-text">35. The word “<span class="bold">they</span>” in the passage refers to:</span>
+                     <ul class="options">
+                         <li><label><input type="radio" name="t1q35" value="A"> A. the limestone islands.</label></li>
+                         <li><label><input type="radio" name="t1q35" value="B"> B. local authorities.</label></li>
+                         <li><label><input type="radio" name="t1q35" value="C"> C. tourists visiting the bay.</label></li>
+                         <li><label><input type="radio" name="t1q35" value="D"> D. conservation rules.</label></li>
+                     </ul>
+                      <span class="correct-answer-text">Đáp án đúng: C ('they' thay thế cho 'tourists visiting the bay')</span>
+                 </div>
+
+                <h3>Phần VII: Viết lại câu</h3>
+                <p>Viết lại các câu sau sao cho nghĩa không thay đổi, bắt đầu bằng từ/cụm từ cho trước (câu 36 đến 40).</p>
+                <div class="question" data-question-id="t1q36" data-correct-answer='["lan hasn’t visited ha long bay for 5 years", "lan hasnt visited ha long bay for 5 years"]'>
+                    <span class="question-text">36. The last time Lan visited Ha Long Bay was 5 years ago.</span>
+                    <label for="t1q36-input"> -> Lan hasn’t </label><input type="text" id="t1q36-input" name="t1q36" placeholder="...">
+                     <span class="correct-answer-text">Đáp án đúng: Lan hasn’t visited Ha Long Bay for 5 years.</span>
+                </div>
+                <div class="question" data-question-id="t1q37" data-correct-answer='["a new school will be built here next year"]'>
+                     <span class="question-text">37. They will build a new school here next year.</span>
+                     <label for="t1q37-input"> -> A new school </label><input type="text" id="t1q37-input" name="t1q37" placeholder="...">
+                    <span class="correct-answer-text">Đáp án đúng: A new school will be built here next year.</span>
+                </div>
+                 <div class="question" data-question-id="t1q38" data-correct-answer='["the teacher asked me if i liked english", "the teacher asked me whether i liked english"]'>
+                     <span class="question-text">38. “Do you like English?” the teacher asked me.</span>
+                     <label for="t1q38-input"> -> The teacher asked me </label><input type="text" id="t1q38-input" name="t1q38" placeholder="...">
+                     <span class="correct-answer-text">Đáp án đúng: The teacher asked me if I liked English. / The teacher asked me whether I liked English.</span>
+                 </div>
+                <div class="question" data-question-id="t1q39" data-correct-answer='["he is not old enough to drive a car", "he isnt old enough to drive a car"]'>
+                     <span class="question-text">39. He is too young to drive a car.</span>
+                     <label for="t1q39-input"> -> He is not </label><input type="text" id="t1q39-input" name="t1q39" placeholder="...">
+                    <span class="correct-answer-text">Đáp án đúng: He is not old enough to drive a car.</span>
+                </div>
+                <div class="question" data-question-id="t1q40" data-correct-answer='["despite the heavy rain, we enjoyed the trip", "despite raining heavily, we enjoyed the trip"]'>
+                     <span class="question-text">40. Although it rained heavily, we enjoyed the trip.</span>
+                     <label for="t1q40-input"> -> Despite </label><input type="text" id="t1q40-input" name="t1q40" placeholder="...">
+                     <span class="correct-answer-text">Đáp án đúng: Despite the heavy rain, we enjoyed the trip. / Despite raining heavily, we enjoyed the trip.</span>
+                </div>
+
+                <div id="test1-results-summary" class="results-summary"></div>
+                <div id="test1-detailed-results" class="detailed-results"></div>
+                <button type="button" id="submit-test1-btn" class="button button-success submit-btn">Nộp bài & Xem kết quả</button> <!-- Added ID -->
+             </form>
+        </section>
+
+        <!-- Đề thi mẫu 2 -->
+        <section id="test2" class="content-section mock-test">
+            <h1>Đề thi mẫu 2</h1>
+           <p class="italic text-center">Thời gian: 60 phút. Không được sử dụng tài liệu.</p>
+            <hr style="margin: 20px 0;">
+
+           <form id="mock-test-2-form">
+               <h3>Phần I: Ngữ âm (Phát âm và Trọng âm)</h3>
+               <p>Chọn từ có phần gạch chân được phát âm khác (câu 1-2) và chọn từ có trọng âm khác (câu 3-4).</p>
+               <div class="question" data-question-id="t2q1" data-correct-answer="A">
+                    <span class="question-text">1.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q1" value="A"> A. b<span class="bold">a</span>d</label></li>
+                       <li><label><input type="radio" name="t2q1" value="B"> B. m<span class="bold">a</span>de</label></li>
+                       <li><label><input type="radio" name="t2q1" value="C"> C. t<span class="bold">a</span>ke</label></li>
+                       <li><label><input type="radio" name="t2q1" value="D"> D. n<span class="bold">a</span>me</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (/æ/, còn lại /eɪ/)</span>
+               </div>
+                <div class="question" data-question-id="t2q2" data-correct-answer="C">
+                    <span class="question-text">2.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q2" value="A"> A. want<span class="bold">s</span></label></li>
+                       <li><label><input type="radio" name="t2q2" value="B"> B. book<span class="bold">s</span></label></li>
+                       <li><label><input type="radio" name="t2q2" value="C"> C. pen<span class="bold">s</span></label></li>
+                       <li><label><input type="radio" name="t2q2" value="D"> D. stop<span class="bold">s</span></label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: C (/z/, còn lại /s/)</span>
+               </div>
+               <div class="question" data-question-id="t2q3" data-correct-answer="D">
+                    <span class="question-text">3.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q3" value="A"> A. answer</label></li>
+                       <li><label><input type="radio" name="t2q3" value="B"> B. people</label></li>
+                       <li><label><input type="radio" name="t2q3" value="C"> C. father</label></li>
+                       <li><label><input type="radio" name="t2q3" value="D"> D. agree</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: D (nhấn âm 2, còn lại âm 1)</span>
+               </div>
+               <div class="question" data-question-id="t2q4" data-correct-answer="C">
+                    <span class="question-text">4.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q4" value="A"> A. important</label></li>
+                       <li><label><input type="radio" name="t2q4" value="B"> B. vacation</label></li>
+                       <li><label><input type="radio" name="t2q4" value="C"> C. capital</label></li>
+                       <li><label><input type="radio" name="t2q4" value="D"> D. museum</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: C (nhấn âm 1, còn lại âm 2)</span>
+               </div>
+
+               <h3>Phần II: Ngữ pháp và Từ vựng (Hoàn thành câu)</h3>
+               <p>Chọn đáp án đúng để hoàn thành mỗi câu sau (câu 5 đến 20).</p>
+                <div class="question" data-question-id="t2q5" data-correct-answer="C">
+                   <span class="question-text">5. She ____ in that company for 10 years.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q5" value="A"> A. works</label></li>
+                       <li><label><input type="radio" name="t2q5" value="B"> B. worked</label></li>
+                       <li><label><input type="radio" name="t2q5" value="C"> C. has worked</label></li>
+                       <li><label><input type="radio" name="t2q5" value="D"> D. is working</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: C (HTHT - 'for 10 years')</span>
+               </div>
+                <div class="question" data-question-id="t2q6" data-correct-answer="C">
+                   <span class="question-text">6. I ____ get up early when I was younger.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q6" value="A"> A. didn’t used to</label></li>
+                       <li><label><input type="radio" name="t2q6" value="B"> B. not used to</label></li>
+                       <li><label><input type="radio" name="t2q6" value="C"> C. didn’t use to</label></li>
+                       <li><label><input type="radio" name="t2q6" value="D"> D. used not to</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: C (Phủ định của 'used to' là 'didn’t use to')</span>
+               </div>
+                <div class="question" data-question-id="t2q7" data-correct-answer="B">
+                   <span class="question-text">7. You haven’t finished the project, ____?</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q7" value="A"> A. did you</label></li>
+                       <li><label><input type="radio" name="t2q7" value="B"> B. have you</label></li>
+                       <li><label><input type="radio" name="t2q7" value="C"> C. haven’t you</label></li>
+                       <li><label><input type="radio" name="t2q7" value="D"> D. had you</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (Câu hỏi đuôi, haven't -> have you)</span>
+                </div>
+                <div class="question" data-question-id="t2q8" data-correct-answer="B">
+                   <span class="question-text">8. He is ____ honest person.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q8" value="A"> A. a</label></li>
+                       <li><label><input type="radio" name="t2q8" value="B"> B. an</label></li>
+                       <li><label><input type="radio" name="t2q8" value="C"> C. the</label></li>
+                       <li><label><input type="radio" name="t2q8" value="D"> D. (no article)</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B ('honest' bắt đầu bằng nguyên âm /ɒ/ -> dùng 'an')</span>
+                </div>
+                <div class="question" data-question-id="t2q9" data-correct-answer="A">
+                   <span class="question-text">9. It’s late. You ____ home now.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q9" value="A"> A. should go</label></li>
+                       <li><label><input type="radio" name="t2q9" value="B"> B. have gone</label></li>
+                       <li><label><input type="radio" name="t2q9" value="C"> C. will go</label></li>
+                       <li><label><input type="radio" name="t2q9" value="D"> D. must to go</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (should go: lời khuyên)</span>
+               </div>
+               <div class="question" data-question-id="t2q10" data-correct-answer="B">
+                    <span class="question-text">10. Either my father or my brothers ____ going to help me move.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q10" value="A"> A. is</label></li>
+                       <li><label><input type="radio" name="t2q10" value="B"> B. are</label></li>
+                       <li><label><input type="radio" name="t2q10" value="C"> C. has</label></li>
+                       <li><label><input type="radio" name="t2q10" value="D"> D. was</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B ('Either... or...', động từ chia theo chủ ngữ gần nhất - 'brothers' -> are)</span>
+               </div>
+                <div class="question" data-question-id="t2q11" data-correct-answer="A">
+                    <span class="question-text">11. He isn’t ____ to reach the top shelf.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q11" value="A"> A. tall enough</label></li>
+                       <li><label><input type="radio" name="t2q11" value="B"> B. enough tall</label></li>
+                       <li><label><input type="radio" name="t2q11" value="C"> C. too tall</label></li>
+                       <li><label><input type="radio" name="t2q11" value="D"> D. so tall</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (Cấu trúc: adj + enough)</span>
+               </div>
+               <div class="question" data-question-id="t2q12" data-correct-answer="B">
+                   <span class="question-text">12. I look forward to ____ you again.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q12" value="A"> A. see</label></li>
+                       <li><label><input type="radio" name="t2q12" value="B"> B. seeing</label></li>
+                       <li><label><input type="radio" name="t2q12" value="C"> C. seen</label></li>
+                       <li><label><input type="radio" name="t2q12" value="D"> D. to see</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (look forward to + V-ing)</span>
+               </div>
+                <div class="question" data-question-id="t2q13" data-correct-answer="A">
+                   <span class="question-text">13. We should use solar energy ____ fossil fuels to protect the environment.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q13" value="A"> A. instead of</label></li>
+                       <li><label><input type="radio" name="t2q13" value="B"> B. in spite of</label></li>
+                       <li><label><input type="radio" name="t2q13" value="C"> C. despite</label></li>
+                       <li><label><input type="radio" name="t2q13" value="D"> D. because of</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (instead of: thay vì)</span>
+               </div>
+                <div class="question" data-question-id="t2q14" data-correct-answer="B">
+                   <span class="question-text">14. After he ____ his work, he went home.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q14" value="A"> A. finished</label></li>
+                       <li><label><input type="radio" name="t2q14" value="B"> B. had finished</label></li>
+                       <li><label><input type="radio" name="t2q14" value="C"> C. has finished</label></li>
+                       <li><label><input type="radio" name="t2q14" value="D"> D. finishes</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (QKHT - hành động xảy ra trước một hành động khác trong quá khứ)</span>
+               </div>
+               <div class="question" data-question-id="t2q15" data-correct-answer="B">
+                   <span class="question-text">15. Coffee ____ in Brazil.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q15" value="A"> A. grown</label></li>
+                       <li><label><input type="radio" name="t2q15" value="B"> B. is grown</label></li>
+                       <li><label><input type="radio" name="t2q15" value="C"> C. grows</label></li>
+                       <li><label><input type="radio" name="t2q15" value="D"> D. is growing</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (Bị động HTĐ)</span>
+               </div>
+                <div class="question" data-question-id="t2q16" data-correct-answer="C">
+                   <span class="question-text">16. The children ____ the candles on the birthday cake.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q16" value="A"> A. turned off</label></li>
+                       <li><label><input type="radio" name="t2q16" value="B"> B. put out</label></li>
+                       <li><label><input type="radio" name="t2q16" value="C"> C. blew out</label></li>
+                       <li><label><input type="radio" name="t2q16" value="D"> D. got out</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: C (blow out candles: thổi nến)</span>
+               </div>
+                <div class="question" data-question-id="t2q17" data-correct-answer="A">
+                   <span class="question-text">17. We are interested ____ learning English.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q17" value="A"> A. in</label></li>
+                       <li><label><input type="radio" name="t2q17" value="B"> B. on</label></li>
+                       <li><label><input type="radio" name="t2q17" value="C"> C. about</label></li>
+                       <li><label><input type="radio" name="t2q17" value="D"> D. for</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (interested in: quan tâm đến)</span>
+               </div>
+                <div class="question" data-question-id="t2q18" data-correct-answer="B">
+                    <span class="question-text">18. Mary said she ____ her exam the next day.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q18" value="A"> A. is taking</label></li>
+                       <li><label><input type="radio" name="t2q18" value="B"> B. was taking</label></li>
+                       <li><label><input type="radio" name="t2q18" value="C"> C. will take</label></li>
+                       <li><label><input type="radio" name="t2q18" value="D"> D. takes</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Câu tường thuật: lùi thì HTTD -> QKTD 'was taking', 'the next day' cũng là dấu hiệu lùi thì từ 'tomorrow')</span>
+                </div>
+                <div class="question" data-question-id="t2q19" data-correct-answer="A">
+                   <span class="question-text">19. If it ____ tomorrow, we’ll cancel the picnic.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q19" value="A"> A. rains</label></li>
+                       <li><label><input type="radio" name="t2q19" value="B"> B. will rain</label></li>
+                       <li><label><input type="radio" name="t2q19" value="C"> C. rained</label></li>
+                       <li><label><input type="radio" name="t2q19" value="D"> D. is raining</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: A (Câu ĐK loại 1: If + HTĐ, S + will + V)</span>
+                </div>
+                <div class="question" data-question-id="t2q20" data-correct-answer="B">
+                   <span class="question-text">20. Not only ____ intelligent but she is also very kind.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q20" value="A"> A. she is</label></li>
+                       <li><label><input type="radio" name="t2q20" value="B"> B. is she</label></li>
+                       <li><label><input type="radio" name="t2q20" value="C"> C. she was</label></li>
+                       <li><label><input type="radio" name="t2q20" value="D"> D. is not she</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Đảo ngữ với 'Not only': Not only + Aux + S + Adj...)</span>
+               </div>
+
+               <h3>Phần III: Từ đồng nghĩa – Trái nghĩa</h3>
+               <p>Chọn từ có nghĩa gần nhất (câu 21) hoặc trái ngược (câu 22) với từ được gạch chân.</p>
+                <div class="question" data-question-id="t2q21" data-correct-answer="B">
+                   <span class="question-text">21. The teacher was <span class="bold"><u>delighted</u></span> with the exam results. (Đồng nghĩa)</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q21" value="A"> A. angry</label></li>
+                       <li><label><input type="radio" name="t2q21" value="B"> B. pleased</label></li>
+                       <li><label><input type="radio" name="t2q21" value="C"> C. worried</label></li>
+                       <li><label><input type="radio" name="t2q21" value="D"> D. bored</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (delighted = pleased: hài lòng, vui mừng)</span>
+               </div>
+                <div class="question" data-question-id="t2q22" data-correct-answer="A">
+                    <span class="question-text">22. This problem is quite <span class="bold"><u>complicated</u></span>. (Trái nghĩa)</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q22" value="A"> A. simple</label></li>
+                       <li><label><input type="radio" name="t2q22" value="B"> B. difficult</label></li>
+                       <li><label><input type="radio" name="t2q22" value="C"> C. important</label></li>
+                       <li><label><input type="radio" name="t2q22" value="D"> D. confusing</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (complicated: phức tạp ≠ simple: đơn giản)</span>
+               </div>
+
+               <h3>Phần IV: Tìm lỗi sai</h3>
+                <p>Xác định một lỗi sai trong mỗi câu sau (câu 23 đến 25).</p>
+                <div class="question" data-question-id="t2q23" data-correct-answer="B">
+                    <span class="question-text">23. I (A)<u>suggest</u> that he (B)<u>tries</u> (C)<u>to find</u> (D)<u>a new job</u>.</span>
+                    <ul class="options">
+                        <li><label><input type="radio" name="t2q23" value="A"> A</label></li>
+                        <li><label><input type="radio" name="t2q23" value="B"> B</label></li>
+                        <li><label><input type="radio" name="t2q23" value="C"> C</label></li>
+                        <li><label><input type="radio" name="t2q23" value="D"> D</label></li>
+                    </ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (Sai: tries -> Đúng: try - Sau 'suggest that S + (should) + V(nguyên mẫu)')</span>
+                </div>
+                <div class="question" data-question-id="t2q24" data-correct-answer="D">
+                    <span class="question-text">24. My sister (A)<u>likes</u> (B)<u>listening</u> to music (C)<u>and</u> (D)<u>watch</u> TV in her free time.</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t2q24" value="A"> A</label></li>
+                        <li><label><input type="radio" name="t2q24" value="B"> B</label></li>
+                        <li><label><input type="radio" name="t2q24" value="C"> C</label></li>
+                        <li><label><input type="radio" name="t2q24" value="D"> D</label></li>
+                    </ul>
+                    <span class="correct-answer-text">Đáp án đúng: D (Sai: watch -> Đúng: watching - Cấu trúc song song với 'listening')</span>
+               </div>
+                <div class="question" data-question-id="t2q25" data-correct-answer="B">
+                    <span class="question-text">25. There were (A)<u>so</u> (B)<u>much</u> (C)<u>people</u> at the concert that I (D)<u>couldn’t</u> see anything.</span>
+                     <ul class="options">
+                        <li><label><input type="radio" name="t2q25" value="A"> A</label></li>
+                        <li><label><input type="radio" name="t2q25" value="B"> B</label></li>
+                        <li><label><input type="radio" name="t2q25" value="C"> C</label></li>
+                        <li><label><input type="radio" name="t2q25" value="D"> D</label></li>
+                    </ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (Sai: much -> Đúng: many - 'people' là danh từ đếm được số nhiều)</span>
+               </div>
+
+               <h3>Phần V: Điền từ vào đoạn văn</h3>
+               <p>Chọn một từ thích hợp ứng với A, B, C hoặc D để điền vào mỗi chỗ trống trong đoạn văn sau (câu 26 đến 30).</p>
+               <blockquote>“A healthy lifestyle is essential for everyone. Firstly, regular exercise helps (26) ____ your body strong and fit. Activities like jogging or cycling improve your heart health and increase your energy (27) ____. Secondly, a balanced diet provides the (28) ____ nutrients your body needs. You should eat a variety of foods, including fruits and vegetables, instead (29) ____ junk food. Finally, getting enough sleep is important for your body to recover and (30) ____ stress. By following these habits, you can lead a healthier and happier life.”</blockquote>
+               <div class="question" data-question-id="t2q26" data-correct-answer="D">
+                    <span class="question-text">26.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q26" value="A"> A. let</label></li>
+                       <li><label><input type="radio" name="t2q26" value="B"> B. stay</label></li>
+                       <li><label><input type="radio" name="t2q26" value="C"> C. make</label></li>
+                       <li><label><input type="radio" name="t2q26" value="D"> D. keep</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: D (keep your body strong: giữ cơ thể khỏe mạnh)</span>
+               </div>
+               <div class="question" data-question-id="t2q27" data-correct-answer="B">
+                   <span class="question-text">27.</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q27" value="A"> A. level</label></li>
+                       <li><label><input type="radio" name="t2q27" value="B"> B. levels</label></li>
+                       <li><label><input type="radio" name="t2q27" value="C"> C. degree</label></li>
+                       <li><label><input type="radio" name="t2q27" value="D"> D. degrees</label></li></ul>
+                    <span class="correct-answer-text">Đáp án đúng: B (energy levels: mức năng lượng)</span>
+               </div>
+               <div class="question" data-question-id="t2q28" data-correct-answer="A">
+                    <span class="question-text">28.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q28" value="A"> A. necessary</label></li>
+                       <li><label><input type="radio" name="t2q28" value="B"> B. necessity</label></li>
+                       <li><label><input type="radio" name="t2q28" value="C"> C. necessarily</label></li>
+                       <li><label><input type="radio" name="t2q28" value="D"> D. need</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (necessary nutrients: dinh dưỡng cần thiết - cần tính từ)</span>
+                </div>
+               <div class="question" data-question-id="t2q29" data-correct-answer="A">
+                    <span class="question-text">29.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q29" value="A"> A. of</label></li>
+                       <li><label><input type="radio" name="t2q29" value="B"> B. for</label></li>
+                       <li><label><input type="radio" name="t2q29" value="C"> C. with</label></li>
+                       <li><label><input type="radio" name="t2q29" value="D"> D. about</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (instead of + N/Ving: thay vì)</span>
+               </div>
+               <div class="question" data-question-id="t2q30" data-correct-answer="B">
+                    <span class="question-text">30.</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q30" value="A"> A. increase</label></li>
+                       <li><label><input type="radio" name="t2q30" value="B"> B. reduce</label></li>
+                       <li><label><input type="radio" name="t2q30" value="C"> C. create</label></li>
+                       <li><label><input type="radio" name="t2q30" value="D"> D. rise</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (reduce stress: giảm căng thẳng)</span>
+               </div>
+
+               <h3>Phần VI: Đọc hiểu</h3>
+               <p>Đọc đoạn văn sau và chọn đáp án đúng cho các câu hỏi 31 đến 35.</p>
+               <blockquote>“One of the most popular festivals in Vietnam is the Mid-Autumn Festival. It is celebrated on the 15th day of the 8th lunar month, when the moon is brightest. This festival is especially enjoyed by children, who receive toys and lanterns. Many families prepare traditional foods like mooncakes, which are round cakes with sweet fillings symbolizing reunion. During the festival, children parade on the streets carrying colorful lanterns, and some areas host lion dance performances. The Mid-Autumn Festival is an <span class="bold">occasion</span> for family members to gather, give thanks for the harvest, and wish for good fortune in the future.”</blockquote>
+                <div class="question" data-question-id="t2q31" data-correct-answer="A">
+                   <span class="question-text">31. When is the Mid-Autumn Festival celebrated?</span>
+                   <ul class="options">
+                       <li><label><input type="radio" name="t2q31" value="A"> A. On the 15th day of the 8th lunar month.</label></li>
+                       <li><label><input type="radio" name="t2q31" value="B"> B. On the first day of the Lunar New Year.</label></li>
+                       <li><label><input type="radio" name="t2q31" value="C"> C. In mid-August (solar calendar).</label></li>
+                       <li><label><input type="radio" name="t2q31" value="D"> D. On the 8th day of the 5th lunar month.</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (Thông tin trong bài: 15th day of the 8th lunar month)</span>
+               </div>
+               <div class="question" data-question-id="t2q32" data-correct-answer="A">
+                    <span class="question-text">32. Who especially enjoys the Mid-Autumn Festival?</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q32" value="A"> A. Children.</label></li>
+                       <li><label><input type="radio" name="t2q32" value="B"> B. Farmers.</label></li>
+                       <li><label><input type="radio" name="t2q32" value="C"> C. College students.</label></li>
+                       <li><label><input type="radio" name="t2q32" value="D"> D. Elderly people.</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (Thông tin trong bài: especially enjoyed by children)</span>
+               </div>
+               <div class="question" data-question-id="t2q33" data-correct-answer="B">
+                    <span class="question-text">33. What traditional food is mentioned as part of this festival?</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q33" value="A"> A. Sticky rice cakes.</label></li>
+                       <li><label><input type="radio" name="t2q33" value="B"> B. Mooncakes.</label></li>
+                       <li><label><input type="radio" name="t2q33" value="C"> C. Bánh chưng (square rice cakes).</label></li>
+                       <li><label><input type="radio" name="t2q33" value="D"> D. Green rice flakes.</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: B (Thông tin trong bài: traditional foods like mooncakes)</span>
+                </div>
+                <div class="question" data-question-id="t2q34" data-correct-answer="A">
+                    <span class="question-text">34. What do children do during the Mid-Autumn Festival?</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q34" value="A"> A. Carry lanterns in parades.</label></li>
+                       <li><label><input type="radio" name="t2q34" value="B"> B. Visit their teachers.</label></li>
+                       <li><label><input type="radio" name="t2q34" value="C"> C. Give lucky money.</label></li>
+                       <li><label><input type="radio" name="t2q34" value="D"> D. Exchange gifts with friends.</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (Thông tin trong bài: parade on the streets carrying colorful lanterns)</span>
+               </div>
+                <div class="question" data-question-id="t2q35" data-correct-answer="A">
+                    <span class="question-text">35. The word “<span class="bold">occasion</span>” in the passage is closest in meaning to:</span>
+                    <ul class="options">
+                       <li><label><input type="radio" name="t2q35" value="A"> A. event.</label></li>
+                       <li><label><input type="radio" name="t2q35" value="B"> B. place.</label></li>
+                       <li><label><input type="radio" name="t2q35" value="C"> C. reason.</label></li>
+                       <li><label><input type="radio" name="t2q35" value="D"> D. celebration.</label></li></ul>
+                   <span class="correct-answer-text">Đáp án đúng: A (occasion ≈ event: dịp, sự kiện)</span>
+               </div>
+
+               <h3>Phần VII: Viết lại câu</h3>
+               <p>Viết lại các câu sau sao cho nghĩa không thay đổi, bắt đầu bằng từ/cụm từ cho trước (câu 36 đến 40).</p>
+                <div class="question" data-question-id="t2q36" data-correct-answer='["a new supermarket has just been opened in our town"]'>
+                    <span class="question-text">36. They have just opened a new supermarket in our town.</span>
+                    <label for="t2q36-input"> -> A new supermarket </label><input type="text" id="t2q36-input" name="t2q36" placeholder="...">
+                    <span class="correct-answer-text">Đáp án đúng: A new supermarket has just been opened in our town.</span>
+               </div>
+                <div class="question" data-question-id="t2q37" data-correct-answer='["if we do not reduce waste, we will harm the environment", "if we dont reduce waste, we will harm the environment"]'>
+                   <span class="question-text">37. Unless we reduce waste, we will harm the environment.</span>
+                    <label for="t2q37-input"> -> If </label><input type="text" id="t2q37-input" name="t2q37" placeholder="...">
+                   <span class="correct-answer-text">Đáp án đúng: If we do not reduce waste, we will harm the environment. / If we don’t reduce waste, we will harm the environment.</span>
+                </div>
+                <div class="question" data-question-id="t2q38" data-correct-answer='["nam is the tallest student in my class", "nam is the tallest in my class"]'>
+                    <span class="question-text">38. No one in my class is taller than Nam.</span>
+                    <label for="t2q38-input"> -> Nam </label><input type="text" id="t2q38-input" name="t2q38" placeholder="...">
+                   <span class="correct-answer-text">Đáp án đúng: Nam is the tallest student in my class. / Nam is the tallest in my class.</span>
+                </div>
+                <div class="question" data-question-id="t2q39" data-correct-answer='["she said she couldn’t go to the party that night", "she said she couldnt go to the party that night"]'>
+                    <span class="question-text">39. She said, “I can’t go to the party tonight.”</span>
+                    <label for="t2q39-input"> -> She said she </label><input type="text" id="t2q39-input" name="t2q39" placeholder="...">
+                   <span class="correct-answer-text">Đáp án đúng: She said she couldn’t go to the party that night.</span>
+               </div>
+                <div class="question" data-question-id="t2q40" data-correct-answer='["although he was busy, he helped me"]'>
+                   <span class="question-text">40. In spite of being busy, he helped me.</span>
+                    <label for="t2q40-input"> -> Although </label><input type="text" id="t2q40-input" name="t2q40" placeholder="...">
+                   <span class="correct-answer-text">Đáp án đúng: Although he was busy, he helped me.</span>
+               </div>
+
+               <div id="test2-results-summary" class="results-summary"></div>
+                <div id="test2-detailed-results" class="detailed-results"></div>
+               <button type="button" id="submit-test2-btn" class="button button-success submit-btn">Nộp bài & Xem kết quả</button> <!-- Added ID -->
+            </form>
+       </section>
+
+    </main>
+
+    <script>
+        // --- Navigation and Section Switching ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const mainContent = document.getElementById('mainContent');
+
+        function showSection(sectionId) {
+            // Hide all sections first
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+
+            // Show the target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                console.log(`[Debug Nav] Displaying section: ${sectionId}`);
+
+                // Update active link in sidebar
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                });
+
+                // Close sidebar on mobile
+                if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                }
+                 // Scroll to top of the main content area
+                 if(mainContent) mainContent.scrollTop = 0;
+                 // Also scroll window for overall page view
+                  window.scrollTo(0, 0);
+
+            } else {
+                console.warn(`[Debug Nav] Section with ID "${sectionId}" not found.`);
+                 // Optionally show a default section like module1 if the target is invalid
+                 const defaultSection = document.getElementById('module1');
+                  if(defaultSection) {
+                     defaultSection.style.display = 'block';
+                     defaultSection.classList.add('active');
+                      navLinks.forEach(link => {
+                         link.classList.toggle('active', link.getAttribute('href') === '#module1');
+                      });
+                  }
+            }
+        }
+
+
+        if (navLinks.length > 0 && contentSections.length > 0 && sidebar && menuToggle && mainContent) {
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href')?.substring(1);
+                    if (targetId) {
+                        showSection(targetId);
+                         // Update hash in URL for better navigation history (optional)
+                         // history.pushState(null, '', '#' + targetId);
+                    } else {
+                         console.error("[Debug Nav] Link has no valid href:", link);
+                    }
+                });
+            });
+
+            menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+
+            // Close sidebar if clicking on the main content area (useful on mobile)
+            mainContent.addEventListener('click', (e) => {
+                 // Check if the click is outside the sidebar and the sidebar is open
+                 if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                     sidebar.classList.remove('open');
+                 }
+             });
+
+
+            // Initial setup on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log("[Debug DOMContentLoaded] Full DOM loaded.");
+                let hash = window.location.hash.substring(1);
+                let initialSectionId = 'module1'; // Default section
+
+                if (hash) {
+                    const elementExists = document.getElementById(hash);
+                    if (elementExists && elementExists.classList.contains('content-section')) {
+                        initialSectionId = hash;
+                    } else {
+                         console.warn(`[Debug DOMContentLoaded] Hash "#${hash}" does not correspond to a valid section. Falling back to default.`);
+                          // Optionally remove invalid hash
+                         // history.pushState("", document.title, window.location.pathname + window.location.search);
+                    }
+                }
+                 console.log(`[Debug DOMContentLoaded] Initial section to show: ${initialSectionId}`);
+                showSection(initialSectionId);
+
+                // Attach listeners for mock test buttons AFTER ensuring DOM is ready
+                attachTestSubmitListeners();
+                 // Initialize flashcard table if the creator section exists
+                const flashcardTable = document.getElementById('flashcard-input-table');
+                if (flashcardTable) {
+                   addFlashcardRow();
+                }
+
+            });
+
+             // Support for browser back/forward buttons using hashchange
+             window.addEventListener('hashchange', () => {
+                  let hash = window.location.hash.substring(1);
+                  const elementExists = document.getElementById(hash);
+                   if (elementExists && elementExists.classList.contains('content-section')) {
+                         console.log(`[Debug HashChange] Hash changed to: ${hash}. Showing section.`);
+                         showSection(hash);
+                   } else if (!hash) { // Handle case where hash is removed (going back to base URL)
+                         console.log("[Debug HashChange] Hash removed. Showing default section.");
+                         showSection('module1'); // Show default section
+                   }
+             });
+
+
+        } else {
+            console.error("[Debug Init] Crucial navigation elements (sidebar, menuToggle, mainContent, navLinks) not found. Navigation will not work.");
+        }
+
+
+        // --- Module Answer Checking ---
+        function normalizeAnswer(answer) {
+            if (typeof answer !== 'string') return "";
+            return answer.trim().toLowerCase().replace(/\.$/, ''); // Trim, lowercase, remove trailing period
+        }
+
+        function checkAnswerMCQ(questionId, showCorrection = false, correctionText = '') {
+            const questionDiv = document.querySelector(`.practice-question[data-question-id="${questionId}"]`);
+            if (!questionDiv) { console.error(`[Check MCQ] Question div not found: ${questionId}`); return; }
+            const feedbackDiv = questionDiv.querySelector('.feedback');
+            if (!feedbackDiv) { console.error(`[Check MCQ] Feedback div not found: ${questionId}`); return; }
+            const correctAnswer = questionDiv.getAttribute('data-correct-answer');
+            const selectedAnswer = questionDiv.querySelector(`input[name="${questionId}"]:checked`);
+
+            feedbackDiv.className = 'feedback'; feedbackDiv.innerHTML = '';
+
+            if (!selectedAnswer) {
+                feedbackDiv.textContent = 'Vui lòng chọn một đáp án.';
+                feedbackDiv.classList.add('incorrect'); return;
+            }
+
+            const userAnswer = selectedAnswer.value;
+            if (userAnswer === correctAnswer) {
+                feedbackDiv.textContent = 'Chính xác!';
+                feedbackDiv.classList.add('correct');
+            } else {
+                let feedbackText = `Không chính xác. Đáp án đúng là: ${correctAnswer}.`;
+                if (showCorrection && correctionText) { feedbackText += `<br><span class='correct-answer'>${correctionText}</span>`; }
+                feedbackDiv.innerHTML = feedbackText;
+                feedbackDiv.classList.add('incorrect');
+            }
+        }
+
+        function checkAnswerText(questionId) {
+            const questionDiv = document.querySelector(`.practice-question[data-question-id="${questionId}"]`);
+             if (!questionDiv){ console.error(`[Check Text] Question div not found: ${questionId}`); return; }
+            const feedbackDiv = questionDiv.querySelector('.feedback');
+             if (!feedbackDiv) { console.error(`[Check Text] Feedback div not found: ${questionId}`); return; }
+            const inputElement = document.getElementById(`${questionId}-input`);
+             if (!inputElement) { console.error(`[Check Text] Input element not found: ${questionId}-input`); return; }
+            const userAnswer = normalizeAnswer(inputElement.value);
+            const correctAnswerDataAttr = questionDiv.getAttribute('data-correct-answer');
+
+            feedbackDiv.className = 'feedback'; feedbackDiv.innerHTML = '';
+
+            if (userAnswer === "") {
+                feedbackDiv.textContent = 'Vui lòng nhập câu trả lời.';
+                feedbackDiv.classList.add('incorrect'); return;
+            }
+
+            let correctOptionsNormalized = [];
+            let correctAnswersForDisplay = [];
+
+            try {
+                const parsedAnswers = JSON.parse(correctAnswerDataAttr.replace(/'/g, '"')); // Replace single quotes needed for HTML attribute
+                if (Array.isArray(parsedAnswers)) {
+                     correctOptionsNormalized = parsedAnswers.map(ans => normalizeAnswer(ans));
+                     correctAnswersForDisplay = parsedAnswers;
+                } else {
+                     correctOptionsNormalized = [normalizeAnswer(String(parsedAnswers))];
+                     correctAnswersForDisplay = [String(parsedAnswers)];
+                }
+            } catch (e) {
+                 correctOptionsNormalized = [normalizeAnswer(correctAnswerDataAttr)];
+                 correctAnswersForDisplay = [correctAnswerDataAttr];
+            }
+
+            let isCorrect = correctOptionsNormalized.includes(userAnswer);
+
+             if (isCorrect) {
+                 feedbackDiv.textContent = 'Chính xác!';
+                 feedbackDiv.classList.add('correct');
+             } else {
+                 feedbackDiv.innerHTML = `Gần đúng hoặc chưa chính xác. <br><span class='correct-answer'>Đáp án gợi ý: ${correctAnswersForDisplay.join(' / ')}</span>`;
+                 feedbackDiv.classList.add('incorrect');
+             }
+         }
+
+
+        // --- Mock Test Submission and Grading ---
+        function submitMockTest(testId) {
+            console.log(`[Debug] Starting submitMockTest for ${testId}`);
+            // Logic tìm form đã được sửa và kiểm tra
+             let form = document.getElementById(`mock-test-${testId}-form`);
+             if (!form) { // Fallback check using the pattern you provided, although likely unnecessary now
+                 const fallbackId = `mock-test-${testId.replace(/^test/, '')}-form`;
+                 console.warn(`[Debug] Form ID 'mock-test-${testId}-form' not found. Trying fallback ID '${fallbackId}'...`);
+                 form = document.getElementById(fallbackId);
+             }
+
+            if (!form) {
+                console.error(`[Debug] CRITICAL ERROR: Form element for '${testId}' NOT FOUND.`);
+                alert(`Lỗi: Không tìm thấy form HTML cho bài thi ${testId}.`);
+                return;
+            }
+            console.log(`[Debug] Form found for ${testId} with ID: ${form.id}`);
+
+            const questions = form.querySelectorAll('.question');
+            if (questions.length === 0) {
+                 console.error(`[Debug] No questions (.question) found within form ${testId}`);
+                 return;
+            }
+            const resultsSummary = document.getElementById(`${testId}-results-summary`);
+            const detailedResultsDiv = document.getElementById(`${testId}-detailed-results`);
+            const section = document.getElementById(testId);
+            const submitButton = form.querySelector('.submit-btn');
+
+            if (!resultsSummary) console.error(`[Debug] Results summary div (#${testId}-results-summary) NOT FOUND!`);
+            if (!detailedResultsDiv) console.error(`[Debug] Detailed results div (#${testId}-detailed-results) NOT FOUND!`);
+            if (!submitButton) console.warn(`[Debug] Submit button (.submit-btn) not found for test ${testId}`);
+
+            // Check if already submitted using the button's state
+             if (submitButton && submitButton.disabled) {
+                 console.warn(`[Debug] Test ${testId} already submitted (button disabled).`);
+                 resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                 return;
+             }
+              // Add submitted class to the section or form for CSS styling
+             if (section) section.classList.add('submitted');
+             else form.classList.add('submitted'); // Fallback if section wrapping is missing
+
+            console.log(`[Debug] Found ${questions.length} questions for test ${testId}`);
+
+            let score = 0;
+            let totalValidQuestions = 0;
+            let detailedAnswersHTML = '<ol>';
+
+            questions.forEach((question, index) => {
+                const questionId = question.getAttribute('data-question-id');
+                const correctAnswerDataAttr = question.getAttribute('data-correct-answer');
+
+                if (correctAnswerDataAttr === null || correctAnswerDataAttr === undefined) {
+                    console.warn(`[Debug] Question ${index + 1} (ID: ${questionId}) missing data-correct-answer.`);
+                    return;
+                }
+                 totalValidQuestions++;
+
+                const isMcq = question.querySelector('input[type="radio"]');
+                const textInput = question.querySelector('input[type="text"]');
+                let userAnswer = null;
+                let isAnswerCorrect = false;
+                let correctAnswersForDisplay = [];
+
+                // Clear styling & disable inputs
+                question.classList.remove('user-correct', 'user-incorrect');
+                 if (isMcq) {
+                    const optionsLi = question.querySelectorAll('.options li');
+                     optionsLi.forEach(li => {
+                         li.classList.remove('user-correct', 'user-incorrect', 'correct-answer-highlight');
+                         const label = li.querySelector('label');
+                         if(label) label.style.pointerEvents = 'none';
+                     });
+                    const radios = question.querySelectorAll(`input[name="${questionId}"]`);
+                    radios.forEach(radio => radio.disabled = true);
+                 } else if (textInput) {
+                     textInput.classList.remove('user-correct', 'user-incorrect');
+                     textInput.disabled = true;
+                 } else {
+                      console.warn(`[Debug] Question ${index + 1} (ID: ${questionId}) has no valid input.`);
+                       totalValidQuestions--;
+                      return;
+                 }
+
+                // Check Answer
+                if (isMcq) {
+                    const selectedRadio = question.querySelector(`input[name="${questionId}"]:checked`);
+                    const correctAnswerValue = correctAnswerDataAttr;
+                    correctAnswersForDisplay.push(correctAnswerValue);
+                    const correctRadio = question.querySelector(`input[value="${correctAnswerValue}"]`);
+                    const correctLabelLi = correctRadio ? correctRadio.closest('li') : null;
+
+                    if (selectedRadio) {
+                        userAnswer = selectedRadio.value;
+                        isAnswerCorrect = (userAnswer === correctAnswerValue);
+                        const selectedLabelLi = selectedRadio.closest('li');
+                        if (selectedLabelLi) selectedLabelLi.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect');
+                        if (!isAnswerCorrect && correctLabelLi) correctLabelLi.classList.add('correct-answer-highlight');
+                    } else if (correctLabelLi) {
+                        correctLabelLi.classList.add('correct-answer-highlight');
+                    }
+                } else if (textInput) {
+                    userAnswer = normalizeAnswer(textInput.value);
+                    let correctOptionsNormalized = [];
+                    try {
+                        const parsedAnswers = JSON.parse(correctAnswerDataAttr.replace(/'/g, '"'));
+                        if (Array.isArray(parsedAnswers)) {
+                             correctOptionsNormalized = parsedAnswers.map(ans => normalizeAnswer(ans));
+                             correctAnswersForDisplay = parsedAnswers;
+                         } else {
+                             correctOptionsNormalized = [normalizeAnswer(String(parsedAnswers))];
+                             correctAnswersForDisplay = [String(parsedAnswers)];
+                         }
+                    } catch (e) {
+                         correctOptionsNormalized = [normalizeAnswer(correctAnswerDataAttr)];
+                         correctAnswersForDisplay = [correctAnswerDataAttr];
+                    }
+                    isAnswerCorrect = correctOptionsNormalized.includes(userAnswer);
+                    textInput.classList.add(isAnswerCorrect ? 'user-correct' : 'user-incorrect');
+                }
+
+                if (isAnswerCorrect) { score++; }
+                detailedAnswersHTML += `<li><span class="q-number">Câu ${index + 1}:</span> <span class="q-answer">${correctAnswersForDisplay.join(' / ')}</span></li>`;
+            });
+
+            detailedAnswersHTML += '</ol>';
+            console.log(`[Debug] Grading complete for ${testId}. Score: ${score}/${totalValidQuestions}`);
+
+            // Display Summaries
+            if (resultsSummary) {
+                resultsSummary.innerHTML = `<h3>Kết quả</h3>Bạn đã trả lời đúng ${score} / ${totalValidQuestions} câu.`;
+                resultsSummary.style.display = 'block';
+                 console.log(`[Debug] Displayed results summary for ${testId}`);
+            }
+            if (detailedResultsDiv) {
+                detailedResultsDiv.innerHTML = `<h4>Tổng hợp đáp án đúng</h4>${detailedAnswersHTML}`;
+                detailedResultsDiv.style.display = 'block';
+                console.log(`[Debug] Displayed detailed results for ${testId}`);
+            }
+
+            // Disable Submit Button
+            if (submitButton) {
+                submitButton.disabled = true;
+                console.log(`[Debug] Submit button disabled for ${testId}`);
+            }
+            resultsSummary?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+             console.log(`[Debug] submitMockTest for ${testId} finished.`);
+        }
+
+        // --- Event Listener Attachment Function---
+        function attachTestSubmitListeners() {
+             const submitBtn1 = document.getElementById('submit-test1-btn');
+             if (submitBtn1) {
+                 const form1 = document.getElementById('mock-test-1-form');
+                 if(form1){
+                    submitBtn1.addEventListener('click', function() {
+                        console.log("[Debug Button Click] Submit button for test1 clicked via listener.");
+                        submitMockTest('test1');
+                    });
+                    console.log("[Debug DOMContentLoaded] Event listener attached to #submit-test1-btn.");
+                 } else {
+                      console.error("[Debug DOMContentLoaded] Form #mock-test-1-form NOT FOUND when attaching listener!");
+                 }
+             } else {
+                 // It's okay if not found, might be in a different section view
+                 // console.warn("[Debug DOMContentLoaded] Submit button #submit-test1-btn not found.");
+             }
+
+             const submitBtn2 = document.getElementById('submit-test2-btn');
+              if (submitBtn2) {
+                  const form2 = document.getElementById('mock-test-2-form');
+                  if(form2){
+                      submitBtn2.addEventListener('click', function() {
+                          console.log("[Debug Button Click] Submit button for test2 clicked via listener.");
+                         submitMockTest('test2');
+                      });
+                      console.log("[Debug DOMContentLoaded] Event listener attached to #submit-test2-btn.");
+                  } else {
+                       console.error("[Debug DOMContentLoaded] Form #mock-test-2-form NOT FOUND when attaching listener!");
+                  }
+              } else {
+                  // console.warn("[Debug DOMContentLoaded] Submit button #submit-test2-btn not found.");
+              }
+        }
+
+
+        // --- Flashcard Creator Logic ---
+         let flashcards = [];
+         let currentCardIndex = 0;
+         const maxFlashcards = 15;
+
+         function addFlashcardRow() {
+            const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+             if (!tableBody) return;
+             if (tableBody.rows.length >= maxFlashcards) {
+                 alert(`Bạn chỉ có thể tạo tối đa ${maxFlashcards} flashcards.`);
+                 return;
+             }
+             const newRow = tableBody.insertRow();
+             const cell1 = newRow.insertCell(0);
+             const cell2 = newRow.insertCell(1);
+             cell1.innerHTML = '<input type="text" placeholder="Nhập từ...">';
+             cell2.innerHTML = '<input type="text" placeholder="Nhập nghĩa hoặc ví dụ...">';
+             document.getElementById('add-fc-row-btn').disabled = (tableBody.rows.length >= maxFlashcards);
+         }
+
+         function createFlashcards() {
+             flashcards = [];
+             const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+             if (!tableBody) return;
+             const rows = tableBody.rows;
+             for (let i = 0; i < rows.length; i++) {
+                 const wordInput = rows[i].cells[0].getElementsByTagName('input')[0];
+                 const meaningInput = rows[i].cells[1].getElementsByTagName('input')[0];
+                 const word = wordInput.value.trim();
+                 const meaning = meaningInput.value.trim();
+                 if (word && meaning) flashcards.push({ front: word, back: meaning });
+             }
+             const displayArea = document.getElementById('flashcard-display-area');
+             const prevBtn = document.getElementById('fc-prev-btn');
+             const nextBtn = document.getElementById('fc-next-btn');
+             const randomBtn = document.getElementById('fc-random-btn');
+             const counterEl = document.getElementById('fc-counter');
+
+             if (flashcards.length === 0) {
+                 alert("Vui lòng nhập ít nhất một cặp từ và nghĩa.");
+                 if(displayArea) displayArea.classList.add('hidden');
+                 if(prevBtn) prevBtn.disabled = true;
+                 if(nextBtn) nextBtn.disabled = true;
+                 if(randomBtn) randomBtn.disabled = true;
+                 if (counterEl) counterEl.textContent = '0 / 0';
+                 return;
+             }
+             currentCardIndex = 0;
+             displayFlashcard();
+             if(displayArea) displayArea.classList.remove('hidden');
+             const controlsEnabled = flashcards.length > 0;
+             if(prevBtn) prevBtn.disabled = true;
+             if(nextBtn) nextBtn.disabled = flashcards.length <= 1;
+             if(randomBtn) randomBtn.disabled = controlsEnabled;
+         }
+
+         function displayFlashcard() {
+             const displayArea = document.getElementById('flashcard-display-area');
+             const card = document.getElementById('flashcard');
+             const front = document.getElementById('flashcard-front');
+             const back = document.getElementById('flashcard-back');
+             const counter = document.getElementById('fc-counter');
+             const prevBtn = document.getElementById('fc-prev-btn');
+             const nextBtn = document.getElementById('fc-next-btn');
+             const randomBtn = document.getElementById('fc-random-btn');
+
+              if (!displayArea || !card || !front || !back || !counter || !prevBtn || !nextBtn || !randomBtn) { return; }
+             if (flashcards.length === 0 || currentCardIndex < 0 || currentCardIndex >= flashcards.length) {
+                 displayArea.classList.add('hidden');
+                 prevBtn.disabled = true; nextBtn.disabled = true; randomBtn.disabled = true; counter.textContent = '0 / 0';
+                 return;
+             };
+              displayArea.classList.remove('hidden');
+             card.classList.remove('is-flipped');
+             setTimeout(() => {
+                const currentData = flashcards[currentCardIndex];
+                front.textContent = currentData.front; back.textContent = currentData.back;
+                counter.textContent = `${currentCardIndex + 1} / ${flashcards.length}`;
+             }, 50);
+             prevBtn.disabled = (currentCardIndex === 0);
+             nextBtn.disabled = (currentCardIndex === flashcards.length - 1);
+             randomBtn.disabled = flashcards.length <= 0;
+         }
+
+         document.getElementById('flashcard')?.addEventListener('click', function() { if (flashcards.length > 0) this.classList.toggle('is-flipped'); });
+         function nextFlashcard() { if (currentCardIndex < flashcards.length - 1) { currentCardIndex++; displayFlashcard(); } }
+         function prevFlashcard() { if (currentCardIndex > 0) { currentCardIndex--; displayFlashcard(); } }
+         function randomFlashcard() {
+             if (flashcards.length > 1) { let randomIndex; do { randomIndex = Math.floor(Math.random() * flashcards.length); } while (flashcards.length > 1 && randomIndex === currentCardIndex); currentCardIndex = randomIndex; displayFlashcard(); }
+             else if (flashcards.length === 1) { currentCardIndex = 0; displayFlashcard(); }
+         }
+         function resetFlashcardTable() {
+             const tableBody = document.getElementById('flashcard-input-table')?.getElementsByTagName('tbody')[0];
+             if (!tableBody) return;
+             tableBody.innerHTML = ''; addFlashcardRow(); flashcards = [];
+             document.getElementById('flashcard-display-area')?.classList.add('hidden');
+             document.getElementById('add-fc-row-btn').disabled = false;
+             document.getElementById('fc-prev-btn').disabled = true; document.getElementById('fc-next-btn').disabled = true;
+             document.getElementById('fc-random-btn').disabled = true;
+             const counterEl = document.getElementById('fc-counter'); if (counterEl) counterEl.textContent = '0 / 0';
+         }
+
+    </script>
+
+</body>
+</html>
